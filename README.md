@@ -1,2 +1,2 @@
 # dbo
-Experimental Java to relational database mapping
+experimental java objects to relational database mapping
