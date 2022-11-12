@@ -1,10 +1,10 @@
 package db;
 
 public class RelRefN extends DbRelation {
-	private Class<? extends DbObject> toCls;
+	private Class<? extends DbObject> cls;
 
 	public RelRefN(Class<? extends DbObject> cls) {
-		this.toCls = cls;
+		this.cls = cls;
 	}
 
 }

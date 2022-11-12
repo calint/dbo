@@ -18,10 +18,14 @@ public final class RelAggN extends DbRelation {
 		toDbCls.fields.add(relfld);
 	}
 
-	public DbObject create(final DbObject ths) throws Throwable {
-		final DbObject o = cls.getConstructor().newInstance();
-		o.set(relfld, ths.getId());
-		o.createInDb();
-		return o;
+	public DbObject create(final DbObject ths) {
+		try {
+			final DbObject o = cls.getConstructor().newInstance();
+			o.set(relfld, ths.getId());
+			o.createInDb();
+			return o;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 }

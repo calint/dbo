@@ -3,7 +3,7 @@ package db;
 final public class IdField extends DbField {
 	@Override
 	void sql_appendUpdateValue(StringBuilder sb, DbObject o) {
-		sb.append(o.getInt(this));
+		sb.append(o.getLong(this));
 	}
 	@Override
 	public void sql_createField(StringBuilder sb) {

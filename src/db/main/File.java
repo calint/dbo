@@ -1,5 +1,7 @@
-package db;
-// CREATE TABLE db_File(id INT PRIMARY KEY AUTO_INCREMENT,name varchar(20) default '');
+package db.main;
+
+import db.DbObject;
+import db.StringField;
 
 final public class File extends DbObject {
 	public final static StringField name = new StringField();

@@ -1,6 +1,11 @@
-package db;
+package db.main;
 
-//CREATE TABLE db_User(id INT PRIMARY KEY AUTO_INCREMENT,name varchar(20) default '',passhash varchar(255) default '',nlogins int default 0,file int);
+import db.DbObject;
+import db.IntField;
+import db.RelAgg;
+import db.RelAggN;
+import db.RelRef;
+import db.StringField;
 
 final public class User extends DbObject {
 	public final static StringField name = new StringField();
@@ -34,15 +39,15 @@ final public class User extends DbObject {
 		set(nlogins, v);
 	}
 
-	public File createFile() throws Throwable {
+	public File createFile() {
 		return (File) files.create(this);
 	}
 
-	public File createProfilePic() throws Throwable {
+	public File createProfilePic() {
 		return (File) profilepic.create(this);
 	}
 
-	public void setGroupPic(File f) throws Throwable {
+	public void setGroupPic(File f) {
 		grouppic.set(this, f);
 	}
 }

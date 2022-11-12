@@ -1,8 +1,6 @@
 package db.main;
 
 import db.Db;
-import db.File;
-import db.User;
 
 public class Main {
 	public static final void main(String[] args)throws Throwable{	

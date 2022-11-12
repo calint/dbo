@@ -2,8 +2,6 @@ package db.main;
 
 import db.Db;
 import db.DbTransaction;
-import db.File;
-import db.User;
 
 class ReqThread extends Thread {
 	@Override

@@ -16,13 +16,18 @@ public class RelAgg extends DbRelation {
 		relfld.dbname = name;
 		dbcls.fields.add(relfld);
 	}
-	
-	public DbObject create(final DbObject ths) throws Throwable {
-		final DbObject o = cls.getConstructor().newInstance();
-		o.createInDb();
-		ths.set(relfld, o.getId());
-		ths.updateDb();
-		return o;
+
+	public DbObject create(final DbObject ths) {
+		try {
+			final DbObject o = cls.getConstructor().newInstance();
+			o.createInDb();
+			ths.set(relfld, o.getId());
+			ths.updateDb();
+			return o;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+
 	}
 
 }
