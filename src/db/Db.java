@@ -17,7 +17,7 @@ public final class Db {
 	public static DbTransaction initCurrentTransaction() throws Throwable {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)
-			throw new RuntimeException("connection pool empty");
+			throw new RuntimeException("connection pool empty");//?
 		final DbTransaction t = new DbTransaction(c);
 		tn.set(t);
 		return t;
@@ -43,7 +43,7 @@ public final class Db {
 	}
 
 	////////////////////////////////////////////////////////////
-	private final ArrayList<DbClass> classes = new ArrayList<>();
+	private final ArrayList<DbClass> dbclasses = new ArrayList<>();
 	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
 
 	public Db() throws Throwable {
@@ -52,7 +52,7 @@ public final class Db {
 
 	public void register(Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
-		classes.add(dbcls);
+		dbclasses.add(dbcls);
 		jclsToDbCls.put(cls, dbcls);
 	}
 
@@ -60,7 +60,7 @@ public final class Db {
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 
-		for (final DbClass c : classes) {
+		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.relations) {
 				r.connect(c);
 			}
@@ -81,7 +81,7 @@ public final class Db {
 
 		// create missing tables
 		final Statement s = c.createStatement();
-		for (final DbClass dbcls : classes) {
+		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.jcls.getModifiers()))
 				continue;
 			if (tblNames.contains(dbcls.tableName))
