@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-final public class Db {
+public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
 	public static DbTransaction initCurrentTransaction() throws Throwable {
@@ -24,7 +24,7 @@ final public class Db {
 	}
 
 	public static void deinitCurrentTransaction() {
-		inst.conpool.add(tn.get().c);
+		inst.conpool.add(tn.get().con);
 		tn.remove();
 	}
 
@@ -126,7 +126,7 @@ final public class Db {
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
-		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.')+1);
+		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);
 		return tblnm;
 	}
 }

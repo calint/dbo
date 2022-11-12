@@ -15,7 +15,6 @@ public abstract class DbObject {
 		final DbTransaction t = Db.currentTransaction();
 		final Statement s = t.stmt;
 		final StringBuilder sbSql = new StringBuilder(256);
-//		final String tablenm = getClass().getName().replace('.', '_');
 		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass()));
 		final StringBuilder sbFields = new StringBuilder(256);
 		final StringBuilder sbValues = new StringBuilder(256);
@@ -44,6 +43,31 @@ public abstract class DbObject {
 		} else
 			throw new RuntimeException("no generated id");
 		rs.close();
+	}
+
+	final public void updateDb() throws Throwable {
+		final DbTransaction t = Db.currentTransaction();
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
+		for (final DbField f : dirtyFields) {
+			sb.append(f.dbname).append('=');
+			f.sql_updateValue(sb, this);
+			sb.append(',');
+		}
+		sb.setLength(sb.length() - 1);
+		sb.append(" where id=").append(getLong(id));
+		System.out.println(sb.toString());
+		t.stmt.execute(sb.toString());
+		dirtyFields.clear();
+	}
+
+	final public void deleteFromDb() throws Throwable {
+		final DbTransaction t = Db.currentTransaction();
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getLong(id));
+		System.out.println(sb.toString());
+		t.stmt.execute(sb.toString());
+		t.dirtyObjects.remove(this);
 	}
 
 	final void setId(long v) {
@@ -86,39 +110,6 @@ public abstract class DbObject {
 
 	public String toString() {
 		return getClass().getName() + fieldValues.toString();
-	}
-
-	final public void updateDb() throws Throwable {
-		final DbTransaction t = Db.currentTransaction();
-		final StringBuilder sb = new StringBuilder(256);
-		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
-		for (DbField f : dirtyFields) {
-			sb.append(f.dbname).append('=');
-			f.sql_updateValue(sb, this);
-			sb.append(',');
-		}
-		sb.setLength(sb.length() - 1);
-		sb.append(" where id=").append(getLong(id));
-		System.out.println(sb.toString());
-//		final Statement s = t.c.createStatement();
-		final Statement s = t.stmt;
-		s.execute(sb.toString());
-		dirtyFields.clear();
-//		s.close();
-//		t.dirtyObjects.remove(this);
-	}
-
-	final public void deleteFromDb() throws Throwable {
-		final DbTransaction t = Db.currentTransaction();
-		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=")
-				.append(getLong(id));
-		System.out.println(sb.toString());
-//		final Statement s = t.c.createStatement();
-		final Statement s = t.stmt;
-		s.execute(sb.toString());
-//		s.close();
-		t.dirtyObjects.remove(this);
 	}
 
 }

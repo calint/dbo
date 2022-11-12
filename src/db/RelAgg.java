@@ -2,7 +2,7 @@ package db;
 
 import java.util.HashMap;
 
-final public class RelAgg extends DbRelation {
+public final class RelAgg extends DbRelation {
 	private Class<? extends DbObject> cls;
 	LongField relfld;
 

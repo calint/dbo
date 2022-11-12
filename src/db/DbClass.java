@@ -39,7 +39,7 @@ public final class DbClass {
 		return jcls.getName() + " fields:" + fields + " relations:" + relations;
 	}
 
-	final String sql_createTable(StringBuilder sb,Map<Class<? extends DbObject>, DbClass> clsToDbCls) {
+	final String sql_createTable(StringBuilder sb, Map<Class<? extends DbObject>, DbClass> clsToDbCls) {
 		sb.append("create table ").append(tableName).append("(");
 		sql_createTableRec(sb, jcls, clsToDbCls);
 		sb.setLength(sb.length() - 1);
@@ -47,8 +47,9 @@ public final class DbClass {
 		return sb.toString();
 	}
 
-	private static void sql_createTableRec(StringBuilder sb,Class<?> c, Map<Class<? extends DbObject>, DbClass> jclsToDbCls) {
-		if(!c.getSuperclass().equals(Object.class))
+	private static void sql_createTableRec(StringBuilder sb, Class<?> c,
+			Map<Class<? extends DbObject>, DbClass> jclsToDbCls) {
+		if (!c.getSuperclass().equals(Object.class))
 			sql_createTableRec(sb, c.getSuperclass(), jclsToDbCls);
 		final DbClass dbcls = jclsToDbCls.get(c);
 		for (final DbField f : dbcls.fields) {

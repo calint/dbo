@@ -1,6 +1,6 @@
 package db;
 
-final public class IntField extends DbField {
+public final class IntField extends DbField {
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append(o.getInt(this));

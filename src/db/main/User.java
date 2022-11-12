@@ -7,9 +7,9 @@ import db.RelAggN;
 import db.RelRef;
 import db.StringField;
 
-final public class User extends DbObject {
+public final class User extends DbObject {
 	public final static StringField name = new StringField();
-	public final static StringField passhash = new StringField();
+	public final static StringField passhash = new StringField(32);
 	public final static IntField nlogins = new IntField();
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilepic = new RelAgg(File.class);

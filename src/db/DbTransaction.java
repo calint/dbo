@@ -4,18 +4,18 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.HashSet;
 
-final public class DbTransaction {
-	final Connection c;
+public final class DbTransaction {
+	final Connection con;
 	final Statement stmt;
 	final HashSet<DbObject> dirtyObjects = new HashSet<>();
 
 	DbTransaction(final Connection c) throws Throwable {
-		this.c = c;
+		this.con = c;
 		this.stmt = c.createStatement();
 	}
 
 	public DbObject create(final Class<? extends DbObject> cls) throws Throwable {
-		final DbObject o=cls.getConstructor().newInstance();
+		final DbObject o = cls.getConstructor().newInstance();
 		o.createInDb();
 		return o;
 	}
@@ -25,17 +25,21 @@ final public class DbTransaction {
 //	}
 
 	public void commit() throws Throwable {
-		for (DbObject o : dirtyObjects) {
+		flush();
+		stmt.close();
+		con.commit();
+	}
+
+	public void flush() throws Throwable {
+		for (final DbObject o : dirtyObjects) {
 			o.updateDb();
 		}
 		dirtyObjects.clear();
-		stmt.close();
-		c.commit();
 	}
 
 	public void rollback() throws Throwable {
 		stmt.close();
-		c.rollback();
+		con.rollback();
 	}
 
 	public String toString() {

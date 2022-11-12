@@ -1,6 +1,6 @@
 package db;
 
-final public class IdField extends DbField {
+public final class IdField extends DbField {
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append(o.getLong(this));

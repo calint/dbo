@@ -3,7 +3,7 @@ package db.main;
 import db.DbObject;
 import db.StringField;
 
-final public class File extends DbObject {
+public final class File extends DbObject {
 	public final static StringField name = new StringField();
 
 	public String getName() {
