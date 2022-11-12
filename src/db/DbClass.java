@@ -13,7 +13,7 @@ public final class DbClass {
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		this.jcls = c;
-		tableName = c.getName().replace('.', '_');
+		tableName = Db.tableNameForJavaClass(c);
 
 		for (final Field f : c.getDeclaredFields()) {
 			if (!Modifier.isStatic(f.getModifiers()))

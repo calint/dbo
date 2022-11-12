@@ -125,4 +125,8 @@ final public class Db {
 		System.out.println();
 	}
 
+	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
+		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.')+1);
+		return tblnm;
+	}
 }

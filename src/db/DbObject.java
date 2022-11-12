@@ -15,27 +15,26 @@ public abstract class DbObject {
 		final DbTransaction t = Db.currentTransaction();
 		final Statement s = t.stmt;
 		final StringBuilder sbSql = new StringBuilder(256);
-		final String tablenm = getClass().getName().replace('.', '_');
-		sbSql.append("insert into ").append(tablenm);
+//		final String tablenm = getClass().getName().replace('.', '_');
+		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass()));
 		final StringBuilder sbFields = new StringBuilder(256);
 		final StringBuilder sbValues = new StringBuilder(256);
-		for(final DbField f:dirtyFields) {
+		for (final DbField f : dirtyFields) {
 			f.sql_fieldName(sbFields);
 			sbFields.append(',');
 			f.sql_updateValue(sbValues, this);
 			sbValues.append(',');
 		}
 		dirtyFields.clear();
-		if(sbFields.length()>0) {
+		if (sbFields.length() > 0) {
 			sbSql.append('(');
-			sbFields.setLength(sbFields.length()-1);
+			sbFields.setLength(sbFields.length() - 1);
 			sbSql.append(sbFields);
-			sbValues.setLength(sbValues.length()-1);
+			sbValues.setLength(sbValues.length() - 1);
 			sbSql.append(") values(").append(sbValues).append(")");
-		}else
+		} else
 			sbSql.append(" values()");
-		
-		
+
 		System.out.println(sbSql.toString());
 		s.execute(sbSql.toString(), Statement.RETURN_GENERATED_KEYS);
 		final ResultSet rs = s.getGeneratedKeys();
@@ -92,7 +91,7 @@ public abstract class DbObject {
 	final public void updateDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("update ").append(getClass().getName().replace('.', '_')).append(" set ");
+		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
 		for (DbField f : dirtyFields) {
 			sb.append(f.dbname).append('=');
 			f.sql_updateValue(sb, this);
@@ -112,7 +111,7 @@ public abstract class DbObject {
 	final public void deleteFromDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(getClass().getName().replace('.', '_')).append(" where id=")
+		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=")
 				.append(getLong(id));
 		System.out.println(sb.toString());
 //		final Statement s = t.c.createStatement();
