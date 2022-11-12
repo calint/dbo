@@ -2,7 +2,7 @@ package db;
 
 public final class RelAggN extends DbRelation {
 	private final Class<? extends DbObject> cls;
-	private ForeignKeyField fkfld;
+	private FldForeignKey fkfld;
 
 	public RelAggN(Class<? extends DbObject> cls) {
 		this.cls = cls;
@@ -11,7 +11,7 @@ public final class RelAggN extends DbRelation {
 	@Override
 	void connect(final DbClass dbcls) {
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(cls);
-		fkfld = new ForeignKeyField();
+		fkfld = new FldForeignKey();
 		fkfld.dbname = dbcls.tableName + "_" + name;
 		toDbCls.fields.add(fkfld);
 	}

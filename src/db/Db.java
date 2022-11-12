@@ -95,7 +95,7 @@ public final class Db {
 		}
 		// create special RefN tables
 		for(final RelRefNMeta rrm:relRefNMeta) {
-			if (tblNames.contains(rrm.tableName))
+			if(rrm.tableIsIn(tblNames))
 				continue;
 			final StringBuilder sb = new StringBuilder(256);
 			rrm.sql_createTable(sb);

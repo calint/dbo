@@ -1,10 +1,10 @@
 package db.main;
 
 import db.DbObject;
-import db.StringField;
+import db.FldString;
 
 public final class File extends DbObject {
-	public final static StringField name = new StringField("");
+	public final static FldString name = new FldString("");
 
 	public String getName() {
 		return getStr(name);

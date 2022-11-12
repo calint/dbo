@@ -2,7 +2,7 @@ package db;
 
 import java.util.Map;
 
-final class ForeignKeyField extends DbField {
+public final class FldId extends DbField {
 	@Override
 	void sql_updateValue(final StringBuilder sb,final DbObject o) {
 		sb.append(o.getLong(this));
@@ -10,7 +10,7 @@ final class ForeignKeyField extends DbField {
 
 	@Override
 	void sql_createField(final StringBuilder sb) {
-		sb.append(dbname).append(" int");
+		sb.append(dbname).append(" int primary key auto_increment");
 	}
 
 	@Override

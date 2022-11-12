@@ -1,17 +1,17 @@
 package db.main;
 
 import db.DbObject;
-import db.IntField;
+import db.FldInt;
 import db.RelAgg;
 import db.RelAggN;
 import db.RelRef;
 import db.RelRefN;
-import db.StringField;
+import db.FldString;
 
 public final class User extends DbObject {
-	public final static StringField name = new StringField();
-	public final static StringField passhash = new StringField(32);
-	public final static IntField nlogins = new IntField();
+	public final static FldString name = new FldString();
+	public final static FldString passhash = new FldString(32);
+	public final static FldInt nlogins = new FldInt();
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
@@ -49,8 +49,8 @@ public final class User extends DbObject {
 		return (File) profilePic.create(this);
 	}
 
-	public void setGroupPic(File f) {
-		groupPic.set(this, f);
+	public void setGroupPic(File o) {
+		groupPic.set(this, o);
 	}
 
 	public void addRefFile(File o) {

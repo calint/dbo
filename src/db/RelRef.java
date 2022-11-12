@@ -2,7 +2,7 @@ package db;
 
 public final class RelRef extends DbRelation {
 	private final Class<? extends DbObject> cls;
-	private ForeignKeyField fkfld;
+	private FldForeignKey fkfld;
 
 	public RelRef(Class<? extends DbObject> cls) {
 		this.cls = cls;
@@ -10,7 +10,7 @@ public final class RelRef extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		fkfld = new ForeignKeyField();
+		fkfld = new FldForeignKey();
 		fkfld.dbname = name;
 		c.fields.add(fkfld);
 	}

@@ -2,24 +2,24 @@ package db;
 
 import java.util.Map;
 
-public final class StringField extends DbField {
+public final class FldString extends DbField {
 	public final static int max_size = 65535;
 	private int size = 255;
 	private String defval = "";
 
-	public StringField() {
+	public FldString() {
 		this("", 255);
 	}
 
-	public StringField(final String def) {
+	public FldString(final String def) {
 		this(def, 255);
 	}
 
-	public StringField(int size) {
+	public FldString(int size) {
 		this("", size);
 	}
 
-	public StringField(final String def, final int size) {
+	public FldString(final String def, final int size) {
 		if (size > max_size)
 			throw new RuntimeException("size " + size + " exceeds maximum of " + max_size);
 		this.size = size;

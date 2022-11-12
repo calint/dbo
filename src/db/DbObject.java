@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class DbObject {
-	public final static IdField id = new IdField();
+	public final static FldId id = new FldId();
 
 	private final HashMap<DbField, Object> fieldValues = new HashMap<>();
 	private final HashSet<DbField> dirtyFields = new HashSet<>();

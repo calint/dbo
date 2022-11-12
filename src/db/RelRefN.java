@@ -12,20 +12,14 @@ public final class RelRefN extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		rrm = new RelRefNMeta();
-		rrm.fromCls = c.jcls;
-		rrm.toCls = cls;
-		final StringBuilder sb = new StringBuilder(256).append(Db.tableNameForJavaClass(rrm.fromCls)).append('_')
-				.append(name);
-		rrm.tableName = sb.toString();
+		rrm = new RelRefNMeta(c.jcls, name, cls);
 		Db.instance().relRefNMeta.add(rrm);
 	}
 
-	public void add(DbObject from, DbObject to) {
+	public void add(final DbObject from, final DbObject to) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("insert into ").append(rrm.tableName).append(" values(").append(from.getId()).append(',')
-				.append(to.getId()).append(')');
+		rrm.sql_addToTable(sb, from, to);
 		final String sql = sb.toString();
 		System.out.println(sql);
 		try {

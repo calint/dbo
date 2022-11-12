@@ -2,20 +2,20 @@ package db;
 
 import java.util.Map;
 
-public final class LongField extends DbField {
-	private long defval;
+public final class FldInt extends DbField {
+	private int defval;
 
-	public LongField(final long def) {
+	public FldInt(final int def) {
 		defval = def;
 	}
 
-	public LongField() {
+	public FldInt() {
 		this(0);
 	}
 
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append(o.getLong(this));
+		sb.append(o.getInt(this));
 	}
 
 	@Override
@@ -27,5 +27,4 @@ public final class LongField extends DbField {
 	void initDefaultValue(Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
-
 }
