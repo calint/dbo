@@ -1,0 +1,10 @@
+[ ] select
+[ ] cache
+[ ] condition
+[ ] paging
+[ ] blob field
+[ ] clob field
+[ ] date field
+[ ] bool field
+[ ] float field
+[ ] double field
