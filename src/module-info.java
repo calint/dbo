@@ -1,9 +1,3 @@
-/**
- * 
- */
-/**
- * @author c
- *
- */
-module dbo {
+module db {
+	requires java.sql;
 }
