@@ -3,7 +3,6 @@ package db;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Map;
 
 public final class DbClass {
 	final Class<? extends DbObject> jcls;
@@ -39,19 +38,18 @@ public final class DbClass {
 		return jcls.getName() + " fields:" + fields + " relations:" + relations;
 	}
 
-	final String sql_createTable(StringBuilder sb, Map<Class<? extends DbObject>, DbClass> clsToDbCls) {
+	final String sql_createTable(StringBuilder sb) {
 		sb.append("create table ").append(tableName).append("(");
-		sql_createTableRec(sb, jcls, clsToDbCls);
+		sql_createTableRec(sb, jcls);
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
 		return sb.toString();
 	}
 
-	private static void sql_createTableRec(StringBuilder sb, Class<?> c,
-			Map<Class<? extends DbObject>, DbClass> jclsToDbCls) {
+	private static void sql_createTableRec(StringBuilder sb, Class<?> c) {
 		if (!c.getSuperclass().equals(Object.class))
-			sql_createTableRec(sb, c.getSuperclass(), jclsToDbCls);
-		final DbClass dbcls = jclsToDbCls.get(c);
+			sql_createTableRec(sb, c.getSuperclass());
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(c);
 		for (final DbField f : dbcls.fields) {
 			f.sql_createField(sb);
 			sb.append(',');

@@ -43,8 +43,8 @@ public final class Db {
 	}
 
 	////////////////////////////////////////////////////////////
-	final ArrayList<DbClass> classes = new ArrayList<>();
-	final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
+	private final ArrayList<DbClass> classes = new ArrayList<>();
+	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
 
 	public Db() throws Throwable {
 		register(DbObject.class);
@@ -56,7 +56,7 @@ public final class Db {
 		jclsToDbCls.put(cls, dbcls);
 	}
 
-	final private LinkedList<Connection> conpool = new LinkedList<>();
+	private final LinkedList<Connection> conpool = new LinkedList<>();
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 
@@ -87,7 +87,7 @@ public final class Db {
 			if (tblNames.contains(dbcls.tableName))
 				continue;
 			final StringBuilder sb = new StringBuilder(256);
-			dbcls.sql_createTable(sb, jclsToDbCls);
+			dbcls.sql_createTable(sb);
 			final String sql = sb.toString();
 			System.out.println(sql);
 			s.execute(sql);
@@ -128,5 +128,9 @@ public final class Db {
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
 		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);
 		return tblnm;
+	}
+
+	DbClass dbClassForJavaClass(final Class<?> c) {
+		return jclsToDbCls.get(c);
 	}
 }

@@ -10,7 +10,7 @@ public final class RelAggN extends DbRelation {
 
 	@Override
 	void connect(final DbClass dbcls) {
-		final DbClass toDbCls = Db.instance().jclsToDbCls.get(cls);
+		final DbClass toDbCls = Db.instance().dbClassForJavaClass(cls);
 		relfld = new ForeignKeyField();
 		relfld.dbname = dbcls.tableName + "_" + name;
 		toDbCls.fields.add(relfld);

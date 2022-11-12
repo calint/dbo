@@ -22,6 +22,5 @@ public final class RelRef extends DbRelation {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
-
 	}
 }
