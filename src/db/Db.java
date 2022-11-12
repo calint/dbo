@@ -17,7 +17,7 @@ public final class Db {
 	public static DbTransaction initCurrentTransaction() throws Throwable {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)
-			throw new RuntimeException("connection pool empty");//?
+			throw new RuntimeException("connection pool empty");// ?
 		final DbTransaction t = new DbTransaction(c);
 		tn.set(t);
 		return t;
@@ -45,6 +45,7 @@ public final class Db {
 	////////////////////////////////////////////////////////////
 	private final ArrayList<DbClass> dbclasses = new ArrayList<>();
 	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
+	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<>();
 
 	public Db() throws Throwable {
 		register(DbObject.class);
@@ -92,6 +93,17 @@ public final class Db {
 			System.out.println(sql);
 			stmt.execute(sql);
 		}
+		// create special RefN tables
+		for(final RelRefNMeta rrm:relRefNMeta) {
+			if (tblNames.contains(rrm.tableName))
+				continue;
+			final StringBuilder sb = new StringBuilder(256);
+			rrm.sql_createTable(sb);
+			final String sql = sb.toString();
+			System.out.println(sql);
+			stmt.execute(sql);
+		}
+		
 		stmt.close();
 		con.close();
 

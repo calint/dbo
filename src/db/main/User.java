@@ -5,6 +5,7 @@ import db.IntField;
 import db.RelAgg;
 import db.RelAggN;
 import db.RelRef;
+import db.RelRefN;
 import db.StringField;
 
 public final class User extends DbObject {
@@ -12,8 +13,9 @@ public final class User extends DbObject {
 	public final static StringField passhash = new StringField(32);
 	public final static IntField nlogins = new IntField();
 	public final static RelAggN files = new RelAggN(File.class);
-	public final static RelAgg profilepic = new RelAgg(File.class);
-	public final static RelRef grouppic = new RelRef(File.class);
+	public final static RelAgg profilePic = new RelAgg(File.class);
+	public final static RelRef groupPic = new RelRef(File.class);
+	public final static RelRefN refFiles = new RelRefN(File.class);
 
 	public String getName() {
 		return getStr(name);
@@ -44,10 +46,14 @@ public final class User extends DbObject {
 	}
 
 	public File createProfilePic() {
-		return (File) profilepic.create(this);
+		return (File) profilePic.create(this);
 	}
 
 	public void setGroupPic(File f) {
-		grouppic.set(this, f);
+		groupPic.set(this, f);
+	}
+
+	public void addRefFile(File o) {
+		refFiles.add(this, o);
 	}
 }

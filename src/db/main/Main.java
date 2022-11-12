@@ -45,6 +45,8 @@ class ReqThread extends Thread {
 //			u.setName("hello 'name' name");
 			u.setNLogins(3);
 			f.setName("file1");
+			u.addRefFile(f);
+			u.addRefFile(fg);
 			////////////////////////////////////////////////////////////
 			t.commit();
 //			System.out.println(t);

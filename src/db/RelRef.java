@@ -1,8 +1,8 @@
 package db;
 
 public final class RelRef extends DbRelation {
-	private Class<? extends DbObject> cls;
-	ForeignKeyField fkfld;
+	private final Class<? extends DbObject> cls;
+	private ForeignKeyField fkfld;
 
 	public RelRef(Class<? extends DbObject> cls) {
 		this.cls = cls;

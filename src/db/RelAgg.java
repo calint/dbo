@@ -2,7 +2,7 @@ package db;
 
 public final class RelAgg extends DbRelation {
 	private Class<? extends DbObject> cls;
-	ForeignKeyField fkfld;
+	private ForeignKeyField fkfld;
 
 	public RelAgg(Class<? extends DbObject> cls) {
 		this.cls = cls;
