@@ -32,12 +32,13 @@ final public class Db {
 		return tn.get();
 	}
 
-	static Db inst;
-	public static void initInstance()throws Throwable{
-		inst=new Db();
+	private static Db inst;
+
+	public static void initInstance() throws Throwable {
+		inst = new Db();
 	}
 
-	public final static Db instance() {
+	public static Db instance() {
 		return inst;
 	}
 
@@ -55,7 +56,7 @@ final public class Db {
 		jclsToDbCls.put(cls, dbcls);
 	}
 
-	private LinkedList<Connection> conpool = new LinkedList<>();
+	final private LinkedList<Connection> conpool = new LinkedList<>();
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 
@@ -79,13 +80,13 @@ final public class Db {
 		}
 
 		// create missing tables
-		final Statement s=c.createStatement();
+		final Statement s = c.createStatement();
 		for (final DbClass dbcls : classes) {
-			if(Modifier.isAbstract(dbcls.jcls.getModifiers()))
+			if (Modifier.isAbstract(dbcls.jcls.getModifiers()))
 				continue;
 			if (tblNames.contains(dbcls.tableName))
 				continue;
-			final StringBuilder sb=new StringBuilder(256);
+			final StringBuilder sb = new StringBuilder(256);
 			dbcls.sql_createTable(sb, jclsToDbCls);
 			final String sql = sb.toString();
 			System.out.println(sql);
@@ -97,22 +98,29 @@ final public class Db {
 
 	private void initConnectionPool(final String url, final String user, final String password, final int ncons)
 			throws Throwable {
+		System.out.println("jdbc connection: " + url);
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
 			conpool.add(c);
-			System.out.println((i + 1) + " connection");
+			System.out.print(".");
+			System.out.flush();
 		}
+		System.out.println();
 	}
 
-	public void deinitConnectionPool(){
+	public void deinitConnectionPool() {
+		System.out.println("close jdbc connections");
 		for (final Connection c : conpool) {
 			try {
 				c.close();
+				System.out.print(".");
+				System.out.flush();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
+		System.out.println();
 	}
 
 }
