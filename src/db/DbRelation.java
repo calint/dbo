@@ -1,11 +1,9 @@
 package db;
 
-import java.util.HashMap;
-
 abstract class DbRelation {
 	String name;
 
-	void connect(final DbClass c, final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls) {
+	void connect(final DbClass c) {
 	}
 
 	@Override

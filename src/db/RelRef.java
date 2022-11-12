@@ -1,18 +1,16 @@
 package db;
 
-import java.util.HashMap;
-
 public final class RelRef extends DbRelation {
 	private Class<? extends DbObject> cls;
-	LongField relfld;
+	ForeignKeyField relfld;
 
 	public RelRef(Class<? extends DbObject> cls) {
 		this.cls = cls;
 	}
 
 	@Override
-	void connect(final DbClass c, final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls) {
-		relfld = new LongField();
+	void connect(final DbClass c) {
+		relfld = new ForeignKeyField();
 		relfld.dbname = name;
 		c.fields.add(relfld);
 	}

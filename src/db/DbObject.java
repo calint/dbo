@@ -43,6 +43,11 @@ public abstract class DbObject {
 		} else
 			throw new RuntimeException("no generated id");
 		rs.close();
+
+		final DbClass dbcls = Db.instance().jclsToDbCls.get(this.getClass());
+		for (final DbField f : dbcls.fields) {
+			f.initDefaultValue(fieldValues);
+		}
 	}
 
 	final public void updateDb() throws Throwable {

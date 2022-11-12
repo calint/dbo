@@ -1,19 +1,17 @@
 package db;
 
-import java.util.HashMap;
-
 public final class RelAggN extends DbRelation {
 	final Class<? extends DbObject> cls;
-	LongField relfld;
+	ForeignKeyField relfld;
 
 	public RelAggN(Class<? extends DbObject> cls) {
 		this.cls = cls;
 	}
 
 	@Override
-	void connect(final DbClass dbcls, final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls) {
-		final DbClass toDbCls = jclsToDbCls.get(cls);
-		relfld = new LongField();
+	void connect(final DbClass dbcls) {
+		final DbClass toDbCls = Db.instance().jclsToDbCls.get(cls);
+		relfld = new ForeignKeyField();
 		relfld.dbname = dbcls.tableName + "_" + name;
 		toDbCls.fields.add(relfld);
 	}

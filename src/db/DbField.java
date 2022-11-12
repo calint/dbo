@@ -1,5 +1,7 @@
 package db;
 
+import java.util.Map;
+
 abstract class DbField {
 	String dbname;
 
@@ -13,6 +15,10 @@ abstract class DbField {
 	void sql_createField(StringBuilder sb) {
 	}
 
+	void initDefaultValue(Map<DbField,Object>kvm) {
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		return dbname.hashCode();

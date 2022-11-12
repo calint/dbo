@@ -20,8 +20,8 @@ class ReqThread extends Thread {
 			File fg = (File) t.create(File.class);
 			u.setGroupPic(fg);
 			fp.setName("profile pic");
-			u.setName("hello 'name' name");
-			u.setNLogins(1);
+//			u.setName("hello 'name' name");
+			u.setNLogins(3);
 			f.setName("file1");
 			////////////////////////////////////////////////////////////
 			t.commit();

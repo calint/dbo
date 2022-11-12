@@ -43,8 +43,8 @@ public final class Db {
 	}
 
 	////////////////////////////////////////////////////////////
-	private final ArrayList<DbClass> classes = new ArrayList<>();
-	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
+	final ArrayList<DbClass> classes = new ArrayList<>();
+	final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
 
 	public Db() throws Throwable {
 		register(DbObject.class);
@@ -62,7 +62,7 @@ public final class Db {
 
 		for (final DbClass c : classes) {
 			for (final DbRelation r : c.relations) {
-				r.connect(c, jclsToDbCls);
+				r.connect(c);
 			}
 			System.out.println(c);
 		}
