@@ -92,6 +92,8 @@ final public class Db {
 			System.out.println(sql);
 			s.execute(sql);
 		}
+		s.close();
+		c.close();
 
 		initConnectionPool(url, user, password, ncons);
 	}
