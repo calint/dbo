@@ -25,7 +25,7 @@ class ReqThread extends Thread {
 			f.setName("file1");
 			////////////////////////////////////////////////////////////
 			t.commit();
-			System.out.println(t);
+//			System.out.println(t);
 		} catch (Throwable t1) {
 			try {
 				t.rollback();

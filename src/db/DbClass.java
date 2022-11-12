@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class DbClass {
+public final class DbClass {
 	final Class<? extends DbObject> jcls;
 	final String tableName;
 	final ArrayList<DbField> fields = new ArrayList<>();
@@ -39,7 +39,7 @@ public class DbClass {
 		return jcls.getName() + " fields:" + fields + " relations:" + relations;
 	}
 
-	public String sql_createTable(StringBuilder sb,Map<Class<? extends DbObject>, DbClass> clsToDbCls) {
+	final String sql_createTable(StringBuilder sb,Map<Class<? extends DbObject>, DbClass> clsToDbCls) {
 		sb.append("create table ").append(tableName).append("(");
 		sql_createTableRec(sb, jcls, clsToDbCls);
 		sb.setLength(sb.length() - 1);

@@ -1,6 +1,6 @@
 package db;
 
-public class RelRefN extends DbRelation {
+public final class RelRefN extends DbRelation {
 	private Class<? extends DbObject> cls;
 
 	public RelRefN(Class<? extends DbObject> cls) {

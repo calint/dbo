@@ -11,7 +11,7 @@ public abstract class DbObject {
 	private final HashMap<DbField, Object> fieldValues = new HashMap<>();
 	private final HashSet<DbField> dirtyFields = new HashSet<>();
 
-	void createInDb() throws Throwable {
+	final void createInDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();
 		final Statement s = t.stmt;
 		final StringBuilder sbSql = new StringBuilder(256);
@@ -20,9 +20,9 @@ public abstract class DbObject {
 		final StringBuilder sbFields = new StringBuilder(256);
 		final StringBuilder sbValues = new StringBuilder(256);
 		for(final DbField f:dirtyFields) {
-			f.sql_appendFieldName(sbFields);
+			f.sql_fieldName(sbFields);
 			sbFields.append(',');
-			f.sql_appendUpdateValue(sbValues, this);
+			f.sql_updateValue(sbValues, this);
 			sbValues.append(',');
 		}
 		dirtyFields.clear();
@@ -47,7 +47,7 @@ public abstract class DbObject {
 		rs.close();
 	}
 
-	void setId(long v) {
+	final void setId(long v) {
 		fieldValues.put(id, v);
 	}
 
@@ -55,31 +55,31 @@ public abstract class DbObject {
 		return ((Long) fieldValues.get(id)).longValue();
 	}
 
-	public String getStr(DbField field) {
+	final public String getStr(DbField field) {
 		return (String) fieldValues.get(field);
 	}
 
-	public int getInt(DbField field) {
+	final public int getInt(DbField field) {
 		return ((Integer) fieldValues.get(field)).intValue();
 	}
 
-	public long getLong(DbField field) {
+	final public long getLong(DbField field) {
 		return ((Long) fieldValues.get(field)).longValue();
 	}
 
-	public void set(DbField field, String value) {
+	final public void set(DbField field, String value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	public void set(DbField field, int value) {
+	final public void set(DbField field, int value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	public void set(DbField field, long value) {
+	final public void set(DbField field, long value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
@@ -95,7 +95,7 @@ public abstract class DbObject {
 		sb.append("update ").append(getClass().getName().replace('.', '_')).append(" set ");
 		for (DbField f : dirtyFields) {
 			sb.append(f.dbname).append('=');
-			f.sql_appendUpdateValue(sb, this);
+			f.sql_updateValue(sb, this);
 			sb.append(',');
 		}
 		sb.setLength(sb.length() - 1);

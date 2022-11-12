@@ -1,16 +1,16 @@
 package db;
 
-class DbField {
+abstract class DbField {
 	String dbname;
 
-	void sql_appendUpdateValue(StringBuilder sb, DbObject o) {
+	void sql_updateValue(StringBuilder sb, DbObject o) {
 	}
 
-	void sql_appendFieldName(StringBuilder sb) {
+	void sql_fieldName(StringBuilder sb) {
 		sb.append(dbname);
 	}
 
-	public void sql_createField(StringBuilder sb) {
+	void sql_createField(StringBuilder sb) {
 	}
 
 	@Override
