@@ -4,7 +4,7 @@ import java.sql.Statement;
 
 public final class RelRefN extends DbRelation {
 	private final Class<? extends DbObject> cls;
-	private RelRefNMeta rrm;
+	private MetaRelRefN rrm;
 
 	public RelRefN(Class<? extends DbObject> cls) {
 		this.cls = cls;
@@ -12,7 +12,7 @@ public final class RelRefN extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		rrm = new RelRefNMeta(c.jcls, name, cls);
+		rrm = new MetaRelRefN(c.jcls, name, cls);
 		Db.instance().relRefNMeta.add(rrm);
 	}
 

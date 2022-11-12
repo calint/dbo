@@ -45,7 +45,7 @@ public final class Db {
 	////////////////////////////////////////////////////////////
 	private final ArrayList<DbClass> dbclasses = new ArrayList<>();
 	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
-	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<>();
+	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<>();
 
 	public Db() throws Throwable {
 		register(DbObject.class);
@@ -94,7 +94,7 @@ public final class Db {
 			stmt.execute(sql);
 		}
 		// create special RefN tables
-		for(final RelRefNMeta rrm:relRefNMeta) {
+		for(final MetaRelRefN rrm:relRefNMeta) {
 			if(rrm.tableIsIn(tblNames))
 				continue;
 			final StringBuilder sb = new StringBuilder(256);

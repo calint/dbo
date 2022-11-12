@@ -3,13 +3,13 @@ package db;
 import java.util.Set;
 
 // represents the relation table
-final class RelRefNMeta {
+final class MetaRelRefN {
 	private final Class<? extends DbObject> fromCls;
 //	private final String relName;
 	private final Class<? extends DbObject> toCls;
 	private final String tableName;
 
-	public RelRefNMeta(final Class<? extends DbObject> fromCls, final String relName,
+	public MetaRelRefN(final Class<? extends DbObject> fromCls, final String relName,
 			final Class<? extends DbObject> toCls) {
 		this.fromCls = fromCls;
 		this.toCls = toCls;
