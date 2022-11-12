@@ -6,11 +6,9 @@ final public class User extends DbObject {
 	public final static StringField name = new StringField();
 	public final static StringField passhash = new StringField();
 	public final static IntField nlogins = new IntField();
-	public final static RelAgg1 file = new RelAgg1(File.class);
-
-	public User() throws Throwable {
-
-	}
+	public final static RelAggN files = new RelAggN(File.class);
+	public final static RelAgg profilepic = new RelAgg(File.class);
+	public final static RelRef grouppic = new RelRef(File.class);
 
 	public String getName() {
 		return getStr(name);
@@ -36,7 +34,15 @@ final public class User extends DbObject {
 		set(nlogins, v);
 	}
 
-	public File createFile() {
-		return (File) file.create(this);
+	public File createFile() throws Throwable {
+		return (File) files.create(this);
+	}
+
+	public File createProfilePic() throws Throwable {
+		return (File) profilepic.create(this);
+	}
+
+	public void setGroupPic(File f) throws Throwable {
+		grouppic.set(this, f);
 	}
 }

@@ -5,10 +5,11 @@ import db.File;
 import db.User;
 
 public class Main {
-	public static final void main(String[] args)throws Throwable{		
+	public static final void main(String[] args)throws Throwable{	
+		Db.initInstance();
 		Db.instance().register(User.class);
 		Db.instance().register(File.class);
-		Db.instance().initConnectionPool("jdbc:mysql://localhost:3306/testdb","c","password",5);
+		Db.instance().init("jdbc:mysql://localhost:3306/testdb","c","password",5);
 		
 		
 		Thread t1=new ReqThread();

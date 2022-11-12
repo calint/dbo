@@ -4,10 +4,6 @@ package db;
 final public class File extends DbObject {
 	public final static StringField name = new StringField();
 
-	public File() throws Throwable {
-
-	}
-
 	public String getName() {
 		return getStr(name);
 	}

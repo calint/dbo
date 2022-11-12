@@ -16,14 +16,15 @@ class ReqThread extends Thread {
 		}
 		try {
 			////////////////////////////////////////////////////////////
-//			User u = (User) t.create(User.class);
-			User u = new User();
+			User u = (User) t.create(User.class);
 			File f = u.createFile();
-			f.setName("file1");
+			File fp = u.createProfilePic();
+			File fg = (File) t.create(File.class);
+			u.setGroupPic(fg);
+			fp.setName("profile pic");
 			u.setName("hello 'name' name");
 			u.setNLogins(1);
-			u.update();
-//			u.delete();
+			f.setName("file1");
 			////////////////////////////////////////////////////////////
 			t.commit();
 			System.out.println(t);

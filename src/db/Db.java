@@ -1,10 +1,14 @@
 package db;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 final public class Db {
@@ -28,48 +32,70 @@ final public class Db {
 		return tn.get();
 	}
 
-	final static Db inst = new Db();
+	static Db inst;
+	public static void initInstance()throws Throwable{
+		inst=new Db();
+	}
 
 	public final static Db instance() {
 		return inst;
 	}
 
 	////////////////////////////////////////////////////////////
-	private ArrayList<Class<? extends DbObject>> classes = new ArrayList<>();
+	private final ArrayList<DbClass> classes = new ArrayList<>();
+	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
 
-	public Db() {
+	public Db() throws Throwable {
 		register(DbObject.class);
 	}
 
-	public void register(Class<? extends DbObject> cls) {
-		classes.add(cls);
-		Field fs[] = cls.getDeclaredFields();
-		for (Field f : fs) {
-			if (!Modifier.isStatic(f.getModifiers()))
-				continue;
-			if (DbField.class.isAssignableFrom(f.getType())) {
-				DbField dbf;
-				try {
-					dbf = (DbField) f.get(null);
-				} catch (Throwable t) {
-					throw new RuntimeException(t);
-				}
-				dbf.dbname = f.getName();
-			}else if(RelAgg1.class.isAssignableFrom(f.getType())) {
-				RelAgg1 dbf;
-				try {
-					dbf = (RelAgg1) f.get(null);
-				} catch (Throwable t) {
-					throw new RuntimeException(t);
-				}
-				dbf.dbname = f.getName();				
-			}
-		}
+	public void register(Class<? extends DbObject> cls) throws Throwable {
+		final DbClass dbcls = new DbClass(cls);
+		classes.add(dbcls);
+		jclsToDbCls.put(cls, dbcls);
 	}
 
 	private LinkedList<Connection> conpool = new LinkedList<>();
 
-	public void initConnectionPool(final String url, final String user, final String password, final int ncons)
+	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
+
+		for (final DbClass c : classes) {
+			for (final DbRelation r : c.relations) {
+				r.connect(c, jclsToDbCls);
+			}
+			System.out.println(c);
+		}
+
+		final Connection c = DriverManager.getConnection(url, user, password);
+		final DatabaseMetaData dbm = c.getMetaData();
+
+		// get table names
+		final HashSet<String> tblNames = new HashSet<>();
+		try (final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" })) {
+			while (rs.next()) {
+				final String tblname = rs.getString("TABLE_NAME");
+				tblNames.add(tblname);
+			}
+		}
+
+		// create missing tables
+		final Statement s=c.createStatement();
+		for (final DbClass dbcls : classes) {
+			if(Modifier.isAbstract(dbcls.jcls.getModifiers()))
+				continue;
+			if (tblNames.contains(dbcls.tableName))
+				continue;
+			final StringBuilder sb=new StringBuilder(256);
+			dbcls.sql_createTable(sb, jclsToDbCls);
+			final String sql = sb.toString();
+			System.out.println(sql);
+			s.execute(sql);
+		}
+
+		initConnectionPool(url, user, password, ncons);
+	}
+
+	private void initConnectionPool(final String url, final String user, final String password, final int ncons)
 			throws Throwable {
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
@@ -79,8 +105,8 @@ final public class Db {
 		}
 	}
 
-	public void deinitConnectionPool() {
-		for (Connection c : conpool) {
+	public void deinitConnectionPool(){
+		for (final Connection c : conpool) {
 			try {
 				c.close();
 			} catch (Throwable e) {

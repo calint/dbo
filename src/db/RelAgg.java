@@ -2,26 +2,27 @@ package db;
 
 import java.util.HashMap;
 
-public final class RelAggN extends DbRelation {
-	final Class<? extends DbObject> cls;
+public class RelAgg extends DbRelation {
+	private Class<? extends DbObject> cls;
 	LongField relfld;
 
-	public RelAggN(Class<? extends DbObject> cls) {
+	public RelAgg(Class<? extends DbObject> cls) {
 		this.cls = cls;
 	}
 
 	@Override
 	void connect(final DbClass dbcls, final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls) {
-		final DbClass toDbCls = jclsToDbCls.get(cls);
 		relfld = new LongField();
-		relfld.dbname = dbcls.tableName + "_" + name;
-		toDbCls.fields.add(relfld);
+		relfld.dbname = name;
+		dbcls.fields.add(relfld);
 	}
-
+	
 	public DbObject create(final DbObject ths) throws Throwable {
 		final DbObject o = cls.getConstructor().newInstance();
-		o.set(relfld, ths.getId());
 		o.createInDb();
+		ths.set(relfld, o.getId());
+		ths.updateDb();
 		return o;
 	}
+
 }
