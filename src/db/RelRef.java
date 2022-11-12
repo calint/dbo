@@ -2,7 +2,7 @@ package db;
 
 public final class RelRef extends DbRelation {
 	private Class<? extends DbObject> cls;
-	ForeignKeyField relfld;
+	ForeignKeyField fkfld;
 
 	public RelRef(Class<? extends DbObject> cls) {
 		this.cls = cls;
@@ -10,14 +10,14 @@ public final class RelRef extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		relfld = new ForeignKeyField();
-		relfld.dbname = name;
-		c.fields.add(relfld);
+		fkfld = new ForeignKeyField();
+		fkfld.dbname = name;
+		c.fields.add(fkfld);
 	}
 
 	public void set(final DbObject ths, final DbObject trg) {
 		try {
-			ths.set(relfld, trg.getId());
+			ths.set(fkfld, trg.getId());
 			ths.updateDb();
 		} catch (Throwable t) {
 			throw new RuntimeException(t);

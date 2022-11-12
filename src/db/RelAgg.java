@@ -2,7 +2,7 @@ package db;
 
 public final class RelAgg extends DbRelation {
 	private Class<? extends DbObject> cls;
-	ForeignKeyField relfld;
+	ForeignKeyField fkfld;
 
 	public RelAgg(Class<? extends DbObject> cls) {
 		this.cls = cls;
@@ -10,16 +10,16 @@ public final class RelAgg extends DbRelation {
 
 	@Override
 	void connect(final DbClass dbcls) {
-		relfld = new ForeignKeyField();
-		relfld.dbname = name;
-		dbcls.fields.add(relfld);
+		fkfld = new ForeignKeyField();
+		fkfld.dbname = name;
+		dbcls.fields.add(fkfld);
 	}
 
 	public DbObject create(final DbObject ths) {
 		try {
 			final DbObject o = cls.getConstructor().newInstance();
 			o.createInDb();
-			ths.set(relfld, o.getId());
+			ths.set(fkfld, o.getId());
 			ths.updateDb();
 			return o;
 		} catch (Throwable t) {

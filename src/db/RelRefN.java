@@ -6,5 +6,9 @@ public final class RelRefN extends DbRelation {
 	public RelRefN(Class<? extends DbObject> cls) {
 		this.cls = cls;
 	}
+	
+	@Override
+	void connect(final DbClass c) {
+	}
 
 }

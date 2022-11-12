@@ -67,8 +67,8 @@ public final class Db {
 			System.out.println(c);
 		}
 
-		final Connection c = DriverManager.getConnection(url, user, password);
-		final DatabaseMetaData dbm = c.getMetaData();
+		final Connection con = DriverManager.getConnection(url, user, password);
+		final DatabaseMetaData dbm = con.getMetaData();
 
 		// get table names
 		final HashSet<String> tblNames = new HashSet<>();
@@ -80,7 +80,7 @@ public final class Db {
 		}
 
 		// create missing tables
-		final Statement s = c.createStatement();
+		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.jcls.getModifiers()))
 				continue;
@@ -90,10 +90,10 @@ public final class Db {
 			dbcls.sql_createTable(sb);
 			final String sql = sb.toString();
 			System.out.println(sql);
-			s.execute(sql);
+			stmt.execute(sql);
 		}
-		s.close();
-		c.close();
+		stmt.close();
+		con.close();
 
 		initConnectionPool(url, user, password, ncons);
 	}
