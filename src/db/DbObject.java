@@ -44,6 +44,7 @@ public abstract class DbObject {
 			throw new RuntimeException("no generated id");
 		rs.close();
 
+		// init default values
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(this.getClass());
 		for (final DbField f : dbcls.fields) {
 			f.initDefaultValue(fieldValues);

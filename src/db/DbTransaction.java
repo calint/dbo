@@ -23,11 +23,15 @@ public final class DbTransaction {
 		return o;
 	}
 
-	public List<DbObject> get(final Class<? extends DbObject> cls) {
+	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q) {
 		final ArrayList<DbObject> ls = new ArrayList<>();
 		final StringBuilder sb = new StringBuilder(256);
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		sb.append("select * from ").append(dbcls.tableName);
+		if (q != null) {
+			sb.append(" where");
+			q.sql_build(sb);
+		}
 		final String sql = sb.toString();
 		System.out.println(sql);
 		try {

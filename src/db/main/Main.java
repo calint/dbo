@@ -5,6 +5,7 @@ import java.util.List;
 import db.Db;
 import db.DbObject;
 import db.DbTransaction;
+import db.Query;
 
 public class Main {
 	public static final void main(String[] args) throws Throwable {
@@ -51,10 +52,11 @@ class ReqThread extends Thread {
 			u.addRefFile(f);
 			u.addRefFile(fg);
 			t.flush();
-			final List<DbObject> ls = t.get(File.class);
+			final Query q = new Query().append(File.name, Query.OP_EQ, "'file1'");
+			final List<DbObject> ls = t.get(File.class, q);
 			for (final DbObject o : ls)
 				System.out.println(o);
-			for (final DbObject o : t.get(User.class))
+			for (final DbObject o : t.get(User.class, null))
 				System.out.println(o);
 			////////////////////////////////////////////////////////////
 			t.commit();
