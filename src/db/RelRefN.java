@@ -14,7 +14,7 @@ public final class RelRefN extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		rrm = new MetaRelRefN(c.jcls, name, toCls);
+		rrm = new MetaRelRefN(c.javaClass, name, toCls);
 		Db.instance().relRefNMeta.add(rrm);
 	}
 

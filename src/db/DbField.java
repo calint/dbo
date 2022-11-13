@@ -5,13 +5,13 @@ import java.util.Map;
 abstract class DbField {
 	Class<? extends DbObject> cls;
 	String tableName;
-	String dbname;
+	String columnName;
 
 	void sql_updateValue(StringBuilder sb, DbObject o) {
 	}
 
 	void sql_fieldName(StringBuilder sb) {
-		sb.append(dbname);
+		sb.append(columnName);
 	}
 
 	void sql_createField(StringBuilder sb) {
@@ -22,11 +22,11 @@ abstract class DbField {
 
 	@Override
 	public int hashCode() {
-		return dbname.hashCode();
+		return columnName.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return dbname;
+		return columnName;
 	}
 }

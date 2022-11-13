@@ -20,7 +20,7 @@ public final class FldInt extends DbField {
 
 	@Override
 	void sql_createField(StringBuilder sb) {
-		sb.append(dbname).append(" int default ").append(defval);
+		sb.append(columnName).append(" int default ").append(defval);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public final class FldId extends DbField {
 
 	@Override
 	void sql_createField(final StringBuilder sb) {
-		sb.append(dbname).append(" int primary key auto_increment");
+		sb.append(columnName).append(" int primary key auto_increment");
 	}
 
 	@Override

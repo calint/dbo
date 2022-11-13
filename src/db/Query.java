@@ -124,36 +124,36 @@ public final class Query {
 	////////////////////////////////////////////////////////
 	/** query by id */
 	public Query(Class<? extends DbObject> c, long id) {
-		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.dbname, EQ, null, Long.toString(id));
+		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
 	}
 
 	public Query(DbField lh, int op, String rh) {
-		append(NOP, lh.tableName, lh.dbname, op, null, sqlStr(rh));
+		append(NOP, lh.tableName, lh.columnName, op, null, sqlStr(rh));
 	}
 
 	public Query(DbField lh, int op, int rh) {
-		append(NOP, lh.tableName, lh.dbname, op, null, Integer.toString(rh));
+		append(NOP, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
 	}
 
 	public Query(DbField lh, int op, DbField rh) {
-		append(NOP, lh.tableName, lh.dbname, op, rh.tableName, rh.dbname);
+		append(NOP, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
 
 	public Query(RelAggN rel) {
-		append(NOP, rel.tableName, DbObject.id.dbname, EQ, rel.toTableName, rel.fkfld.dbname);
+		append(NOP, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
 	}
 
 	public Query(RelRefN rel) {
-		append(NOP, rel.tableName, DbObject.id.dbname, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
-				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.dbname);
+		append(NOP, rel.tableName, DbObject.id.columnName, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
+				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.columnName);
 	}
 
 	public Query(RelAgg rel) {
-		append(NOP, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		append(NOP, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query(RelRef rel) {
-		append(NOP, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		append(NOP, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	///////////////////////////////////////////////////////////////////////
@@ -188,70 +188,70 @@ public final class Query {
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
 	public Query and(Class<? extends DbObject> c, long id) {
-		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.dbname, EQ, null, Long.toString(id));
+		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
 	}
 
 	public Query and(DbField lh, int op, String rh) {
-		return append(AND, lh.tableName, lh.dbname, op, null, sqlStr(rh));
+		return append(AND, lh.tableName, lh.columnName, op, null, sqlStr(rh));
 	}
 
 	public Query and(DbField lh, int op, int rh) {
-		return append(AND, lh.tableName, lh.dbname, op, null, Integer.toString(rh));
+		return append(AND, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
 	}
 
 	public Query and(DbField lh, int op, DbField rh) {
-		return append(AND, lh.tableName, lh.dbname, op, rh.tableName, rh.dbname);
+		return append(AND, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
 
 	public Query and(RelAggN rel) {
-		return append(AND, rel.tableName, DbObject.id.dbname, EQ, rel.toTableName, rel.fkfld.dbname);
+		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
 	}
 
 	public Query and(RelRefN rel) {
-		return append(AND, rel.tableName, DbObject.id.dbname, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
-				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.dbname);
+		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
+				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.columnName);
 	}
 
 	public Query and(RelAgg rel) {
-		return append(AND, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		return append(AND, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query and(RelRef rel) {
-		return append(AND, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		return append(AND, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
 	public Query or(Class<? extends DbObject> c, long id) {
-		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.dbname, EQ, null, Long.toString(id));
+		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
 	}
 
 	public Query or(DbField lh, int op, String rh) {
-		return append(OR, lh.tableName, lh.dbname, op, null, sqlStr(rh));
+		return append(OR, lh.tableName, lh.columnName, op, null, sqlStr(rh));
 	}
 
 	public Query or(DbField lh, int op, int rh) {
-		return append(OR, lh.tableName, lh.dbname, op, null, Integer.toString(rh));
+		return append(OR, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
 	}
 
 	public Query or(DbField lh, int op, DbField rh) {
-		return append(OR, lh.tableName, lh.dbname, op, rh.tableName, rh.dbname);
+		return append(OR, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
 
 	public Query or(RelAggN rel) {
-		return append(OR, rel.tableName, DbObject.id.dbname, EQ, rel.toTableName, rel.fkfld.dbname);
+		return append(OR, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
 	}
 
 	public Query or(RelRefN rel) {
-		return append(OR, rel.tableName, DbObject.id.dbname, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
-				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.dbname);
+		return append(OR, rel.tableName, DbObject.id.columnName, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
+				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.columnName);
 	}
 
 	public Query or(RelAgg rel) {
-		return append(OR, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		return append(OR, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query or(RelRef rel) {
-		return append(OR, rel.tableName, rel.fkfld.dbname, EQ, rel.toTableName, DbObject.id.dbname);
+		return append(OR, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 }

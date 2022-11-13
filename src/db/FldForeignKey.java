@@ -10,7 +10,7 @@ final class FldForeignKey extends DbField {
 
 	@Override
 	void sql_createField(final StringBuilder sb) {
-		sb.append(dbname).append(" int");
+		sb.append(columnName).append(" int");
 	}
 
 	@Override

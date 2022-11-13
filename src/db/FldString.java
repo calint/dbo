@@ -33,7 +33,7 @@ public final class FldString extends DbField {
 
 	@Override
 	void sql_createField(StringBuilder sb) {
-		sb.append(dbname).append(" varchar(").append(size).append(")");
+		sb.append(columnName).append(" varchar(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '").append(defval.replace("'", "''")).append("'");
 		}

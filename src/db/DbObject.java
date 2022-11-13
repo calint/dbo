@@ -59,7 +59,7 @@ public abstract class DbObject {
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
 		for (final DbField f : dirtyFields) {
-			sb.append(f.dbname).append('=');
+			sb.append(f.columnName).append('=');
 			f.sql_updateValue(sb, this);
 			sb.append(',');
 		}

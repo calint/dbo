@@ -13,7 +13,7 @@ public final class RelRef extends DbRelation {
 	@Override
 	void connect(final DbClass c) {
 		fkfld = new FldForeignKey();
-		fkfld.dbname = name;
+		fkfld.columnName = name;
 		c.fields.add(fkfld);
 	}
 

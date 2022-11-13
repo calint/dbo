@@ -13,7 +13,7 @@ public final class RelAgg extends DbRelation {
 	@Override
 	void connect(final DbClass dbcls) {
 		fkfld = new FldForeignKey();
-		fkfld.dbname = name;
+		fkfld.columnName = name;
 		dbcls.fields.add(fkfld);
 	}
 

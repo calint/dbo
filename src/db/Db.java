@@ -16,7 +16,7 @@ public final class Db {
 
 	public static DbTransaction initCurrentTransaction() throws Throwable {
 		final Connection c = inst.conpool.pollFirst();
-		if (c == null)//? fix
+		if (c == null)// ? fix
 			throw new RuntimeException("connection pool empty");// ?
 		final DbTransaction t = new DbTransaction(c);
 		tn.set(t);
@@ -54,7 +54,7 @@ public final class Db {
 		dbclasses.add(dbcls);
 		jclsToDbCls.put(cls, dbcls);
 	}
-	
+
 	private void initDbClasses() {
 		// allow relations to add necessary fields to other dbclasses
 		for (final DbClass c : dbclasses) {
@@ -87,11 +87,11 @@ public final class Db {
 		// create missing tables
 		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
-			if (Modifier.isAbstract(dbcls.jcls.getModifiers()))
+			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
 			if (tblNames.contains(dbcls.tableName))
-				continue;//? check columns
-			
+				continue;// ? check columns
+
 			final StringBuilder sb = new StringBuilder(256);
 			dbcls.sql_createTable(sb);
 			final String sql = sb.toString();
@@ -110,18 +110,6 @@ public final class Db {
 			stmt.execute(sql);
 		}
 
-		// map DbClass fields to ResultSet
-//		for (final DbClass c : dbclasses) {
-//			if(Modifier.isAbstract(c.jcls.getModifiers()))
-//				continue;
-//			final ResultSet rs=dbm.getColumns(null, null, c.tableName, null);
-//			while(rs.next()) {
-//				final String colname=rs.getString(4);
-//				System.out.println(colname);// column name
-//			}
-//		}
-
-		// done
 		stmt.close();
 		con.close();
 

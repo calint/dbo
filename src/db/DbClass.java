@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class DbClass {
-	final Class<? extends DbObject> jcls;
+	final Class<? extends DbObject> javaClass;
 	final String tableName;
 	/** declared fields */
 	final ArrayList<DbField> fields = new ArrayList<DbField>();
@@ -16,17 +16,17 @@ public final class DbClass {
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
-		jcls = c;
+		javaClass = c;
 		tableName = Db.tableNameForJavaClass(c);
 		// collect declared fields and relations
-		for (final Field f : jcls.getDeclaredFields()) {
+		for (final Field f : javaClass.getDeclaredFields()) {
 			if (!Modifier.isStatic(f.getModifiers()))
 				continue;
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 				dbf.cls = c;
 				dbf.tableName = Db.tableNameForJavaClass(c);
-				dbf.dbname = f.getName();
+				dbf.columnName = f.getName();
 				fields.add(dbf);
 				continue;
 			}
@@ -42,7 +42,7 @@ public final class DbClass {
 	}
 
 	void initAllFieldsList() {
-		initAllFieldsRec(allFields, jcls);
+		initAllFieldsRec(allFields, javaClass);
 	}
 
 	private static void initAllFieldsRec(final List<DbField> ls, Class<?> cls) {
@@ -55,7 +55,7 @@ public final class DbClass {
 
 	@Override
 	public String toString() {
-		return jcls.getName() + " fields:" + fields + " relations:" + relations;
+		return javaClass.getName() + " fields:" + fields + " relations:" + relations;
 	}
 
 	final String sql_createTable(StringBuilder sb) {
