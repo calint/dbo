@@ -4,10 +4,12 @@ import java.sql.Statement;
 
 public final class RelRefN extends DbRelation {
 	private final Class<? extends DbObject> toCls;
+	final String toTableName;
 	MetaRelRefN rrm;
 
 	public RelRefN(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
+		toTableName = Db.tableNameForJavaClass(toCls);
 	}
 
 	@Override

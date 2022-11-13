@@ -1,4 +1,4 @@
-package db.main;
+package main;
 
 import db.DbObject;
 import db.FldLong;

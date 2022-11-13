@@ -25,6 +25,7 @@ public final class DbClass {
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 				dbf.cls = c;
+				dbf.tableName = Db.tableNameForJavaClass(c);
 				dbf.dbname = f.getName();
 				fields.add(dbf);
 				continue;
@@ -32,6 +33,7 @@ public final class DbClass {
 			if (DbRelation.class.isAssignableFrom(f.getType())) {
 				final DbRelation dbr = (DbRelation) f.get(null);
 				dbr.cls = c;
+				dbr.tableName = Db.tableNameForJavaClass(c);
 				dbr.name = f.getName();
 				relations.add(dbr);
 				continue;

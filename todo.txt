@@ -4,6 +4,8 @@
 [x]   join // select t2.* from User as t1,File as t2 where t1.id=t2.User_files;
 [x]   AggN
 [x]   RefN
+[x]   Ref
+[x]   Agg
 [x] order
 [ ]   table ref
 [x] limit

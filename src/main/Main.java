@@ -1,4 +1,4 @@
-package db.main;
+package main;
 
 import java.util.List;
 
@@ -64,14 +64,13 @@ class ReqThread extends Thread {
 //			if(1==1)throw new RuntimeException();
 			t.flush();
 
-//			final Query qry = new Query(User.refFiles).and(File.name, Query.EQ,
-//					"user file 3").and(User.class, Query.EQ, 1);
-			final Query qry = new Query(User.files).and(User.class, Query.EQ, 1);
+//			final Query qry = new Query(User.refFiles).and(User.class, 1);
+			final Query qry = new Query(User.class, 1).and(User.refFiles);
+//			final Query qry = new Query(User.files).and(User.class, Query.EQ, 1);
 //			final Query qry = new Query(User.profilePic).and(User.class, Query.EQ, 1);
 //			final Order ord = new Order(File.id);
 //			final Limit lmt = new Limit(1, 2);
 			final List<DbObject> ls = t.get(File.class, qry, null, null);
-//			final List<DbObject> ls = t.get(File.class, null, null, null);
 //			final List<DbObject> ls = t.get(File.class, qry, ord, lmt);
 			for (final DbObject o : ls) {
 				System.out.println(o);

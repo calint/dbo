@@ -4,6 +4,7 @@ import java.util.Map;
 
 abstract class DbField {
 	Class<? extends DbObject> cls;
+	String tableName;
 	String dbname;
 
 	void sql_updateValue(StringBuilder sb, DbObject o) {

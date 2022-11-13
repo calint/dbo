@@ -5,15 +5,19 @@ import java.util.Set;
 // represents the relation table
 final class MetaRelRefN {
 	final Class<? extends DbObject> fromCls;
-//	private final String relName;
 	final Class<? extends DbObject> toCls;
-	final String tableName;
+	final String tableName; // the table name for this association NN table
+	final String fromColName; // column name where id referencing source of relation id
+	final String toColName; // column name where id to referencing target
+	final String toTableName; // table name of "to" class
 
 	public MetaRelRefN(final Class<? extends DbObject> fromCls, final String relName,
 			final Class<? extends DbObject> toCls) {
 		this.fromCls = fromCls;
 		this.toCls = toCls;
-//		this.relName = relName;
+		this.fromColName=Db.tableNameForJavaClass(fromCls);
+		this.toTableName=Db.tableNameForJavaClass(toCls);
+		this.toColName=Db.tableNameForJavaClass(toCls);
 		tableName = new StringBuilder(256).append(Db.tableNameForJavaClass(fromCls)).append('_').append(relName)
 				.toString();
 	}

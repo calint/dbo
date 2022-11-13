@@ -1,11 +1,13 @@
 package db;
 
 public final class RelAgg extends DbRelation {
-	Class<? extends DbObject> toCls;
+	final Class<? extends DbObject> toCls;
+	final String toTableName;
 	FldForeignKey fkfld;
 
 	public RelAgg(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
+		toTableName = Db.tableNameForJavaClass(toCls);
 	}
 
 	@Override

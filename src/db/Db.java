@@ -16,7 +16,7 @@ public final class Db {
 
 	public static DbTransaction initCurrentTransaction() throws Throwable {
 		final Connection c = inst.conpool.pollFirst();
-		if (c == null)
+		if (c == null)//? fix
 			throw new RuntimeException("connection pool empty");// ?
 		final DbTransaction t = new DbTransaction(c);
 		tn.set(t);
