@@ -1,11 +1,11 @@
 package db;
 
 public final class RelAgg extends DbRelation {
-	private Class<? extends DbObject> cls;
+	private Class<? extends DbObject> toCls;
 	private FldForeignKey fkfld;
 
-	public RelAgg(Class<? extends DbObject> cls) {
-		this.cls = cls;
+	public RelAgg(Class<? extends DbObject> toCls) {
+		this.toCls = toCls;
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public final class RelAgg extends DbRelation {
 
 	public DbObject create(final DbObject ths) {
 		try {
-			final DbObject o = cls.getConstructor().newInstance();
+			final DbObject o = toCls.getConstructor().newInstance();
 			o.createInDb();
 			ths.set(fkfld, o.getId());
 			ths.updateDb();

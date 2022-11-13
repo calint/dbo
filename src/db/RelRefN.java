@@ -3,16 +3,16 @@ package db;
 import java.sql.Statement;
 
 public final class RelRefN extends DbRelation {
-	private final Class<? extends DbObject> cls;
+	private final Class<? extends DbObject> toCls;
 	private MetaRelRefN rrm;
 
-	public RelRefN(Class<? extends DbObject> cls) {
-		this.cls = cls;
+	public RelRefN(Class<? extends DbObject> toCls) {
+		this.toCls = toCls;
 	}
 
 	@Override
 	void connect(final DbClass c) {
-		rrm = new MetaRelRefN(c.jcls, name, cls);
+		rrm = new MetaRelRefN(c.jcls, name, toCls);
 		Db.instance().relRefNMeta.add(rrm);
 	}
 

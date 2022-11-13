@@ -54,7 +54,7 @@ class ReqThread extends Thread {
 			u.addRefFile(f);
 			u.addRefFile(fg);
 			t.flush();
-//			final Query q = new Query(File.name, Query.EQ, "file1").or(File.name, Query.EQ, "file1");
+
 			final Query qry = new Query(File.name, Query.EQ, "a file").or(new Query(File.name, Query.EQ, "file1"));
 			final Order ord = new Order(File.id);
 			final Limit lmt = new Limit(1, 2);
@@ -65,7 +65,7 @@ class ReqThread extends Thread {
 
 			for (final DbObject o : t.get(User.class, new Query(User.nlogins, Query.GT, 1)
 					.and(User.nlogins, Query.LTE, 3).and(User.groupPic, Query.EQ, 3),
-					new Order(User.name).append(User.nlogins), null)) {
+					new Order(User.name).append(User.nlogins, false), null)) {
 				System.out.println(o);
 			}
 

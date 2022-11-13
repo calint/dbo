@@ -22,11 +22,13 @@ public final class DbClass {
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 				dbf.dbname = f.getName();
+				dbf.cls = c;
 				fields.add(dbf);
 				continue;
 			}
 			if (DbRelation.class.isAssignableFrom(f.getType())) {
 				final DbRelation dbr = (DbRelation) f.get(null);
+				dbr.cls = c;
 				dbr.name = f.getName();
 				relations.add(dbr);
 				continue;

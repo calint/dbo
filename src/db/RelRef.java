@@ -1,11 +1,11 @@
 package db;
 
 public final class RelRef extends DbRelation {
-//	private final Class<? extends DbObject> cls;
+	private final Class<? extends DbObject> toCls;
 	private FldForeignKey fkfld;
 
-	public RelRef(Class<? extends DbObject> cls) {
-//		this.cls = cls;
+	public RelRef(Class<? extends DbObject> toCls) {
+		this.toCls = toCls;
 	}
 
 	@Override
