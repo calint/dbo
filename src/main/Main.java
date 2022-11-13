@@ -64,10 +64,10 @@ class ReqThread extends Thread {
 //			if(1==1)throw new RuntimeException();
 			t.flush();
 
-//			final Query qry = new Query(User.refFiles).and(User.class, 1);
-//			final Query qry = new Query(User.class, 1).and(User.refFiles);
+			final Query qry = new Query(User.class, 1).and(User.refFiles);
 //			final Query qry = new Query(User.class, 1).and(User.files);
-			final Query qry = new Query(User.class, 1).and(User.profilePic);
+//			final Query qry = new Query(User.class, 1).and(User.profilePic);
+//			final Query qry = new Query(User.class, 1).and(User.groupPic);
 //			final Order ord = new Order(File.id);
 //			final Limit lmt = new Limit(1, 2);
 			final List<DbObject> ls = t.get(File.class, qry, null, null);
@@ -75,16 +75,9 @@ class ReqThread extends Thread {
 			for (final DbObject o : ls) {
 				System.out.println(o);
 			}
-//
-//			for (final DbObject o : t.get(User.class, new Query(User.nlogins, Query.GT, 1)
-//					.and(User.nlogins, Query.LTE, 3).and(User.groupPic, Query.EQ, 3),
-//					new Order(User.name).append(User.nlogins, false), null)) {
-//				System.out.println(o);
-//			}
 
 			////////////////////////////////////////////////////////////
 			t.commit();
-//			System.out.println(t);
 		} catch (Throwable t1) {
 			try {
 				t.rollback();
