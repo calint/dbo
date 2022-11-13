@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public final class Order {
 	static class Elem {
-		String arg;
+		String tableName;
+		String columnName;
 		String dir;
 	}
 
@@ -18,24 +19,35 @@ public final class Order {
 		append(fld, ascending);
 	}
 
+	/** sort on id */
+	public Order(Class<? extends DbObject> cls,boolean ascending) {
+		final Elem e = new Elem();
+		e.tableName = Db.tableNameForJavaClass(cls);
+		e.columnName = DbObject.id.dbname;
+		e.dir = ascending ? "" : "desc";
+		elems.add(e);
+	}
+
 	public Order append(DbField fld) {
 		return append(fld, true);
 	}
 
 	public Order append(DbField fld, boolean ascending) {
 		final Elem e = new Elem();
-		e.arg = fld.dbname;
+		e.tableName = fld.tableName;
+		e.columnName = fld.dbname;
 		e.dir = ascending ? "" : "desc";
 		elems.add(e);
 		return this;
 	}
 
-	void sql_appendToQuery(final StringBuilder sb) {
+	void sql_appendToQuery(final StringBuilder sb, Query.TableAliasMap tam) {
 		if (elems.isEmpty())
 			return;
 		sb.append("order by ");
 		for (final Elem e : elems) {
-			sb.append(e.arg);
+			final String s = tam.getAliasForTableName(e.tableName);
+			sb.append(s).append('.').append(e.columnName);
 			if (e.dir.length() > 0) {
 				sb.append(' ').append(e.dir);
 			}
