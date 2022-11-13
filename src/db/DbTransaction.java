@@ -23,7 +23,7 @@ public final class DbTransaction {
 		return o;
 	}
 
-	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q) {
+	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Limit lmt) {
 		final ArrayList<DbObject> ls = new ArrayList<>();
 		final StringBuilder sb = new StringBuilder(256);
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
@@ -32,6 +32,9 @@ public final class DbTransaction {
 			sb.append(" where");
 			q.sql_build(sb);
 		}
+		if(lmt!=null)
+			lmt.sql_to(sb);
+		
 		final String sql = sb.toString();
 		System.out.println(sql);
 		try {

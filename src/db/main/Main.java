@@ -5,6 +5,7 @@ import java.util.List;
 import db.Db;
 import db.DbObject;
 import db.DbTransaction;
+import db.Limit;
 import db.Query;
 
 public class Main {
@@ -48,16 +49,22 @@ class ReqThread extends Thread {
 //			if(1==1)throw new RuntimeException();
 //			u.setName("hello 'name' name");
 			u.setNLogins(3);
-			f.setName("file1");
+			f.setName("a file");
 			u.addRefFile(f);
 			u.addRefFile(fg);
 			t.flush();
-			final Query q = new Query().append(File.name, Query.OP_EQ, "'file1'").and(File.name, Query.OP_EQ, "'file1'");
-			final List<DbObject> ls = t.get(File.class, q);
-			for (final DbObject o : ls)
+//			final Query q = new Query(File.name, Query.EQ, "file1").or(File.name, Query.EQ, "file1");
+			final Query q = new Query(File.name, Query.EQ, "a file").or(new Query(File.name, Query.EQ, "file1"));
+			final List<DbObject> ls = t.get(File.class, q, new Limit(1, 2));
+			for (final DbObject o : ls) {
 				System.out.println(o);
-			for (final DbObject o : t.get(User.class, null))
+			}
+
+			for (final DbObject o : t.get(User.class, new Query(User.nlogins, Query.GT, 1)
+					.and(User.nlogins, Query.LTE, 3).and(User.groupPic, Query.EQ, 3), null)) {
 				System.out.println(o);
+			}
+
 			////////////////////////////////////////////////////////////
 			t.commit();
 //			System.out.println(t);

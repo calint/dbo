@@ -1,7 +1,7 @@
 [ ] delete
 [x] select
-[ ] condition
-[ ] paging
+[x] condition
+[x] paging
 [ ] cache
 [ ] blob field
 [ ] clob field
