@@ -10,6 +10,6 @@ public final class Limit {
 	}
 
 	void sql_to(final StringBuilder sb) {
-		sb.append(" limit ").append(offset).append(',').append(rowCount);
+		sb.append("limit ").append(offset).append(',').append(rowCount).append(' ');
 	}
 }

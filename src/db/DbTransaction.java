@@ -1,5 +1,6 @@
 package db;
 
+import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -24,27 +25,38 @@ public final class DbTransaction {
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
-		final ArrayList<DbObject> ls = new ArrayList<DbObject>();
-		final StringBuilder sb = new StringBuilder(256);
-		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
-		sb.append("select * from ").append(dbcls.tableName);
+		final Query.TableAliasMap tam = new Query.TableAliasMap();
+		final StringBuilder sbwhere = new StringBuilder(128);
 		if (q != null) {
-			sb.append(" where");
-			q.sql_build(sb);
+			sbwhere.append("where ");
+			q.sql_build(sbwhere, tam);
 		}
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		
-		if(ord!=null)
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("select ").append(tam.getAliasForTableName(dbcls.tableName)).append(".* from ");
+		tam.sql_appendFromTables(sb);
+		sb.append(" ");
+		
+		if (sbwhere.length() != 0)
+			sb.append(sbwhere);
+
+		if (ord != null)
 			ord.sql_to(sb);
-		
+
 		if (lmt != null)
 			lmt.sql_to(sb);
 
+		sb.setLength(sb.length() - 1);
+		
 		final String sql = sb.toString();
 		System.out.println(sql);
+		final ArrayList<DbObject> ls = new ArrayList<DbObject>();
 		try {
 			final ResultSet rs = stmt.executeQuery(sql);
+			final Constructor<? extends DbObject> ctor = cls.getConstructor();
 			while (rs.next()) {
-				final DbObject o = cls.getConstructor().newInstance();
+				final DbObject o = ctor.newInstance();
 				o.readResultSet(dbcls, rs);
 				ls.add(o);
 			}

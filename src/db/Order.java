@@ -33,7 +33,7 @@ public final class Order {
 	void sql_to(final StringBuilder sb) {
 		if (elems.isEmpty())
 			return;
-		sb.append(" order by ");
+		sb.append("order by ");
 		for (final Elem e : elems) {
 			sb.append(e.arg);
 			if (e.dir.length() > 0) {
@@ -42,5 +42,6 @@ public final class Order {
 			sb.append(',');
 		}
 		sb.setLength(sb.length() - 1);
+		sb.append(' ');
 	}
 }

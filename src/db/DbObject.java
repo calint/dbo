@@ -68,11 +68,12 @@ public abstract class DbObject {
 	}
 
 	final public void deleteFromDb() throws Throwable {
-		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
-		System.out.println(sb.toString());
-		t.stmt.execute(sb.toString());
+		final String sql = sb.toString();
+		System.out.println(sql);
+		final DbTransaction t = Db.currentTransaction();
+		t.stmt.execute(sql);
 		t.dirtyObjects.remove(this);
 	}
 

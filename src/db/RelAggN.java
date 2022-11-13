@@ -1,8 +1,8 @@
 package db;
 
 public final class RelAggN extends DbRelation {
-	private final Class<? extends DbObject> toCls;
-	private FldForeignKey fkfld;
+	final Class<? extends DbObject> toCls;
+	FldForeignKey fkfld;
 
 	public RelAggN(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -26,4 +26,7 @@ public final class RelAggN extends DbRelation {
 			throw new RuntimeException(t);
 		}
 	}
+	
+	// select File.* from User,File where User.id=File.User_files;
+	// select t2.* from User as t1,File as t2 where t1.id=t2.User_files;
 }

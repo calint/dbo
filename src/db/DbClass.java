@@ -24,6 +24,7 @@ public final class DbClass {
 				continue;
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
+				dbf.cls = c;
 				dbf.dbname = f.getName();
 				fields.add(dbf);
 				continue;
