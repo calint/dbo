@@ -10,7 +10,7 @@ public class Query {
 		String rh;
 
 		public void sql_build(final StringBuilder sb) {
-			switch(elemOp) {
+			switch (elemOp) {
 			case AND:
 				sb.append(" and");
 				break;
@@ -20,16 +20,16 @@ public class Query {
 			case NOP:
 				break;
 			default:
-				throw new RuntimeException("invalid elemOp "+elemOp);				
+				throw new RuntimeException("invalid elemOp " + elemOp);
 			}
 			sb.append(' ');
 			sb.append(lh);
-			switch(op) {
+			switch (op) {
 			case OP_EQ:
 				sb.append('=');
 				break;
 			default:
-				throw new RuntimeException("op "+op+" not supported");
+				throw new RuntimeException("op " + op + " not supported");
 			}
 			sb.append(rh);
 		}
@@ -57,16 +57,6 @@ public class Query {
 		return this;
 	}
 
-	public Query append(DbField lh, int op, String rh) {
-		final Elem e = new Elem();
-		e.elemOp = NOP;
-		e.lh = lh.dbname;
-		e.op = op;
-		e.rh = rh;
-		elems.add(e);
-		return this;
-	}
-
 	public Query append(int elemOp, String lh, int op, String rh) {
 		final Elem e = new Elem();
 		e.elemOp = elemOp;
@@ -75,6 +65,18 @@ public class Query {
 		e.rh = rh;
 		elems.add(e);
 		return this;
+	}
+
+	public Query append(DbField lh, int op, String rh) {
+		return append(NOP, lh.dbname, op, rh);
+	}
+
+	public Query and(DbField lh, int op, String rh) {
+		return append(AND, lh.dbname, op, rh);
+	}
+
+	public Query and(DbField lh, int op, DbField rh) {
+		return append(AND, lh.dbname, op, rh.dbname);
 	}
 
 	public void sql_build(final StringBuilder sb) {

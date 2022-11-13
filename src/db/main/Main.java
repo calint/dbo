@@ -52,7 +52,7 @@ class ReqThread extends Thread {
 			u.addRefFile(f);
 			u.addRefFile(fg);
 			t.flush();
-			final Query q = new Query().append(File.name, Query.OP_EQ, "'file1'");
+			final Query q = new Query().append(File.name, Query.OP_EQ, "'file1'").and(File.name, Query.OP_EQ, "'file1'");
 			final List<DbObject> ls = t.get(File.class, q);
 			for (final DbObject o : ls)
 				System.out.println(o);
