@@ -1,6 +1,7 @@
 [ ] delete
 [x] select
 [x] condition
+[x] order
 [x] paging
 [ ] cache
 [ ] blob field

@@ -1,6 +1,6 @@
 package db;
 
-public class Limit {
+public final class Limit {
 	private int offset;
 	private int rowCount;
 

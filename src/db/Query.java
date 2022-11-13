@@ -2,7 +2,7 @@ package db;
 
 import java.util.ArrayList;
 
-public class Query {
+public final class Query {
 	public final static int EQ = 1;
 	public final static int NEQ = 2;
 	public final static int GT = 3;

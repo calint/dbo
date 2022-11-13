@@ -6,6 +6,7 @@ import db.Db;
 import db.DbObject;
 import db.DbTransaction;
 import db.Limit;
+import db.Order;
 import db.Query;
 
 public class Main {
@@ -54,14 +55,17 @@ class ReqThread extends Thread {
 			u.addRefFile(fg);
 			t.flush();
 //			final Query q = new Query(File.name, Query.EQ, "file1").or(File.name, Query.EQ, "file1");
-			final Query q = new Query(File.name, Query.EQ, "a file").or(new Query(File.name, Query.EQ, "file1"));
-			final List<DbObject> ls = t.get(File.class, q, new Limit(1, 2));
+			final Query qry = new Query(File.name, Query.EQ, "a file").or(new Query(File.name, Query.EQ, "file1"));
+			final Order ord = new Order(File.id);
+			final Limit lmt = new Limit(1, 2);
+			final List<DbObject> ls = t.get(File.class, qry, ord, lmt);
 			for (final DbObject o : ls) {
 				System.out.println(o);
 			}
 
 			for (final DbObject o : t.get(User.class, new Query(User.nlogins, Query.GT, 1)
-					.and(User.nlogins, Query.LTE, 3).and(User.groupPic, Query.EQ, 3), null)) {
+					.and(User.nlogins, Query.LTE, 3).and(User.groupPic, Query.EQ, 3),
+					new Order(User.name).append(User.nlogins), null)) {
 				System.out.println(o);
 			}
 
