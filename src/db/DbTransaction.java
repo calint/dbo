@@ -1,8 +1,11 @@
 package db;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public final class DbTransaction {
 	final Connection con;
@@ -18,6 +21,26 @@ public final class DbTransaction {
 		final DbObject o = cls.getConstructor().newInstance();
 		o.createInDb();
 		return o;
+	}
+
+	public List<DbObject> get(final Class<? extends DbObject> cls) {
+		final ArrayList<DbObject> ls = new ArrayList<>();
+		final StringBuilder sb = new StringBuilder(256);
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
+		sb.append("select * from ").append(dbcls.tableName);
+		final String sql = sb.toString();
+		System.out.println(sql);
+		try {
+			final ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				final DbObject o = cls.getConstructor().newInstance();
+				o.readResultSet(dbcls, rs);
+				ls.add(o);
+			}
+		} catch (final Throwable t) {
+			throw new RuntimeException(t);
+		}
+		return ls;
 	}
 
 //	public void delete(final DbObject o) throws Throwable {

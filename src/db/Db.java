@@ -36,6 +36,7 @@ public final class Db {
 
 	public static void initInstance() throws Throwable {
 		inst = new Db();
+		inst.register(DbObject.class);
 	}
 
 	public static Db instance() {
@@ -43,30 +44,33 @@ public final class Db {
 	}
 
 	////////////////////////////////////////////////////////////
+	private final LinkedList<Connection> conpool = new LinkedList<>();
 	private final ArrayList<DbClass> dbclasses = new ArrayList<>();
 	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
 	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<>();
-
-	public Db() throws Throwable {
-		register(DbObject.class);
-	}
 
 	public void register(Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);
 		jclsToDbCls.put(cls, dbcls);
 	}
-
-	private final LinkedList<Connection> conpool = new LinkedList<>();
-
-	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
-
+	
+	private void initDbClasses() {
+		// allow relations to add necessary fields to other dbclasses
 		for (final DbClass c : dbclasses) {
-			for (final DbRelation r : c.relations) {
+			for (final DbRelation r : c.relations)
 				r.connect(c);
-			}
 			System.out.println(c);
 		}
+
+		// create allFields lists
+		for (final DbClass c : dbclasses)
+			c.initAllFieldsList();
+	}
+
+	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
+		initDbClasses();
+		System.out.println("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		final Connection con = DriverManager.getConnection(url, user, password);
 		final DatabaseMetaData dbm = con.getMetaData();
@@ -86,16 +90,18 @@ public final class Db {
 			if (Modifier.isAbstract(dbcls.jcls.getModifiers()))
 				continue;
 			if (tblNames.contains(dbcls.tableName))
-				continue;
+				continue;//? check columns
+			
 			final StringBuilder sb = new StringBuilder(256);
 			dbcls.sql_createTable(sb);
 			final String sql = sb.toString();
 			System.out.println(sql);
 			stmt.execute(sql);
 		}
+
 		// create special RefN tables
-		for(final MetaRelRefN rrm:relRefNMeta) {
-			if(rrm.tableIsIn(tblNames))
+		for (final MetaRelRefN rrm : relRefNMeta) {
+			if (rrm.tableIsIn(tblNames))
 				continue;
 			final StringBuilder sb = new StringBuilder(256);
 			rrm.sql_createTable(sb);
@@ -103,7 +109,19 @@ public final class Db {
 			System.out.println(sql);
 			stmt.execute(sql);
 		}
-		
+
+		// map DbClass fields to ResultSet
+//		for (final DbClass c : dbclasses) {
+//			if(Modifier.isAbstract(c.jcls.getModifiers()))
+//				continue;
+//			final ResultSet rs=dbm.getColumns(null, null, c.tableName, null);
+//			while(rs.next()) {
+//				final String colname=rs.getString(4);
+//				System.out.println(colname);// column name
+//			}
+//		}
+
+		// done
 		stmt.close();
 		con.close();
 
@@ -124,7 +142,7 @@ public final class Db {
 	}
 
 	public void deinitConnectionPool() {
-		System.out.println("close jdbc connections");
+//		System.out.println("close jdbc connections");
 		for (final Connection c : conpool) {
 			try {
 				c.close();

@@ -69,7 +69,7 @@ public abstract class DbObject {
 	final public void deleteFromDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getLong(id));
+		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
 		System.out.println(sb.toString());
 		t.stmt.execute(sb.toString());
 		t.dirtyObjects.remove(this);
@@ -115,6 +115,15 @@ public abstract class DbObject {
 
 	public String toString() {
 		return getClass().getName() + fieldValues.toString();
+	}
+
+	void readResultSet(DbClass cls, ResultSet rs) throws Throwable {
+		int i = 1;
+		for (final DbField f : cls.allFields) {
+			final Object v = rs.getObject(i);
+			fieldValues.put(f, v);
+			i++;
+		}
 	}
 
 }

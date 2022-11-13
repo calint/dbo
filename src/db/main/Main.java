@@ -1,6 +1,9 @@
 package db.main;
 
+import java.util.List;
+
 import db.Db;
+import db.DbObject;
 import db.DbTransaction;
 
 public class Main {
@@ -47,6 +50,12 @@ class ReqThread extends Thread {
 			f.setName("file1");
 			u.addRefFile(f);
 			u.addRefFile(fg);
+			t.flush();
+			final List<DbObject> ls = t.get(File.class);
+			for (final DbObject o : ls)
+				System.out.println(o);
+			for (final DbObject o : t.get(User.class))
+				System.out.println(o);
 			////////////////////////////////////////////////////////////
 			t.commit();
 //			System.out.println(t);

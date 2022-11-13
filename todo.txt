@@ -1,7 +1,8 @@
+[ ] delete
 [ ] select
-[ ] cache
 [ ] condition
 [ ] paging
+[ ] cache
 [ ] blob field
 [ ] clob field
 [ ] date field
