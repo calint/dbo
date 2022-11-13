@@ -35,26 +35,26 @@ public final class DbTransaction {
 		
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("select ").append(tam.getAliasForTableName(dbcls.tableName)).append(".* from ");
-		tam.sql_appendFromTables(sb);
+		tam.sql_appendSelectFromTables(sb);
 		sb.append(" ");
 		
 		if (sbwhere.length() != 0)
 			sb.append(sbwhere);
 
 		if (ord != null)
-			ord.sql_to(sb);
+			ord.sql_appendToQuery(sb);
 
 		if (lmt != null)
-			lmt.sql_to(sb);
+			lmt.sql_appendToQuery(sb);
 
 		sb.setLength(sb.length() - 1);
 		
 		final String sql = sb.toString();
 		System.out.println(sql);
-		final ArrayList<DbObject> ls = new ArrayList<DbObject>();
+		final ArrayList<DbObject> ls = new ArrayList<DbObject>(128);
 		try {
-			final ResultSet rs = stmt.executeQuery(sql);
 			final Constructor<? extends DbObject> ctor = cls.getConstructor();
+			final ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				final DbObject o = ctor.newInstance();
 				o.readResultSet(dbcls, rs);

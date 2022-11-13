@@ -52,7 +52,8 @@ public abstract class DbObject {
 	}
 
 	final public void updateDb() throws Throwable {
-		if(dirtyFields.isEmpty()) //? fishy, when relation field changes object updates db but is not removed from dirty objects list
+		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
+									// from dirty objects list
 			return;
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
@@ -118,7 +119,7 @@ public abstract class DbObject {
 	}
 
 	public String toString() {
-		return getClass().getName() + fieldValues.toString();
+		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
 	}
 
 	void readResultSet(DbClass cls, ResultSet rs) throws Throwable {

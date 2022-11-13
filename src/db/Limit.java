@@ -9,7 +9,7 @@ public final class Limit {
 		this.rowCount = rowCount;
 	}
 
-	void sql_to(final StringBuilder sb) {
+	void sql_appendToQuery(final StringBuilder sb) {
 		sb.append("limit ").append(offset).append(',').append(rowCount).append(' ');
 	}
 }

@@ -30,7 +30,7 @@ public final class Order {
 		return this;
 	}
 
-	void sql_to(final StringBuilder sb) {
+	void sql_appendToQuery(final StringBuilder sb) {
 		if (elems.isEmpty())
 			return;
 		sb.append("order by ");

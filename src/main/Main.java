@@ -65,9 +65,9 @@ class ReqThread extends Thread {
 			t.flush();
 
 //			final Query qry = new Query(User.refFiles).and(User.class, 1);
-			final Query qry = new Query(User.class, 1).and(User.refFiles);
-//			final Query qry = new Query(User.files).and(User.class, Query.EQ, 1);
-//			final Query qry = new Query(User.profilePic).and(User.class, Query.EQ, 1);
+//			final Query qry = new Query(User.class, 1).and(User.refFiles);
+//			final Query qry = new Query(User.class, 1).and(User.files);
+			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Order ord = new Order(File.id);
 //			final Limit lmt = new Limit(1, 2);
 			final List<DbObject> ls = t.get(File.class, qry, null, null);

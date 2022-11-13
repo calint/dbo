@@ -93,7 +93,7 @@ public final class Query {
 			return tblalias;
 		}
 
-		void sql_appendFromTables(StringBuilder sb) {
+		void sql_appendSelectFromTables(StringBuilder sb) {
 			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
 				sb.append(kv.getKey()).append(" as ").append(kv.getValue()).append(", ");
 			}
@@ -118,8 +118,9 @@ public final class Query {
 			e.sql_build(sb, tam);
 	}
 
-//	public Query() {
-//	}
+	public Query() {
+	}
+
 	////////////////////////////////////////////////////////
 	/** query by id */
 	public Query(Class<? extends DbObject> c, long id) {
