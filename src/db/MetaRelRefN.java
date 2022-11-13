@@ -4,10 +4,10 @@ import java.util.Set;
 
 // represents the relation table
 final class MetaRelRefN {
-	private final Class<? extends DbObject> fromCls;
+	final Class<? extends DbObject> fromCls;
 //	private final String relName;
-	private final Class<? extends DbObject> toCls;
-	private final String tableName;
+	final Class<? extends DbObject> toCls;
+	final String tableName;
 
 	public MetaRelRefN(final Class<? extends DbObject> fromCls, final String relName,
 			final Class<? extends DbObject> toCls) {

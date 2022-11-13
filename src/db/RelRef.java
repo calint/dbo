@@ -19,6 +19,7 @@ public final class RelRef extends DbRelation {
 		try {
 			ths.set(fkfld, trg.getId());
 			ths.updateDb();
+//			Db.currentTransaction().dirtyObjects.remove(ths);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}

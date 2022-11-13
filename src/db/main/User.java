@@ -2,11 +2,11 @@ package db.main;
 
 import db.DbObject;
 import db.FldInt;
+import db.FldString;
 import db.RelAgg;
 import db.RelAggN;
 import db.RelRef;
 import db.RelRefN;
-import db.FldString;
 
 public final class User extends DbObject {
 	public final static FldString name = new FldString();
@@ -56,4 +56,8 @@ public final class User extends DbObject {
 	public void addRefFile(File o) {
 		refFiles.add(this, o);
 	}
+
+//	public List<File> getRefFiles(Query qry, Order ord, Limit lmt) {
+//		
+//	}
 }

@@ -14,8 +14,8 @@ public final class Query {
 
 	static class Elem {
 		int elemOp;
-		String lhtbl;
-		String lh;
+		String lhtbl;// left hand table name
+		String lh; // left hand field name
 		int op;
 		String rhtbl;
 		String rh;
@@ -30,7 +30,6 @@ public final class Query {
 				sb.append("or ");
 				break;
 			case NOP:
-//				sb.append(' ');
 				break;
 			default:
 				throw new RuntimeException("invalid elemOp " + elemOp);
@@ -94,11 +93,11 @@ public final class Query {
 			return tblalias;
 		}
 
-		public void sql_appendFromTables(StringBuilder sb) {
+		void sql_appendFromTables(StringBuilder sb) {
 			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
-				sb.append(kv.getKey()).append(" as ").append(kv.getValue()).append(',');
+				sb.append(kv.getKey()).append(" as ").append(kv.getValue()).append(", ");
 			}
-			sb.setLength(sb.length() - 1);
+			sb.setLength(sb.length() - 2);
 		}
 	}
 
@@ -137,7 +136,17 @@ public final class Query {
 
 	/** join on */
 	public Query(RelAggN rel) {
-		append(NOP, Db.tableNameForJavaClass(rel.cls), "id", EQ, Db.tableNameForJavaClass(rel.toCls), rel.fkfld.dbname);
+		append(NOP, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ, Db.tableNameForJavaClass(rel.toCls),
+				rel.fkfld.dbname);
+	}
+
+	/** join on */
+	public Query(RelRefN rel) {
+		append(NOP, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ, rel.rrm.tableName,
+				Db.tableNameForJavaClass(rel.rrm.fromCls)).append(AND, rel.rrm.tableName,
+						Db.tableNameForJavaClass(rel.rrm.toCls), EQ, Db.tableNameForJavaClass(rel.rrm.toCls),
+						DbObject.id.dbname);
+
 	}
 
 	private Query append(int elemOp, String lhtbl, String lh, int op, String rhtbl, String rh) {
@@ -165,7 +174,11 @@ public final class Query {
 	}
 
 	public Query and(Class<? extends DbObject> cls, int op, int rh) {
-		return append(AND, Db.tableNameForJavaClass(cls), "id", op, null, Integer.toString(rh));
+		return append(AND, Db.tableNameForJavaClass(cls), DbObject.id.dbname, op, null, Integer.toString(rh));
+	}
+
+	public Query and(DbField lh, int op, String rh) {
+		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, sqlStr(rh));
 	}
 
 //	public Query and(RelAggN rel) {
@@ -182,9 +195,6 @@ public final class Query {
 //				rh.dbname);
 //	}
 //
-//	public Query and(DbField lh, int op, String rh) {
-//		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, sqlStr(rh));
-//	}
 //
 //	public Query and(DbField lh, int op, int rh) {
 //		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, Integer.toString(rh));

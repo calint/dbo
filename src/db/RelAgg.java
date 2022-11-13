@@ -21,6 +21,7 @@ public final class RelAgg extends DbRelation {
 			o.createInDb();
 			ths.set(fkfld, o.getId());
 			ths.updateDb();
+//			Db.currentTransaction().dirtyObjects.remove(ths);
 			return o;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);

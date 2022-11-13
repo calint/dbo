@@ -52,6 +52,8 @@ public abstract class DbObject {
 	}
 
 	final public void updateDb() throws Throwable {
+		if(dirtyFields.isEmpty()) //? fishy, when relation field changes object updates db but is not removed from dirty objects list
+			return;
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
@@ -61,7 +63,7 @@ public abstract class DbObject {
 			sb.append(',');
 		}
 		sb.setLength(sb.length() - 1);
-		sb.append(" where id=").append(getLong(id));
+		sb.append(" where id=").append(getId());
 		System.out.println(sb.toString());
 		t.stmt.execute(sb.toString());
 		dirtyFields.clear();

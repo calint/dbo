@@ -4,7 +4,7 @@ import java.sql.Statement;
 
 public final class RelRefN extends DbRelation {
 	private final Class<? extends DbObject> toCls;
-	private MetaRelRefN rrm;
+	MetaRelRefN rrm;
 
 	public RelRefN(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;

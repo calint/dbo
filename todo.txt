@@ -1,8 +1,11 @@
 [x] delete
 [x] transaction.get
 [x] condition
-[ ]   join // select t2.* from User as t1,File as t2 where t1.id=t2.User_files;
+[x]   join // select t2.* from User as t1,File as t2 where t1.id=t2.User_files;
+[x]   AggN
+[x]   RefN
 [x] order
+[ ]   table ref
 [x] limit
 [ ] cache
 [ ] blob field
