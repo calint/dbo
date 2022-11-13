@@ -10,7 +10,7 @@ import java.util.List;
 public final class DbTransaction {
 	final Connection con;
 	final Statement stmt;
-	final HashSet<DbObject> dirtyObjects = new HashSet<>();
+	final HashSet<DbObject> dirtyObjects = new HashSet<DbObject>();
 
 	DbTransaction(final Connection c) throws Throwable {
 		this.con = c;
@@ -24,7 +24,7 @@ public final class DbTransaction {
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
-		final ArrayList<DbObject> ls = new ArrayList<>();
+		final ArrayList<DbObject> ls = new ArrayList<DbObject>();
 		final StringBuilder sb = new StringBuilder(256);
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		sb.append("select * from ").append(dbcls.tableName);

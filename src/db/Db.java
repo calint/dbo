@@ -44,10 +44,10 @@ public final class Db {
 	}
 
 	////////////////////////////////////////////////////////////
-	private final LinkedList<Connection> conpool = new LinkedList<>();
-	private final ArrayList<DbClass> dbclasses = new ArrayList<>();
-	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<>();
-	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<>();
+	private final LinkedList<Connection> conpool = new LinkedList<Connection>();
+	private final ArrayList<DbClass> dbclasses = new ArrayList<DbClass>();
+	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<Class<? extends DbObject>, DbClass>();
+	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<MetaRelRefN>();
 
 	public void register(Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
@@ -76,13 +76,13 @@ public final class Db {
 		final DatabaseMetaData dbm = con.getMetaData();
 
 		// get table names
-		final HashSet<String> tblNames = new HashSet<>();
-		try (final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" })) {
-			while (rs.next()) {
-				final String tblname = rs.getString("TABLE_NAME");
-				tblNames.add(tblname);
-			}
+		final HashSet<String> tblNames = new HashSet<String>();
+		final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" });
+		while (rs.next()) {
+			final String tblname = rs.getString("TABLE_NAME");
+			tblNames.add(tblname);
 		}
+		rs.close();
 
 		// create missing tables
 		final Statement stmt = con.createStatement();

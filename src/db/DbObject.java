@@ -8,8 +8,8 @@ import java.util.HashSet;
 public abstract class DbObject {
 	public final static FldId id = new FldId();
 
-	private final HashMap<DbField, Object> fieldValues = new HashMap<>();
-	private final HashSet<DbField> dirtyFields = new HashSet<>();
+	private final HashMap<DbField, Object> fieldValues = new HashMap<DbField, Object>();
+	private final HashSet<DbField> dirtyFields = new HashSet<DbField>();
 
 	final void createInDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();

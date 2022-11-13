@@ -8,7 +8,7 @@ public final class Order {
 		String dir;
 	}
 
-	private ArrayList<Elem> elems = new ArrayList<>();
+	private ArrayList<Elem> elems = new ArrayList<Elem>();
 
 	public Order(DbField fld) {
 		append(fld, true);

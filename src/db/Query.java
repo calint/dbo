@@ -66,7 +66,7 @@ public final class Query {
 		}
 	}
 
-	private ArrayList<Elem> elems = new ArrayList<>();
+	private ArrayList<Elem> elems = new ArrayList<Elem>();
 
 	public final static int NOP = 0;
 	public final static int AND = 1;

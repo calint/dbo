@@ -8,9 +8,9 @@ import java.util.List;
 public final class DbClass {
 	final Class<? extends DbObject> jcls;
 	final String tableName;
-	final ArrayList<DbField> fields = new ArrayList<>();
-	final ArrayList<DbRelation> relations = new ArrayList<>();
-	final ArrayList<DbField> allFields = new ArrayList<>();
+	final ArrayList<DbField> fields = new ArrayList<DbField>();
+	final ArrayList<DbRelation> relations = new ArrayList<DbRelation>();
+	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		jcls = c;

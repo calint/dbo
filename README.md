@@ -1,2 +1,2 @@
 # dbo
-experimental java objects to relational database mapping
+experimental persistence of java to relational database written in legacy java (1.5)
