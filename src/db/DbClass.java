@@ -8,8 +8,11 @@ import java.util.List;
 public final class DbClass {
 	final Class<? extends DbObject> jcls;
 	final String tableName;
+	/** declared fields */
 	final ArrayList<DbField> fields = new ArrayList<DbField>();
+	/** declared relations */
 	final ArrayList<DbRelation> relations = new ArrayList<DbRelation>();
+	/** all fields, including inherited */
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
@@ -22,7 +25,6 @@ public final class DbClass {
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 				dbf.dbname = f.getName();
-				dbf.cls = c;
 				fields.add(dbf);
 				continue;
 			}
