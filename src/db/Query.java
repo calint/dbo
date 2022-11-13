@@ -80,8 +80,8 @@ public final class Query {
 	}
 
 	static class TableAliasMap {
-		int seq;
-		HashMap<String, String> tblToAlias = new HashMap<String, String>();
+		private int seq;
+		final private HashMap<String, String> tblToAlias = new HashMap<String, String>();
 
 		String getAliasForTableName(String tblname) {
 			String tblalias = tblToAlias.get(tblname);
@@ -116,38 +116,53 @@ public final class Query {
 	void sql_build(final StringBuilder sb, TableAliasMap tam) {
 		for (final Elem e : elems)
 			e.sql_build(sb, tam);
-//		sb.setLength(sb.length()-1);
 	}
 
-	public Query() {
-	}
-
+//	public Query() {
+//	}
+	////////////////////////////////////////////////////////
 	public Query(DbField lh, int op, String rh) {
 		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, sqlStr(rh));
-	}
-
-	public Query(DbField lh, int op, DbField rh) {
-		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, Db.tableNameForJavaClass(rh.cls), rh.dbname);
 	}
 
 	public Query(DbField lh, int op, int rh) {
 		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, Integer.toString(rh));
 	}
 
-	/** join on */
+	public Query(DbField lh, int op, DbField rh) {
+		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, Db.tableNameForJavaClass(rh.cls), rh.dbname);
+	}
+
 	public Query(RelAggN rel) {
 		append(NOP, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ, Db.tableNameForJavaClass(rel.toCls),
 				rel.fkfld.dbname);
 	}
 
-	/** join on */
 	public Query(RelRefN rel) {
 		append(NOP, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ, rel.rrm.tableName,
 				Db.tableNameForJavaClass(rel.rrm.fromCls)).append(AND, rel.rrm.tableName,
 						Db.tableNameForJavaClass(rel.rrm.toCls), EQ, Db.tableNameForJavaClass(rel.rrm.toCls),
 						DbObject.id.dbname);
-
 	}
+
+	public Query(RelAgg rel) {
+		append(NOP, Db.tableNameForJavaClass(rel.cls), rel.fkfld.dbname, EQ, Db.tableNameForJavaClass(rel.toCls),
+				DbObject.id.dbname);
+	}
+
+	public Query(RelRef rel) {
+		append(NOP, Db.tableNameForJavaClass(rel.cls), rel.fkfld.dbname, EQ, Db.tableNameForJavaClass(rel.toCls),
+				DbObject.id.dbname);
+	}
+
+//	public Query(RelAgg lh, int op, int rh) {
+//		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.name, op, null, Integer.toString(rh));
+//	}
+//
+//	public Query(RelRef lh, int op, int rh) {
+//		append(NOP, Db.tableNameForJavaClass(lh.cls), lh.name, op, null, Integer.toString(rh));
+//	}
+	///////////////////////////////////////////////////////////////////////
 
 	private Query append(int elemOp, String lhtbl, String lh, int op, String rhtbl, String rh) {
 		final Elem e = new Elem();
@@ -169,11 +184,16 @@ public final class Query {
 		return this;
 	}
 
+	// - - - - - - -- --- - - -- - - -- - - -- --
 	public Query and(Query q) {
 		return append(AND, q);
 	}
 
-	public Query and(Class<? extends DbObject> cls, int op, int rh) {
+	public Query or(Query q) {
+		return append(OR, q);
+	}
+
+	public Query and(Class<? extends DbObject> cls, int op, int rh) {// ?
 		return append(AND, Db.tableNameForJavaClass(cls), DbObject.id.dbname, op, null, Integer.toString(rh));
 	}
 
@@ -181,25 +201,28 @@ public final class Query {
 		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, sqlStr(rh));
 	}
 
-//	public Query and(RelAggN rel) {
-//		return append(AND, Db.tableNameForJavaClass(rel.cls), "id", EQ, Db.tableNameForJavaClass(rel.toCls),
-//				rel.fkfld.dbname);
-//	}
+	public Query and(DbField lh, int op, int rh) {
+		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, Integer.toString(rh));
+	}
 
-//	public Query and(Class<? extends DbObject> cls, DbField lh, int op, int rh) {
-//		return append(AND, Db.tableNameForJavaClass(cls), lh.dbname, op, null, Integer.toString(rh));
-//	}
-//
-//	public Query and(DbField lh, int op, DbField rh) {
-//		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, Db.tableNameForJavaClass(rh.cls),
-//				rh.dbname);
-//	}
-//
-//
-//	public Query and(DbField lh, int op, int rh) {
-//		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, null, Integer.toString(rh));
-//	}
-//
+	public Query and(DbField lh, int op, DbField rh) {
+		return append(AND, Db.tableNameForJavaClass(lh.cls), lh.dbname, op, Db.tableNameForJavaClass(rh.cls),
+				rh.dbname);
+	}
+
+	/** join */
+	public Query and(RelAggN rel) {
+		return append(AND, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ,
+				Db.tableNameForJavaClass(rel.toCls), rel.fkfld.dbname);
+	}
+
+	/** join */
+	public Query and(RelRefN rel) {
+		return append(AND, Db.tableNameForJavaClass(rel.cls), DbObject.id.dbname, EQ, rel.rrm.tableName,
+				Db.tableNameForJavaClass(rel.rrm.fromCls)).append(AND, rel.rrm.tableName,
+						Db.tableNameForJavaClass(rel.rrm.toCls), EQ, Db.tableNameForJavaClass(rel.rrm.toCls),
+						DbObject.id.dbname);
+	}
 ////	public Query and(RelAgg lh, int op, int rh) {
 ////		return append(AND, lh.name, op, Integer.toString(rh));
 ////	}
@@ -208,28 +231,4 @@ public final class Query {
 ////		return append(AND, lh.name, op, Integer.toString(rh));
 ////	}
 //
-////	public Query or(Query q) {
-////		return append(OR, q);
-////	}
-////
-////	public Query or(DbField lh, int op, DbField rh) {
-////		return append(OR, lh.dbname, op, rh.dbname);
-////	}
-////
-////	public Query or(DbField lh, int op, String rh) {
-////		return append(OR, lh.dbname, op, sqlStr(rh));
-////	}
-////
-////	public Query or(DbField lh, int op, int rh) {
-////		return append(OR, lh.dbname, op, Integer.toString(rh));
-////	}
-////
-////	public Query or(RelAgg lh, int op, int rh) {
-////		return append(OR, lh.name, op, Integer.toString(rh));
-////	}
-////
-////	public Query or(RelRef lh, int op, int rh) {
-////		return append(OR, lh.name, op, Integer.toString(rh));
-////	}
-////
 }

@@ -5,8 +5,6 @@ import java.util.List;
 import db.Db;
 import db.DbObject;
 import db.DbTransaction;
-import db.Limit;
-import db.Order;
 import db.Query;
 
 public class Main {
@@ -68,8 +66,8 @@ class ReqThread extends Thread {
 
 //			final Query qry = new Query(User.refFiles).and(File.name, Query.EQ,
 //					"user file 3").and(User.class, Query.EQ, 1);
-			final Query qry = new Query(User.files).and(User.class, Query.EQ, 1).and(File.name, Query.EQ,
-					"user file 1");
+			final Query qry = new Query(User.files).and(User.class, Query.EQ, 1);
+//			final Query qry = new Query(User.profilePic).and(User.class, Query.EQ, 1);
 //			final Order ord = new Order(File.id);
 //			final Limit lmt = new Limit(1, 2);
 			final List<DbObject> ls = t.get(File.class, qry, null, null);
