@@ -15,7 +15,7 @@ public final class RelAggN extends DbRelation {
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		fkfld = new FldForeignKey();
 		fkfld.columnName = dbcls.tableName + "_" + name;
-		toDbCls.fields.add(fkfld);
+		toDbCls.declaredFields.add(fkfld);
 	}
 
 	public DbObject create(final DbObject ths) {

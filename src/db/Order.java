@@ -20,12 +20,17 @@ public final class Order {
 	}
 
 	/** sort on id */
-	public Order(Class<? extends DbObject> cls,boolean ascending) {
+	public Order(Class<? extends DbObject> cls, boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = Db.tableNameForJavaClass(cls);
 		e.columnName = DbObject.id.columnName;
 		e.dir = ascending ? "" : "desc";
 		elems.add(e);
+	}
+
+	/** sort on id */
+	public Order(Class<? extends DbObject> cls) {
+		this(cls, true);
 	}
 
 	public Order append(DbField fld) {

@@ -47,7 +47,7 @@ public abstract class DbObject {
 
 		// init default values
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(this.getClass());
-		for (final DbField f : dbcls.fields) {
+		for (final DbField f : dbcls.declaredFields) {
 			f.initDefaultValue(fieldValues);
 		}
 	}

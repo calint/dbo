@@ -14,7 +14,7 @@ public final class RelAgg extends DbRelation {
 	void connect(final DbClass dbcls) {
 		fkfld = new FldForeignKey();
 		fkfld.columnName = name;
-		dbcls.fields.add(fkfld);
+		dbcls.declaredFields.add(fkfld);
 	}
 
 	public DbObject create(final DbObject ths) {

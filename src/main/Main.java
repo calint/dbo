@@ -70,10 +70,9 @@ class ReqThread extends Thread {
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Query qry = new Query(User.class, 1).and(User.groupPic);
-			final Order ord = new Order(File.name, false);
-//			final Order ord = new Order(File.class, true);
+//			final Order ord = new Order(File.name, false);
+			final Order ord = new Order(File.class);
 			final Limit lmt = new Limit(0, 2);
-//			final List<DbObject> ls = t.get(File.class, qry, null, null);
 			final List<DbObject> ls = t.get(File.class, qry, ord, lmt);
 			for (final DbObject o : ls) {
 				System.out.println(o);

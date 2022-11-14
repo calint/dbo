@@ -8,10 +8,8 @@ import java.util.List;
 public final class DbClass {
 	final Class<? extends DbObject> javaClass;
 	final String tableName;
-	/** declared fields */
-	final ArrayList<DbField> fields = new ArrayList<DbField>();
-	/** declared relations */
-	final ArrayList<DbRelation> relations = new ArrayList<DbRelation>();
+	final ArrayList<DbField> declaredFields = new ArrayList<DbField>();
+	final ArrayList<DbRelation> declaredRelations = new ArrayList<DbRelation>();
 	/** all fields, including inherited */
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 
@@ -27,7 +25,7 @@ public final class DbClass {
 				dbf.cls = c;
 				dbf.tableName = Db.tableNameForJavaClass(c);
 				dbf.columnName = f.getName();
-				fields.add(dbf);
+				declaredFields.add(dbf);
 				continue;
 			}
 			if (DbRelation.class.isAssignableFrom(f.getType())) {
@@ -35,7 +33,7 @@ public final class DbClass {
 				dbr.cls = c;
 				dbr.tableName = Db.tableNameForJavaClass(c);
 				dbr.name = f.getName();
-				relations.add(dbr);
+				declaredRelations.add(dbr);
 				continue;
 			}
 		}
@@ -50,12 +48,12 @@ public final class DbClass {
 			initAllFieldsRec(ls, cls.getSuperclass());
 		}
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
-		ls.addAll(dbcls.fields);
+		ls.addAll(dbcls.declaredFields);
 	}
 
 	@Override
 	public String toString() {
-		return javaClass.getName() + " fields:" + fields + " relations:" + relations;
+		return javaClass.getName() + " fields:" + declaredFields + " relations:" + declaredRelations;
 	}
 
 	final String sql_createTable(StringBuilder sb) {

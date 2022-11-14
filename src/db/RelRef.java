@@ -14,7 +14,7 @@ public final class RelRef extends DbRelation {
 	void connect(final DbClass c) {
 		fkfld = new FldForeignKey();
 		fkfld.columnName = name;
-		c.fields.add(fkfld);
+		c.declaredFields.add(fkfld);
 	}
 
 	public void set(final DbObject ths, final DbObject trg) {

@@ -60,7 +60,7 @@ public final class Db {
 	private void initDbClasses() {
 		// allow relations to add necessary fields to other dbclasses
 		for (final DbClass c : dbclasses) {
-			for (final DbRelation r : c.relations)
+			for (final DbRelation r : c.declaredRelations)
 				r.connect(c);
 			System.out.println(c);
 		}
