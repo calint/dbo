@@ -5,7 +5,10 @@ abstract class DbRelation {
 	String tableName;
 	String name;
 
-	/** called after initial init, at this time all dbclasses are created and fields can be added to other classes */
+	/**
+	 * called after initial init, at this time all dbclasses are created and fields
+	 * can be added to other classes
+	 */
 	void connect(final DbClass c) {
 	}
 

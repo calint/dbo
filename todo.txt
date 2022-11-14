@@ -13,7 +13,7 @@
 [ ] blob field
 [ ]   stream from field
 [ ] clob field
-[ ] datetime field
+[x] datetime field
 [ ] bool field
 [ ] float field
 [ ] double field

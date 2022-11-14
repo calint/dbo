@@ -4,8 +4,8 @@ import java.util.Map;
 
 final class FldForeignKey extends DbField {
 	@Override
-	void sql_updateValue(final StringBuilder sb,final DbObject o) {
-		sb.append(o.getLong(this));
+	void sql_updateValue(final StringBuilder sb, final DbObject o) {
+		sb.append(o.getInt(this));
 	}
 
 	@Override

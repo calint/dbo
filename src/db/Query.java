@@ -1,5 +1,6 @@
 package db;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -135,6 +136,10 @@ public final class Query {
 		append(NOP, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
 	}
 
+	public Query(DbField lh, int op, Timestamp ts) {
+		append(NOP, lh.tableName, lh.columnName, op, null, "'" + ts.toString() + "'");
+	}
+
 	public Query(DbField lh, int op, DbField rh) {
 		append(NOP, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
@@ -199,6 +204,10 @@ public final class Query {
 		return append(AND, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
 	}
 
+	public Query and(DbField lh, int op, Timestamp ts) {
+		return append(AND, lh.tableName, lh.columnName, op, null, "'" + ts.toString() + "'");
+	}
+
 	public Query and(DbField lh, int op, DbField rh) {
 		return append(AND, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
@@ -208,8 +217,8 @@ public final class Query {
 	}
 
 	public Query and(RelRefN rel) {
-		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
-				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.columnName);
+		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.rrm.tableName, rel.rrm.fromColName)
+				.append(AND, rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.columnName);
 	}
 
 	public Query and(RelAgg rel) {
@@ -232,6 +241,10 @@ public final class Query {
 
 	public Query or(DbField lh, int op, int rh) {
 		return append(OR, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
+	}
+
+	public Query or(DbField lh, int op, Timestamp ts) {
+		return append(OR, lh.tableName, lh.columnName, op, null, "'" + ts.toString() + "'");
 	}
 
 	public Query or(DbField lh, int op, DbField rh) {

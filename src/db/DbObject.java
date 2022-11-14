@@ -2,6 +2,7 @@ package db;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -39,7 +40,7 @@ public abstract class DbObject {
 		s.execute(sql, Statement.RETURN_GENERATED_KEYS);
 		final ResultSet rs = s.getGeneratedKeys();
 		if (rs.next()) {
-			final long id = rs.getLong(1);
+			final int id = rs.getInt(1);
 			setId(id);
 		} else
 			throw new RuntimeException("no generated id");
@@ -83,12 +84,12 @@ public abstract class DbObject {
 		t.dirtyObjects.remove(this);
 	}
 
-	final void setId(long v) {
+	final void setId(int v) {
 		fieldValues.put(id, v);
 	}
 
-	final public long getId() {
-		return ((Long) fieldValues.get(id)).longValue();
+	final public int getId() {
+		return ((Integer) fieldValues.get(id)).intValue();
 	}
 
 	final public String getStr(DbField field) {
@@ -101,6 +102,10 @@ public abstract class DbObject {
 
 	final public long getLong(DbField field) {
 		return ((Long) fieldValues.get(field)).longValue();
+	}
+
+	final public Timestamp getTimestamp(DbField field) {
+		return (Timestamp) fieldValues.get(field);
 	}
 
 	final public void set(DbField field, String value) {
@@ -116,6 +121,12 @@ public abstract class DbObject {
 	}
 
 	final public void set(DbField field, long value) {
+		fieldValues.put(field, value);
+		dirtyFields.add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final public void set(DbField field, Timestamp value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);

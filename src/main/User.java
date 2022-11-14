@@ -1,8 +1,11 @@
 package main;
 
+import java.sql.Timestamp;
+
 import db.DbObject;
 import db.FldInt;
 import db.FldString;
+import db.FldTimestamp;
 import db.RelAgg;
 import db.RelAggN;
 import db.RelRef;
@@ -12,6 +15,7 @@ public final class User extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldString passhash = new FldString(32);
 	public final static FldInt nlogins = new FldInt();
+	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);

@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import db.Db;
@@ -47,6 +48,7 @@ class ReqThread extends Thread {
 
 			File f = u.createFile();
 			f.setName("user file 1");
+			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
 
 			f = u.createFile();
 			f.setName("user file 2");
@@ -66,16 +68,27 @@ class ReqThread extends Thread {
 //			if(1==1)throw new RuntimeException();
 			t.flush();
 
-			final Query qry = new Query(User.class, 1).and(User.refFiles);
+//			final Query qry = new Query(User.class, 1).and(User.refFiles);
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Query qry = new Query(User.class, 1).and(User.groupPic);
+			final Query qry = new Query(File.created_ts, Query.GTE, Timestamp.valueOf("2022-11-14 02:27:00"));
+
+//			final Order ord = null;
+			final Order ord = new Order(File.created_ts, false);
 //			final Order ord = new Order(File.name, false);
-			final Order ord = new Order(File.class);
-			final Limit lmt = new Limit(0, 2);
+//			final Order ord = new Order(File.class);
+
+			final Limit lmt = null;
+//			final Limit lmt = new Limit(0, 2);
 			final List<DbObject> ls = t.get(File.class, qry, ord, lmt);
+//			final List<DbObject> ls = t.get(File.class, null, null, null);
 			for (final DbObject o : ls) {
-				System.out.println(o);
+				final File fo = (File) o;
+				Timestamp ts = fo.getCreatedTs();
+				if (ts != null)
+					System.out.println(o.getId() + " " + ts);
+//				System.out.println(o);
 			}
 
 			////////////////////////////////////////////////////////////
