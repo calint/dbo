@@ -1,3 +1,47 @@
 module db {
 	requires java.sql;
 }
+
+create user c@localhost identified by 'password';
+	mysql -u c -p
+	
+select user from mysql.user;
+	drop user c@localhost;
+
+CREATE DATABASE testdb CHARACTER SET utf8 COLLATE utf8_bin;
+	
+grant all on testdb.* to c@localhost;
+	revoke all on testdb.* from c@localhost;
+	
+FLUSH PRIVILEGES;
+	SHOW GRANTS FOR c@localhost;
+	
+
+
+
+SELECT LOAD_FILE('/home/c/Downloads/test.sql');
+
+
+# the path that can be accessed by LOAD_FILE
+select @@GLOBAL.secure_file_priv;
+show variables like 'secure_file_priv';
+select @@secure_file_priv;
+
+SELECT LOAD_FILE('/var/lib/mysql-files/test.sql');
+insert into blobs values( LOAD_FILE('/var/lib/mysql-files/test.sql'));
+
+show variables like 'max_allowed_packet';
+mysql --max_allowed_packet=32M
+SET GLOBAL max_allowed_packet=524288000;
+
+
+[mysqld]
+max_allowed_packet=128M
+
+
+# display table columns
+desc blobs;
+SHOW FULL COLUMNS FROM blobs;
+
+
+

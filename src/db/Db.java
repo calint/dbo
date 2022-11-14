@@ -1,5 +1,6 @@
 package db;
 
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -138,6 +139,14 @@ public final class Db {
 			rscols.close();
 		}
 		rs2.close();
+
+//		final ResultSet rs3 = stmt.executeQuery("select * from blobs");
+//		while (rs3.next()) {
+//			Object o1 = rs3.getObject(1);
+//			System.out.println(o1 == null ? "null" : o1.getClass().getName());
+//			InputStream o2 = rs3.getBinaryStream(1);
+//			System.out.println(o2 == null ? "null" : o2.getClass().getName());
+//		}
 
 		stmt.close();
 		con.close();
