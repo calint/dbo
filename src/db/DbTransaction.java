@@ -86,6 +86,7 @@ public final class DbTransaction {
 	}
 
 	public void rollback() throws Throwable {
+		Db.log("*** rollback transaction ***");
 		stmt.close();
 		con.rollback();
 	}
