@@ -13,8 +13,4 @@ final class FldForeignKey extends DbField {
 		sb.append(columnName).append(" int");
 	}
 
-	@Override
-	void initDefaultValue(final Map<DbField, Object> kvm) {
-	}
-
 }

@@ -11,7 +11,7 @@ public final class File extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldLong size_B = new FldLong();
 	public final static FldTimestamp created_ts = new FldTimestamp();
-
+	
 	public String getName() {
 		return getStr(name);
 	}
