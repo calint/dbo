@@ -108,6 +108,10 @@ public abstract class DbObject {
 		return (Timestamp) fieldValues.get(field);
 	}
 
+	final public byte[] getBytesArray(DbField field) {
+		return (byte[]) fieldValues.get(field);
+	}
+
 	final public void set(DbField field, String value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
@@ -127,6 +131,12 @@ public abstract class DbObject {
 	}
 
 	final public void set(DbField field, Timestamp value) {
+		fieldValues.put(field, value);
+		dirtyFields.add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final public void set(DbField field, byte[] value) {
 		fieldValues.put(field, value);
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);

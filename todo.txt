@@ -10,10 +10,11 @@
 [x]   table ref
 [x] limit
 [ ] cache
-[ ] blob field
-[ ]   mysql hex
+[x] blob field
+[x]   mysql hex
 [ ] clob field
 [x] datetime field
 [ ] bool field
 [ ] float field
 [ ] double field
+[ ] indexes

@@ -59,6 +59,7 @@ insert into Data values(null, LOAD_FILE('/var/lib/mysql-files/test.mp3'));
 
 
 
+drop table User;drop table File;drop table Data;
 
 
 private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

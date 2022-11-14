@@ -15,6 +15,7 @@ public class Main {
 		Db.initInstance();
 		Db.instance().register(User.class);
 		Db.instance().register(File.class);
+		Db.instance().register(Data.class);
 		Db.instance().init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 
 		Thread t1 = new ReqThread();
@@ -66,6 +67,10 @@ class ReqThread extends Thread {
 			f.setName("a standalone file");
 			u.setGroupPic(f);
 //			if(1==1)throw new RuntimeException();
+
+			Data d = (Data) t.create(Data.class);
+			d.setData(new byte[] { 0, 10, 22, 13 });
+			
 			t.flush();
 
 			final Query qry = new Query(User.class, 1).and(User.refFiles);
