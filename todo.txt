@@ -11,7 +11,7 @@
 [x] limit
 [ ] cache
 [ ] blob field
-[ ]   stream from field
+[ ]   mysql hex
 [ ] clob field
 [x] datetime field
 [ ] bool field

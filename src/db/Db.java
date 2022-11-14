@@ -140,13 +140,14 @@ public final class Db {
 		}
 		rs2.close();
 
-//		final ResultSet rs3 = stmt.executeQuery("select * from blobs");
+//		final ResultSet rs3 = stmt.executeQuery("select * from Data");
 //		while (rs3.next()) {
-//			Object o1 = rs3.getObject(1);
+//			Object o1 = rs3.getObject(2);
 //			System.out.println(o1 == null ? "null" : o1.getClass().getName());
-//			InputStream o2 = rs3.getBinaryStream(1);
+//			InputStream o2 = rs3.getBinaryStream(2);
 //			System.out.println(o2 == null ? "null" : o2.getClass().getName());
 //		}
+//		rs3.close();
 
 		stmt.close();
 		con.close();
