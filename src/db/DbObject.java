@@ -19,7 +19,7 @@ public abstract class DbObject {
 		final StringBuilder sbFields = new StringBuilder(256);
 		final StringBuilder sbValues = new StringBuilder(256);
 		for (final DbField f : dirtyFields) {
-			f.sql_fieldName(sbFields);
+			f.sql_columnName(sbFields);
 			sbFields.append(',');
 			f.sql_updateValue(sbValues, this);
 			sbValues.append(',');
@@ -46,7 +46,7 @@ public abstract class DbObject {
 		rs.close();
 
 		// init default values
-		final DbClass dbcls = Db.instance().dbClassForJavaClass(this.getClass());
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
 		for (final DbField f : dbcls.declaredFields) {
 			f.initDefaultValue(fieldValues);
 		}
@@ -56,6 +56,7 @@ public abstract class DbObject {
 		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
 									// from dirty objects list
 			return;
+
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");

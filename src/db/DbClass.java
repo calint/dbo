@@ -22,7 +22,7 @@ public final class DbClass {
 				continue;
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
-				dbf.cls = c;
+//				dbf.cls = c;
 				dbf.tableName = Db.tableNameForJavaClass(c);
 				dbf.columnName = f.getName();
 				declaredFields.add(dbf);
@@ -59,7 +59,7 @@ public final class DbClass {
 	final String sql_createTable(StringBuilder sb) {
 		sb.append("create table ").append(tableName).append("(");
 		for (final DbField f : allFields) {
-			f.sql_createField(sb);
+			f.sql_createColumn(sb);
 			sb.append(',');
 		}
 //		sql_createTableRec(sb, jcls);
