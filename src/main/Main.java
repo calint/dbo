@@ -68,11 +68,11 @@ class ReqThread extends Thread {
 //			if(1==1)throw new RuntimeException();
 			t.flush();
 
-//			final Query qry = new Query(User.class, 1).and(User.refFiles);
+			final Query qry = new Query(User.class, 1).and(User.refFiles);
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Query qry = new Query(User.class, 1).and(User.groupPic);
-			final Query qry = new Query(File.created_ts, Query.GTE, Timestamp.valueOf("2022-11-14 02:27:00"));
+//			final Query qry = new Query(File.created_ts, Query.GTE, Timestamp.valueOf("2022-11-14 00:00:00"));
 
 //			final Order ord = null;
 			final Order ord = new Order(File.created_ts, false);

@@ -124,8 +124,8 @@ public final class Query {
 
 	////////////////////////////////////////////////////////
 	/** query by id */
-	public Query(Class<? extends DbObject> c, long id) {
-		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
+	public Query(Class<? extends DbObject> c, int id) {
+		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Integer.toString(id));
 	}
 
 	public Query(DbField lh, int op, String rh) {
@@ -192,8 +192,8 @@ public final class Query {
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
-	public Query and(Class<? extends DbObject> c, long id) {
-		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
+	public Query and(Class<? extends DbObject> c, int id) {
+		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Integer.toString(id));
 	}
 
 	public Query and(DbField lh, int op, String rh) {
@@ -231,8 +231,8 @@ public final class Query {
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
-	public Query or(Class<? extends DbObject> c, long id) {
-		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Long.toString(id));
+	public Query or(Class<? extends DbObject> c, int id) {
+		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.columnName, EQ, null, Integer.toString(id));
 	}
 
 	public Query or(DbField lh, int op, String rh) {
