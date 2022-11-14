@@ -23,7 +23,7 @@ public final class RelRefN extends DbRelation {
 		final StringBuilder sb = new StringBuilder(256);
 		rrm.sql_addToTable(sb, from, to);
 		final String sql = sb.toString();
-		System.out.println(sql);
+		Db.log(sql);
 		try {
 			stmt.execute(sql);
 		} catch (final Throwable t) {

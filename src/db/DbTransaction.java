@@ -50,7 +50,7 @@ public final class DbTransaction {
 		sb.setLength(sb.length() - 1);
 
 		final String sql = sb.toString();
-		System.out.println(sql);
+		Db.log(sql);
 		final ArrayList<DbObject> ls = new ArrayList<DbObject>(128);
 		try {
 			final Constructor<? extends DbObject> ctor = cls.getConstructor();
@@ -77,10 +77,12 @@ public final class DbTransaction {
 	}
 
 	public void flush() throws Throwable {
+		Db.log("*** flush connection ***");
 		for (final DbObject o : dirtyObjects) {
 			o.updateDb();
 		}
 		dirtyObjects.clear();
+		Db.log("*** done flushing connection ***");
 	}
 
 	public void rollback() throws Throwable {

@@ -13,7 +13,9 @@ import java.util.LinkedList;
 
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
-
+	static void log(String s) {
+		System.out.println(s);
+	}
 	public static DbTransaction initCurrentTransaction() throws Throwable {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)// ? fix
@@ -70,7 +72,7 @@ public final class Db {
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 		initDbClasses();
-		System.out.println("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		final Connection con = DriverManager.getConnection(url, user, password);
 		final DatabaseMetaData dbm = con.getMetaData();
@@ -95,7 +97,7 @@ public final class Db {
 			final StringBuilder sb = new StringBuilder(256);
 			dbcls.sql_createTable(sb);
 			final String sql = sb.toString();
-			System.out.println(sql);
+			Db.log(sql);
 			stmt.execute(sql);
 		}
 
@@ -106,7 +108,7 @@ public final class Db {
 			final StringBuilder sb = new StringBuilder(256);
 			rrm.sql_createTable(sb);
 			final String sql = sb.toString();
-			System.out.println(sql);
+			Db.log(sql);
 			stmt.execute(sql);
 		}
 
@@ -118,7 +120,7 @@ public final class Db {
 
 	private void initConnectionPool(final String url, final String user, final String password, final int ncons)
 			throws Throwable {
-		System.out.println("jdbc connection: " + url);
+		Db.log("jdbc connection: " + url);
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);

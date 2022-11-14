@@ -34,8 +34,9 @@ public abstract class DbObject {
 		} else
 			sbSql.append(" values()");
 
-		System.out.println(sbSql.toString());
-		s.execute(sbSql.toString(), Statement.RETURN_GENERATED_KEYS);
+		final String sql = sbSql.toString();
+		Db.log(sql);
+		s.execute(sql, Statement.RETURN_GENERATED_KEYS);
 		final ResultSet rs = s.getGeneratedKeys();
 		if (rs.next()) {
 			final long id = rs.getLong(1);
@@ -65,8 +66,9 @@ public abstract class DbObject {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(" where id=").append(getId());
-		System.out.println(sb.toString());
-		t.stmt.execute(sb.toString());
+		final String sql = sb.toString();
+		Db.log(sql);
+		t.stmt.execute(sql);
 		dirtyFields.clear();
 	}
 
@@ -74,7 +76,7 @@ public abstract class DbObject {
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
 		final String sql = sb.toString();
-		System.out.println(sql);
+		Db.log(sql);
 		final DbTransaction t = Db.currentTransaction();
 		t.stmt.execute(sql);
 		t.dirtyObjects.remove(this);
