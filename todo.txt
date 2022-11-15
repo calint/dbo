@@ -18,3 +18,4 @@
 [ ] float field
 [ ] double field
 [ ] indexes
+[ ] Query.LIKE
