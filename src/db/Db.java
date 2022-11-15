@@ -1,6 +1,5 @@
 package db;
 
-import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -193,7 +192,7 @@ public final class Db {
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
-		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);
+		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);//? package name
 		return tblnm;
 	}
 
