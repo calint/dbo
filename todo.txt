@@ -21,4 +21,3 @@
 [ ] Query.LIKE
 [ ] TEXT column type
 [ ] full text search
-[ ] bool field type
