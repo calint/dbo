@@ -19,3 +19,5 @@
 [ ] double field
 [ ] indexes
 [ ] Query.LIKE
+[ ] TEXT column type
+[ ] full text search
