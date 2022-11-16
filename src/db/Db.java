@@ -73,11 +73,16 @@ public final class Db {
 	}
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
-		initDbClasses();
-		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
-
 		final Connection con = DriverManager.getConnection(url, user, password);
 		final DatabaseMetaData dbm = con.getMetaData();
+		Db.log(dbm.getDatabaseProductName() + " " + dbm.getDatabaseProductVersion());
+		Db.log("jdbc connection: " + url);
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+
+		initDbClasses();
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		// get table names
 		final HashSet<String> tblNames = new HashSet<String>();
@@ -151,7 +156,6 @@ public final class Db {
 		stmt.close();
 		con.close();
 
-		Db.log("jdbc connection: " + url);
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
@@ -192,7 +196,7 @@ public final class Db {
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
-		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);//? package name
+		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
 		return tblnm;
 	}
 

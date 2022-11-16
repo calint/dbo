@@ -62,19 +62,8 @@ public final class DbClass {
 			f.sql_createColumn(sb);
 			sb.append(',');
 		}
-//		sql_createTableRec(sb, jcls);
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
 		return sb.toString();
 	}
-
-//	private static void sql_createTableRec(StringBuilder sb, Class<?> c) {
-//		if (!c.getSuperclass().equals(Object.class))
-//			sql_createTableRec(sb, c.getSuperclass());
-//		final DbClass dbcls = Db.instance().dbClassForJavaClass(c);
-//		for (final DbField f : dbcls.fields) {
-//			f.sql_createField(sb);
-//			sb.append(',');
-//		}
-//	}
 }

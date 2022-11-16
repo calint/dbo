@@ -28,7 +28,5 @@ public final class RelAgg extends DbRelation {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
-
 	}
-
 }

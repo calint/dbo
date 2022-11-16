@@ -70,7 +70,10 @@ class ReqThread extends Thread {
 
 			Data d = (Data) t.create(Data.class);
 			d.setData(new byte[] { 0, 10, 22, 13 });
-			
+
+			d = (Data) f.createData();
+			d.setData(new byte[] { 0, 1, 2, 1 });
+
 			t.flush();
 
 			final Query qry = new Query(User.class, 1).and(User.refFiles);

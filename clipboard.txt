@@ -57,20 +57,10 @@ update Data set data=0x19c0300dc90e7cedf64703ed8ae8683d where id=6;
 
 insert into Data values(null, LOAD_FILE('/var/lib/mysql-files/test.mp3'));
 
+show indexes from File;
+create index User_files on File(User_files);
+alter table File drop index File_User_files;
 
 
 drop table User;drop table File;drop table Data;
-
-
-private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-public static String bytesToHex(byte[] bytes) {
-    char[] hexChars = new char[bytes.length * 2];
-    for (int j = 0; j < bytes.length; j++) {
-        int v = bytes[j] & 0xFF;
-        hexChars[j * 2] = HEX_ARRAY[v >>> 4];
-        hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
-    }
-    return new String(hexChars);
-}
-
 

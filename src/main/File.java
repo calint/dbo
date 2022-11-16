@@ -6,12 +6,14 @@ import db.DbObject;
 import db.FldLong;
 import db.FldString;
 import db.FldTimestamp;
+import db.RelAgg;
 
 public final class File extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldLong size_B = new FldLong();
 	public final static FldTimestamp created_ts = new FldTimestamp();
-	
+	public final static RelAgg data = new RelAgg(Data.class);
+
 	public String getName() {
 		return getStr(name);
 	}
@@ -34,6 +36,10 @@ public final class File extends DbObject {
 
 	public void setCreatedTs(Timestamp v) {
 		set(created_ts, v);
+	}
+
+	public Data createData() {
+		return (Data) data.create(this);
 	}
 
 }
