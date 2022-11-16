@@ -19,6 +19,9 @@
 [ ] float field
 [ ] double field
 [ ] indexes
+[x]    RefN
+[ ]    AggN
+[ ]    fields
 [ ] Query.LIKE
 [ ] LONGTEXT
 [ ] full text search

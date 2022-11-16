@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 public final class Db {
@@ -64,7 +63,7 @@ public final class Db {
 		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.declaredRelations)
 				r.connect(c);
-			System.out.println(c);
+			Db.log(c.toString());
 		}
 
 		// create allFields lists
@@ -84,40 +83,51 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		// get table names
-		final HashSet<String> tblNames = new HashSet<String>();
-		final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" });
-		while (rs.next()) {
-			final String tblname = rs.getString("TABLE_NAME");
-			tblNames.add(tblname);
-		}
-		rs.close();
-
 		// create missing tables
 		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
-			if (tblNames.contains(dbcls.tableName))
-				continue;// ? check columns
-
 			final StringBuilder sb = new StringBuilder(256);
-			dbcls.sql_createTable(sb);
-			final String sql = sb.toString();
-			Db.log(sql);
-			stmt.execute(sql);
-		}
-
-		// create special RefN tables
-		for (final MetaRelRefN rrm : relRefNMeta) {
-			if (rrm.tableIsIn(tblNames))
+			dbcls.sql_createTable(sb, dbm);
+			if (sb.length() == 0)
 				continue;
-			final StringBuilder sb = new StringBuilder(256);
-			rrm.sql_createTable(sb);
 			final String sql = sb.toString();
 			Db.log(sql);
 			stmt.execute(sql);
 		}
+
+//		// get table names
+//		final HashSet<String> tblNames = new HashSet<String>();
+//		final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" });
+//		while (rs.next()) {
+//			final String tblname = rs.getString("TABLE_NAME");
+//			tblNames.add(tblname);
+//		}
+//		rs.close();
+
+		// create RefN tables
+		for (final MetaRelRefN rrm : relRefNMeta) {
+			final StringBuilder sb = new StringBuilder(256);
+			rrm.sql_createTable(sb, dbm);
+			if (sb.length() == 0)
+				continue;
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
+		// create RefN indexes
+		for (final MetaRelRefN rrm : relRefNMeta) {
+			final StringBuilder sb = new StringBuilder(256);
+			rrm.sql_createIndex(sb, dbm);
+			if (sb.length() == 0)
+				continue;
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		final ResultSet rs2 = dbm.getTables(null, null, null, new String[] { "TABLE" });
 		while (rs2.next()) {
@@ -126,21 +136,24 @@ public final class Db {
 			ResultSet rscols = dbm.getColumns(null, null, tblname, null);
 			while (rscols.next()) {
 				String columnName = rscols.getString("COLUMN_NAME");
-//				String columnSize = rscols.getString("COLUMN_SIZE");
 				String datatype = rscols.getString("TYPE_NAME");
 				String defval = rscols.getString("COLUMN_DEF");
 				final StringBuilder sb = new StringBuilder();
 				sb.append("    ").append(columnName).append(' ').append(datatype).append(' ');
-//				sb.append(columnSize).append(' ');
-				if (defval == null) {
-//					sb.append("null");
-				} else {
+				if (defval != null) {
 					sb.append('\'').append(defval).append('\'');
 				}
 
 				Db.log(sb.toString());
 			}
 			rscols.close();
+			ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
+			// Printing the column name and size
+			while (rsix.next()) {
+				System.out.println("index " + rsix.getString("INDEX_NAME")+" of column " + rsix.getString("COLUMN_NAME"));
+			}
+			rsix.close();
+			System.out.println(" ");
 		}
 		rs2.close();
 
@@ -156,43 +169,25 @@ public final class Db {
 		stmt.close();
 		con.close();
 
+		// init connection pool
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
 			conpool.add(c);
-			System.out.print(".");
-			System.out.flush();
 		}
-		System.out.println();
 
-//		initConnectionPool(url, user, password, ncons);
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+
 	}
-//
-//	private void initConnectionPool(final String url, final String user, final String password, final int ncons)
-//			throws Throwable {
-//		Db.log("jdbc connection: " + url);
-//		for (int i = 0; i < ncons; i++) {
-//			final Connection c = DriverManager.getConnection(url, user, password);
-//			c.setAutoCommit(false);
-//			conpool.add(c);
-//			System.out.print(".");
-//			System.out.flush();
-//		}
-//		System.out.println();
-//	}
 
 	public void deinitConnectionPool() {
-//		System.out.println("close jdbc connections");
 		for (final Connection c : conpool) {
 			try {
 				c.close();
-				System.out.print(".");
-				System.out.flush();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.println();
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {

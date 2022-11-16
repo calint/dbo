@@ -59,8 +59,15 @@ insert into Data values(null, LOAD_FILE('/var/lib/mysql-files/test.mp3'));
 
 show indexes from File;
 create index User_files on File(User_files);
-alter table File drop index File_User_files;
+alter table File drop index User_files;
 
 
-drop table User;drop table File;drop table Data;
+create index User_refFiles on User_refFiles(User);
+
+drop table User;drop table File;drop table Data;drop table User_refFiles;
+
+
+
+explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id=1 and t1.id=t2.User and t2.File=t3.id order by t3.created_ts desc;
+
 

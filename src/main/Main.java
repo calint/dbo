@@ -93,10 +93,10 @@ class ReqThread extends Thread {
 //			final List<DbObject> ls = t.get(File.class, null, null, null);
 			for (final DbObject o : ls) {
 				final File fo = (File) o;
-				Timestamp ts = fo.getCreatedTs();
-				if (ts != null)
-					System.out.println(o.getId() + " " + ts);
-//				System.out.println(o);
+//				Timestamp ts = fo.getCreatedTs();
+//				if (ts != null)
+//					System.out.println(o.getId() + " " + ts);
+				System.out.println(fo);
 			}
 
 			////////////////////////////////////////////////////////////

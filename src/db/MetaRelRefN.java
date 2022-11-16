@@ -1,5 +1,7 @@
 package db;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.Set;
 
 // represents the relation table
@@ -19,21 +21,39 @@ final class MetaRelRefN {
 		this.fromColName = Db.tableNameForJavaClass(fromCls);
 		this.toTableName = Db.tableNameForJavaClass(toCls);
 		this.toColName = Db.tableNameForJavaClass(toCls);
-		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName)
-				.toString();
+		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName).toString();
 	}
 
-	void sql_createTable(final StringBuilder sb) {
+	void sql_createTable(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
+		if (rs.next()) {
+			rs.close();
+			return;// ? check columns
+		}
+		rs.close();
+
 		sb.append("create table ").append(tableName).append('(').append(fromTableName).append(" int,")
 				.append(toTableName).append(" int)");
 	}
 
-	void sql_addToTable(final StringBuilder sb, DbObject from, DbObject to) {
+	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
+		// Printing the column name and size
+		if (rs.next()) {
+			rs.close();// ? check column
+			return;
+		}
+		// create index User_refFiles on User_refFiles(User);
+		sb.append("create index ").append(tableName).append(" on ").append(tableName).append('(').append(fromColName)
+				.append(')');
+	}
+
+	void sql_addToTable(final StringBuilder sb, final DbObject from, final DbObject to) {
 		sb.append("insert into ").append(tableName).append(" values(").append(from.getId()).append(',')
 				.append(to.getId()).append(')').toString();
 	}
 
-	boolean tableIsIn(Set<String> tblNames) {
+	boolean tableIsIn(final Set<String> tblNames) {
 		return tblNames.contains(tableName);
 	}
 }

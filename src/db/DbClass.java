@@ -2,6 +2,8 @@ package db;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +58,14 @@ public final class DbClass {
 		return javaClass.getName() + " fields:" + declaredFields + " relations:" + declaredRelations;
 	}
 
-	final String sql_createTable(StringBuilder sb) {
+	final void sql_createTable(StringBuilder sb, DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
+		if (rs.next()) {
+			rs.close();
+			return;// ? check columns
+		}
+		rs.close();
+
 		sb.append("create table ").append(tableName).append("(");
 		for (final DbField f : allFields) {
 			f.sql_createColumn(sb);
@@ -64,6 +73,6 @@ public final class DbClass {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
-		return sb.toString();
+		return;
 	}
 }
