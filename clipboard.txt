@@ -40,8 +40,8 @@ max_allowed_packet=128M
 
 
 # display table columns
-desc blobs;
-SHOW FULL COLUMNS FROM blobs;
+desc File;
+SHOW FULL COLUMNS FROM File;
 
 
 

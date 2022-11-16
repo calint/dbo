@@ -59,10 +59,11 @@ public final class Db {
 	}
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
+		Db.log("jdbc connection: " + url);
 		final Connection con = DriverManager.getConnection(url, user, password);
+
 		final DatabaseMetaData dbm = con.getMetaData();
 		Db.log(dbm.getDatabaseProductName() + " " + dbm.getDatabaseProductVersion());
-		Db.log("jdbc connection: " + url);
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -124,6 +125,7 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
+		// output tables, columns, indexes
 		final ResultSet rs2 = dbm.getTables(null, null, null, new String[] { "TABLE" });
 		while (rs2.next()) {
 			final String tblname = rs2.getString("TABLE_NAME");
@@ -165,7 +167,7 @@ public final class Db {
 		stmt.close();
 		con.close();
 
-		// init connection pool
+		// create connection pool
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
