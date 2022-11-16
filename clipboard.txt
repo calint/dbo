@@ -70,4 +70,5 @@ drop table User;drop table File;drop table Data;drop table User_refFiles;
 
 explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id=1 and t1.id=t2.User and t2.File=t3.id order by t3.created_ts desc;
 
-
+explain select t2.* from User as t1, File as t2 where t1.id=1 and t1.id=t2.User_files order by t2.created_ts desc;
+create index User_files on File(User_files);

@@ -36,17 +36,17 @@ final class MetaRelRefN {
 				.append(toTableName).append(" int)");
 	}
 
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
-		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
-		// Printing the column name and size
-		if (rs.next()) {
-			rs.close();// ? check column
-			return;
-		}
-		// create index User_refFiles on User_refFiles(User);
-		sb.append("create index ").append(tableName).append(" on ").append(tableName).append('(').append(fromColName)
-				.append(')');
-	}
+//	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+//		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
+//		// Printing the column name and size
+//		if (rs.next()) {
+//			rs.close();// ? check column
+//			return;
+//		}
+//		// create index User_refFiles on User_refFiles(User);
+//		sb.append("create index ").append(tableName).append(" on ").append(tableName).append('(').append(fromColName)
+//				.append(')');
+//	}
 
 	void sql_addToTable(final StringBuilder sb, final DbObject from, final DbObject to) {
 		sb.append("insert into ").append(tableName).append(" values(").append(from.getId()).append(',')

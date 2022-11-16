@@ -1,5 +1,7 @@
 package db;
 
+import java.sql.DatabaseMetaData;
+
 abstract class DbRelation {
 	Class<? extends DbObject> cls;
 	String tableName;
@@ -15,6 +17,12 @@ abstract class DbRelation {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	/**
+	 * called after all tables have been created and relations can create necessary indexes
+	 */
+	void sql_createIndex(final StringBuilder sb,final DatabaseMetaData dbm) throws Throwable {		
 	}
 
 }

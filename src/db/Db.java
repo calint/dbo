@@ -116,16 +116,32 @@ public final class Db {
 			Db.log(sql);
 			stmt.execute(sql);
 		}
-		// create RefN indexes
-		for (final MetaRelRefN rrm : relRefNMeta) {
-			final StringBuilder sb = new StringBuilder(256);
-			rrm.sql_createIndex(sb, dbm);
-			if (sb.length() == 0)
-				continue;
-			final String sql = sb.toString();
-			Db.log(sql);
-			stmt.execute(sql);
+		
+		// all tables have been created
+		
+		// create indexes
+		for(final DbClass dbcls:dbclasses) {
+			for(final DbRelation dbrel:dbcls.declaredRelations) {//? what about inherited relations
+				final StringBuilder sb = new StringBuilder(256);
+				dbrel.sql_createIndex(sb,dbm);
+				if (sb.length() == 0)
+					continue;
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
+			}
 		}
+		
+//		// create RefN indexes
+//		for (final MetaRelRefN rrm : relRefNMeta) {
+//			final StringBuilder sb = new StringBuilder(256);
+//			rrm.sql_createIndex(sb, dbm);
+//			if (sb.length() == 0)
+//				continue;
+//			final String sql = sb.toString();
+//			Db.log(sql);
+//			stmt.execute(sql);
+//		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 

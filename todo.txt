@@ -20,7 +20,7 @@
 [ ] double field
 [ ] indexes
 [x]    RefN
-[ ]    AggN
+[x]    AggN
 [ ]    fields
 [ ] Query.LIKE
 [ ] LONGTEXT

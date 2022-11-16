@@ -1,5 +1,7 @@
 package db;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public final class RelRefN extends DbRelation {
@@ -29,6 +31,26 @@ public final class RelRefN extends DbRelation {
 		} catch (final Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+
+	@Override
+	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getIndexInfo(null, null, rrm.tableName, false, false);
+		boolean found = false;
+		while (rs.next()) {
+			final String indexName = rs.getString("INDEX_NAME");
+			if (indexName.equals(rrm.tableName)) {
+				found = true;
+				break;
+			}
+		}
+		rs.close();
+		if (found == true)
+			return;
+
+		// create index User_refFiles on User_refFiles(User);
+		sb.append("create index ").append(rrm.tableName).append(" on ").append(rrm.tableName).append('(')
+				.append(rrm.fromColName).append(')');
 	}
 
 }

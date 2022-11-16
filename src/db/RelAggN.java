@@ -1,5 +1,8 @@
 package db;
 
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+
 public final class RelAggN extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
@@ -27,5 +30,26 @@ public final class RelAggN extends DbRelation {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+
+	@Override
+	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
+		boolean found = false;
+		while (rs.next()) {
+			final String indexName = rs.getString("INDEX_NAME");
+			if (indexName.equals(relFld.columnName)) {
+				found = true;
+				break;
+			}
+		}
+		rs.close();
+		if (found == true)
+			return;
+		
+		// create index User_refFiles on User_refFiles(User);
+		sb.append("create index ").append(relFld.columnName).append(" on ").append(toTableName).append('(')
+				.append(relFld.columnName).append(')');
+
 	}
 }
