@@ -19,7 +19,7 @@ final class MetaRelRefN {
 		this.fromColName = Db.tableNameForJavaClass(fromCls);
 		this.toTableName = Db.tableNameForJavaClass(toCls);
 		this.toColName = Db.tableNameForJavaClass(toCls);
-		tableName = new StringBuilder(256).append(Db.tableNameForJavaClass(fromCls)).append('_').append(relName)
+		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName)
 				.toString();
 	}
 

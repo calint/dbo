@@ -145,7 +145,7 @@ public final class Query {
 	}
 
 	public Query(RelAggN rel) {
-		append(NOP, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
+		append(NOP, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.relFld.columnName);
 	}
 
 	public Query(RelRefN rel) {
@@ -154,11 +154,11 @@ public final class Query {
 	}
 
 	public Query(RelAgg rel) {
-		append(NOP, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		append(NOP, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query(RelRef rel) {
-		append(NOP, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		append(NOP, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	///////////////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ public final class Query {
 	}
 
 	public Query and(RelAggN rel) {
-		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
+		return append(AND, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.relFld.columnName);
 	}
 
 	public Query and(RelRefN rel) {
@@ -222,11 +222,11 @@ public final class Query {
 	}
 
 	public Query and(RelAgg rel) {
-		return append(AND, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		return append(AND, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query and(RelRef rel) {
-		return append(AND, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		return append(AND, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
@@ -252,7 +252,7 @@ public final class Query {
 	}
 
 	public Query or(RelAggN rel) {
-		return append(OR, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.fkfld.columnName);
+		return append(OR, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.relFld.columnName);
 	}
 
 	public Query or(RelRefN rel) {
@@ -261,10 +261,10 @@ public final class Query {
 	}
 
 	public Query or(RelAgg rel) {
-		return append(OR, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		return append(OR, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
 	public Query or(RelRef rel) {
-		return append(OR, rel.tableName, rel.fkfld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+		return append(OR, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 }

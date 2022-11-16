@@ -3,7 +3,7 @@ package db;
 public final class RelAgg extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
-	FldRel fkfld;
+	FldRel relFld;
 
 	public RelAgg(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -12,16 +12,16 @@ public final class RelAgg extends DbRelation {
 
 	@Override
 	void connect(final DbClass dbcls) {
-		fkfld = new FldRel();
-		fkfld.columnName = name;
-		dbcls.declaredFields.add(fkfld);
+		relFld = new FldRel();
+		relFld.columnName = name;
+		dbcls.declaredFields.add(relFld);
 	}
 
 	public DbObject create(final DbObject ths) {
 		try {
 			final DbObject o = toCls.getConstructor().newInstance();
 			o.createInDb();
-			ths.set(fkfld, o.getId());
+			ths.set(relFld, o.getId());
 			ths.updateDb();
 //			Db.currentTransaction().dirtyObjects.remove(ths);
 			return o;

@@ -3,7 +3,7 @@ package db;
 public final class RelRef extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
-	FldRel fkfld;
+	FldRel relFld;
 
 	public RelRef(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -12,14 +12,14 @@ public final class RelRef extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		fkfld = new FldRel();
-		fkfld.columnName = name;
-		c.declaredFields.add(fkfld);
+		relFld = new FldRel();
+		relFld.columnName = name;
+		c.declaredFields.add(relFld);
 	}
 
 	public void set(final DbObject ths, final DbObject trg) {
 		try {
-			ths.set(fkfld, trg.getId());
+			ths.set(relFld, trg.getId());
 			ths.updateDb();
 //			Db.currentTransaction().dirtyObjects.remove(ths);
 		} catch (Throwable t) {
