@@ -12,6 +12,7 @@ public final class Query {
 	public final static int GTE = 4;
 	public final static int LT = 5;
 	public final static int LTE = 6;
+	public final static int LIKE = 7;
 
 	static class Elem {
 		int elemOp;
@@ -68,6 +69,9 @@ public final class Query {
 				break;
 			case LTE:
 				sb.append("<=");
+				break;
+			case LIKE:
+				sb.append(" like ");
 				break;
 			default:
 				throw new RuntimeException("op " + op + " not supported");

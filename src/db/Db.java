@@ -126,9 +126,9 @@ public final class Db {
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		// output tables, columns, indexes
-		final ResultSet rs2 = dbm.getTables(null, null, null, new String[] { "TABLE" });
-		while (rs2.next()) {
-			final String tblname = rs2.getString("TABLE_NAME");
+		final ResultSet rstbls = dbm.getTables(null, null, null, new String[] { "TABLE" });
+		while (rstbls.next()) {
+			final String tblname = rstbls.getString("TABLE_NAME");
 			Db.log("[" + tblname + "]");
 			ResultSet rscols = dbm.getColumns(null, null, tblname, null);
 			while (rscols.next()) {
@@ -145,7 +145,7 @@ public final class Db {
 			}
 			rscols.close();
 			
-			ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
+			final ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
 			while (rsix.next()) {
 				System.out.println(
 						"  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
@@ -153,7 +153,7 @@ public final class Db {
 			rsix.close();
 			System.out.println(" ");
 		}
-		rs2.close();
+		rstbls.close();
 
 //		final ResultSet rs3 = stmt.executeQuery("select * from Data");
 //		while (rs3.next()) {

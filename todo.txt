@@ -22,7 +22,8 @@
 [x]    RefN
 [x]    AggN
 [ ]    fields
-[ ] Query.LIKE
+[x] Query.LIKE
 [ ] LONGTEXT
 [ ] full text search
 [ ] check string lengths when setting varchar fields?
+[ ] check table columns vs class fields

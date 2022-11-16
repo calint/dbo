@@ -76,8 +76,8 @@ class ReqThread extends Thread {
 
 			t.flush();
 
-//			final Query qry = new Query(User.class, 1).and(User.refFiles);
-			final Query qry = new Query(User.class, 1).and(User.files);
+			final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user file %");
+//			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Query qry = new Query(User.class, 1).and(User.groupPic);
 //			final Query qry = new Query(File.created_ts, Query.GTE, Timestamp.valueOf("2022-11-14 00:00:00"));
