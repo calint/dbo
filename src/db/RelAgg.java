@@ -3,7 +3,7 @@ package db;
 public final class RelAgg extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
-	FldForeignKey fkfld;
+	FldRel fkfld;
 
 	public RelAgg(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -12,7 +12,7 @@ public final class RelAgg extends DbRelation {
 
 	@Override
 	void connect(final DbClass dbcls) {
-		fkfld = new FldForeignKey();
+		fkfld = new FldRel();
 		fkfld.columnName = name;
 		dbcls.declaredFields.add(fkfld);
 	}
