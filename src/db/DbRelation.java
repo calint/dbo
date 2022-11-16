@@ -8,21 +8,21 @@ abstract class DbRelation {
 	String name;
 
 	/**
-	 * called after initial init, at this time all dbclasses are created and fields
-	 * can be added to other classes
+	 * Called after all DbClasses have been created and necessary relation fields
+	 * can be added to other DbClasses.
 	 */
 	void connect(final DbClass c) {
+	}
+
+	/**
+	 * Called after all tables have been created and relations can create necessary
+	 * indexes. DatabaseMetaData is used to check if index already exists.
+	 */
+	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
 	}
 
 	@Override
 	public String toString() {
 		return name;
 	}
-
-	/**
-	 * called after all tables have been created and relations can create necessary indexes
-	 */
-	void sql_createIndex(final StringBuilder sb,final DatabaseMetaData dbm) throws Throwable {		
-	}
-
 }

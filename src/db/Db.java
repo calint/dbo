@@ -58,19 +58,6 @@ public final class Db {
 		jclsToDbCls.put(cls, dbcls);
 	}
 
-	private void initDbClasses() {
-		// allow relations to add necessary fields to other dbclasses
-		for (final DbClass c : dbclasses) {
-			for (final DbRelation r : c.declaredRelations)
-				r.connect(c);
-			Db.log(c.toString());
-		}
-
-		// create allFields lists
-		for (final DbClass c : dbclasses)
-			c.initAllFieldsList();
-	}
-
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 		final Connection con = DriverManager.getConnection(url, user, password);
 		final DatabaseMetaData dbm = con.getMetaData();
@@ -79,11 +66,23 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		initDbClasses();
+		// allow DbClasses relations to add necessary fields to other DbClasses
+		for (final DbClass c : dbclasses) {
+			for (final DbRelation r : c.declaredRelations)// ? what about inherited relations
+				r.connect(c);
+		}
 
+		// create allFields lists
+		for (final DbClass c : dbclasses) {
+			c.initAllFieldsList();
+			Db.log(c.toString());
+		}
+
+		// DbClasses fields are now ready for create tables
+		
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		// create missing tables
+		// create tables
 		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
@@ -97,15 +96,6 @@ public final class Db {
 			stmt.execute(sql);
 		}
 
-//		// get table names
-//		final HashSet<String> tblNames = new HashSet<String>();
-//		final ResultSet rs = dbm.getTables(null, null, null, new String[] { "TABLE" });
-//		while (rs.next()) {
-//			final String tblname = rs.getString("TABLE_NAME");
-//			tblNames.add(tblname);
-//		}
-//		rs.close();
-
 		// create RefN tables
 		for (final MetaRelRefN rrm : relRefNMeta) {
 			final StringBuilder sb = new StringBuilder(256);
@@ -116,14 +106,14 @@ public final class Db {
 			Db.log(sql);
 			stmt.execute(sql);
 		}
-		
+
 		// all tables have been created
-		
+
 		// create indexes
-		for(final DbClass dbcls:dbclasses) {
-			for(final DbRelation dbrel:dbcls.declaredRelations) {//? what about inherited relations
+		for (final DbClass dbcls : dbclasses) {
+			for (final DbRelation dbrel : dbcls.declaredRelations) {// ? what about inherited relations
 				final StringBuilder sb = new StringBuilder(256);
-				dbrel.sql_createIndex(sb,dbm);
+				dbrel.sql_createIndex(sb, dbm);
 				if (sb.length() == 0)
 					continue;
 				final String sql = sb.toString();
@@ -131,17 +121,6 @@ public final class Db {
 				stmt.execute(sql);
 			}
 		}
-		
-//		// create RefN indexes
-//		for (final MetaRelRefN rrm : relRefNMeta) {
-//			final StringBuilder sb = new StringBuilder(256);
-//			rrm.sql_createIndex(sb, dbm);
-//			if (sb.length() == 0)
-//				continue;
-//			final String sql = sb.toString();
-//			Db.log(sql);
-//			stmt.execute(sql);
-//		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -166,7 +145,8 @@ public final class Db {
 			ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
 			// Printing the column name and size
 			while (rsix.next()) {
-				System.out.println("index " + rsix.getString("INDEX_NAME")+" of column " + rsix.getString("COLUMN_NAME"));
+				System.out.println(
+						"index " + rsix.getString("INDEX_NAME") + " of column " + rsix.getString("COLUMN_NAME"));
 			}
 			rsix.close();
 			System.out.println(" ");

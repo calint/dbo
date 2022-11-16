@@ -53,7 +53,7 @@ class ReqThread extends Thread {
 
 			f = u.createFile();
 			f.setName("user file 2");
-			u.addRefFile(f);
+			u.addRefFile(f.getId());
 
 			f = u.createFile();
 			f.setName("user file 3");

@@ -48,9 +48,9 @@ final class MetaRelRefN {
 //				.append(')');
 //	}
 
-	void sql_addToTable(final StringBuilder sb, final DbObject from, final DbObject to) {
-		sb.append("insert into ").append(tableName).append(" values(").append(from.getId()).append(',')
-				.append(to.getId()).append(')').toString();
+	void sql_addToTable(final StringBuilder sb, final int fromId, final int toId) {
+		sb.append("insert into ").append(tableName).append(" values(").append(fromId).append(',')
+				.append(toId).append(')').toString();
 	}
 
 	boolean tableIsIn(final Set<String> tblNames) {

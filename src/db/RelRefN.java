@@ -21,9 +21,13 @@ public final class RelRefN extends DbRelation {
 	}
 
 	public void add(final DbObject from, final DbObject to) {
+		add(from, to.getId());
+	}
+
+	public void add(final DbObject from, final int toId) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		rrm.sql_addToTable(sb, from, to);
+		rrm.sql_addToTable(sb, from.getId(), toId);
 		final String sql = sb.toString();
 		Db.log(sql);
 		try {

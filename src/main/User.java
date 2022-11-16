@@ -58,7 +58,11 @@ public final class User extends DbObject {
 	}
 
 	public void addRefFile(File o) {
-		refFiles.add(this, o);
+		refFiles.add(this, o.getId());
+	}
+
+	public void addRefFile(int id) {
+		refFiles.add(this, id);
 	}
 
 //	public List<File> getRefFiles(Query qry, Order ord, Limit lmt) {

@@ -53,11 +53,6 @@ public final class DbClass {
 		ls.addAll(dbcls.declaredFields);
 	}
 
-	@Override
-	public String toString() {
-		return javaClass.getName() + " fields:" + declaredFields + " relations:" + declaredRelations;
-	}
-
 	final void sql_createTable(StringBuilder sb, DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
@@ -74,5 +69,10 @@ public final class DbClass {
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
 		return;
+	}
+
+	@Override
+	public String toString() {
+		return javaClass.getName() + " fields:" + allFields + " relations:" + declaredRelations;
 	}
 }
