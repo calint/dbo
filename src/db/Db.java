@@ -66,7 +66,7 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		// allow DbClasses relations to add necessary fields to other DbClasses
+		// allow DbClass relations to add necessary fields to other DbClasses
 		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.declaredRelations)// ? what about inherited relations
 				r.connect(c);
@@ -142,11 +142,11 @@ public final class Db {
 				Db.log(sb.toString());
 			}
 			rscols.close();
+			
 			ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
-			// Printing the column name and size
 			while (rsix.next()) {
 				System.out.println(
-						"index " + rsix.getString("INDEX_NAME") + " of column " + rsix.getString("COLUMN_NAME"));
+						"  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
 			}
 			rsix.close();
 			System.out.println(" ");

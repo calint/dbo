@@ -2,7 +2,6 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.util.Set;
 
 // represents the relation table
 final class MetaRelRefN {
