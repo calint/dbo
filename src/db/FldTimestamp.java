@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 public final class FldTimestamp extends DbField {
-	private Timestamp defval;
+	private Timestamp defval;// ? min max values not big enough
 
 	public FldTimestamp(Timestamp def) {
 		defval = def;
@@ -29,7 +29,8 @@ public final class FldTimestamp extends DbField {
 
 	@Override
 	void initDefaultValue(Map<DbField, Object> kvm) {
-		kvm.put(this, defval);
+		if (defval != null)
+			kvm.put(this, defval);
 	}
 
 }
