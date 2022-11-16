@@ -46,7 +46,7 @@ public final class RelAggN extends DbRelation {
 		rs.close();
 		if (found == true)
 			return;
-		
+
 		// create index User_refFiles on User_refFiles(User);
 		sb.append("create index ").append(relFld.columnName).append(" on ").append(toTableName).append('(')
 				.append(relFld.columnName).append(')');

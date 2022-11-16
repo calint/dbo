@@ -79,7 +79,7 @@ public final class Db {
 		}
 
 		// DbClasses fields are now ready for create tables
-		
+
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		// create tables
