@@ -27,6 +27,8 @@
 [ ] full text search
 [ ] check string lengths when setting varchar fields?
 [ ] check table columns vs class fields
+[ ] check index fields?
 [ ] id field to bigint?
 [ ] FldTimestamp min max too limited?
 [ ] FldTimestamp using java.sql type. ok?
+[ ] inheritance
