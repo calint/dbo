@@ -90,8 +90,6 @@ class ReqThread extends Thread {
 
 			u.setNLogins(3);
 
-			t.flush();
-
 			final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user file %");
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);

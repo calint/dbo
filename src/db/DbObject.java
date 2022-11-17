@@ -59,10 +59,10 @@ public abstract class DbObject {
 	}
 
 	final void updateDbWithoutRemovingFromDirtyList() throws Throwable {
-		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
-									// from dirty objects list
-			return;
-
+//		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
+//									// from dirty objects list
+//			return;
+//
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");

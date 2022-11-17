@@ -25,6 +25,12 @@ public final class DbTransaction {
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
+		try {
+			flush();
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 		final StringBuilder sbwhere = new StringBuilder(128);
 		if (q != null) {
@@ -77,16 +83,16 @@ public final class DbTransaction {
 	}
 
 	public void flush() throws Throwable {
-		Db.log("*** flush connection ***");
+		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		for (final DbObject o : dirtyObjects) {
 			o.updateDbWithoutRemovingFromDirtyList();
 		}
 		dirtyObjects.clear();
-		Db.log("*** done flushing connection ***");
+		Db.log("*** done flushing connection");
 	}
 
 	public void rollback() throws Throwable {
-		Db.log("*** rollback transaction ***");
+		Db.log("*** rollback transaction");
 		stmt.close();
 		con.rollback();
 	}
