@@ -54,4 +54,6 @@
 		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
 		}
+[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
+
 
