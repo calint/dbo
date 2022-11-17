@@ -58,7 +58,7 @@ public abstract class DbObject {
 //		Db.currentTransaction().dirtyObjects.remove(this);
 //	}
 
-	final void updateDbWithoutRemovingFromDirtyList() throws Throwable {
+	final void updateDb() throws Throwable {
 //		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
 //									// from dirty objects list
 //			return;

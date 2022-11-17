@@ -82,7 +82,7 @@ public final class DbTransaction {
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
-				o.updateDbWithoutRemovingFromDirtyList();
+				o.updateDb();
 			}
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
