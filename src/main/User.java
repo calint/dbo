@@ -21,6 +21,7 @@ public final class User extends DbObject {
 	public final static RelRef groupPic = new RelRef(File.class);
 	public final static RelRefN refFiles = new RelRefN(File.class);
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {
 		return getStr(name);
 	}
@@ -29,6 +30,7 @@ public final class User extends DbObject {
 		set(name, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getPasshash() {
 		return getStr(passhash);
 	}
@@ -37,6 +39,7 @@ public final class User extends DbObject {
 		set(passhash, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public int getNLogins() {
 		return getInt(nlogins);
 	}
@@ -53,10 +56,6 @@ public final class User extends DbObject {
 	public void deleteFile(int id) {
 		files.delete(this, id);
 	}
-
-//	public void deleteFile(File o) {
-//		files.delete(this, o.getId());
-//	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public int getProfilePicId() {
@@ -84,32 +83,13 @@ public final class User extends DbObject {
 		groupPic.set(this, id);
 	}
 
-//	public void setGroupPic(File o) {
-//		setGroupPic(o.getId());
-//	}
-
-//	public void removeGroupPic() {// ? same as setGroupPic(0);
-//		groupPic.remove(this);
-//	}
-
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public void addRefFile(int id) {
 		refFiles.add(this, id);
 	}
 
-//	public void addRefFile(File o) {
-//		refFiles.add(this, o.getId());
-//	}
-//
 	public void removeRefFile(int id) {
 		refFiles.remove(this, id);
 	}
 
-//	public void removeRefFile(DbObject o) {
-//		refFiles.remove(this, o.getId());
-//	}
-
-//	public List<File> getRefFiles(Query qry, Order ord, Limit lmt) {
-//		
-//	}
 }

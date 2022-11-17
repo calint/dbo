@@ -14,6 +14,7 @@ public final class File extends DbObject {
 	public final static FldTimestamp created_ts = new FldTimestamp();
 	public final static RelAgg data = new RelAgg(Data.class);
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {
 		return getStr(name);
 	}
@@ -22,6 +23,7 @@ public final class File extends DbObject {
 		set(name, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public long getSizeB() {
 		return getLong(size_B);
 	}
@@ -30,6 +32,7 @@ public final class File extends DbObject {
 		set(size_B, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Timestamp getCreatedTs() {
 		return getTimestamp(created_ts);
 	}
@@ -38,8 +41,13 @@ public final class File extends DbObject {
 		set(created_ts, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Data getData(final boolean createIfNone) {
 		return (Data) data.get(this, createIfNone);
+	}
+
+	public void deleteData() {
+		data.delete(this);
 	}
 
 }

@@ -6,6 +6,7 @@ import db.FldBlob;
 public final class Data extends DbObject {
 	public final static FldBlob data = new FldBlob();
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public byte[] getData() {
 		return getBytesArray(data);
 	}
