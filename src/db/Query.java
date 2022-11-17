@@ -102,7 +102,8 @@ public final class Query {
 			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
 				sb.append(kv.getKey()).append(" as ").append(kv.getValue()).append(", ");
 			}
-			sb.setLength(sb.length() - 2);
+			if (sb.length() > 2)
+				sb.setLength(sb.length() - 2);
 		}
 	}
 
@@ -270,5 +271,18 @@ public final class Query {
 
 	public Query or(RelRef rel) {
 		return append(OR, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+	}
+
+	@Override
+	public String toString() {
+		final TableAliasMap tam = new TableAliasMap();
+		final StringBuilder sbw = new StringBuilder(256);
+		sql_build(sbw, tam);
+		
+		final StringBuilder sbf = new StringBuilder(256);
+		tam.sql_appendSelectFromTables(sbf);
+		sbf.append(" where ");
+		sbf.append(sbw);
+		return sbf.toString();
 	}
 }

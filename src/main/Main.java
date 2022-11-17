@@ -110,6 +110,7 @@ class ReqThread extends Thread {
 			u.setNLogins(3);
 
 			final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user file %");
+//			System.out.println(qry.toString());
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
 //			final Query qry = new Query(User.class, 1).and(User.groupPic);
