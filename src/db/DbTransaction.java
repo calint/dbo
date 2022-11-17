@@ -25,11 +25,7 @@ public final class DbTransaction {
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
-		try {
-			flush();
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
+		flush(); // necessary to update db before query
 
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 		final StringBuilder sbwhere = new StringBuilder(128);
@@ -37,8 +33,8 @@ public final class DbTransaction {
 			sbwhere.append("where ");
 			q.sql_build(sbwhere, tam);
 		}
-		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("select ").append(tam.getAliasForTableName(dbcls.tableName)).append(".* from ");
 		tam.sql_appendSelectFromTables(sb);
@@ -82,11 +78,16 @@ public final class DbTransaction {
 		con.commit();
 	}
 
-	public void flush() throws Throwable {
+	void flush() {
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
-		for (final DbObject o : dirtyObjects) {
-			o.updateDbWithoutRemovingFromDirtyList();
+		try {
+			for (final DbObject o : dirtyObjects) {
+				o.updateDbWithoutRemovingFromDirtyList();
+			}
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
+
 		dirtyObjects.clear();
 		Db.log("*** done flushing connection");
 	}
