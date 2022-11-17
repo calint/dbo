@@ -51,6 +51,24 @@ public final class RelAggN extends DbRelation {
 		}
 	}
 
+	public void deleteAll(final DbObject ths) {
+		final Statement stmt = Db.currentTransaction().stmt;
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
+				.append(ths.getId());
+//		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
+//				.append(toId);
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			stmt.execute(sql);
+			// ? if object is in diry list it will make an update the will change no rows.
+			// bug?
+		} catch (final Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
 	@Override
 	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);

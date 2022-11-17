@@ -50,6 +50,19 @@ public final class RelRefN extends DbRelation {
 		}
 	}
 
+	public void removeAll(final DbObject from) {
+		final Statement stmt = Db.currentTransaction().stmt;
+		final StringBuilder sb = new StringBuilder(256);
+		rrm.sql_deleteAllFromTable(sb, from.getId());
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			stmt.execute(sql);
+		} catch (final Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
 //	public void remove(final DbObject from, final DbObject to) {
 //		remove(from, to.getId());
 //	}

@@ -40,9 +40,13 @@ final class MetaRelRefN {
 				.append(')');
 	}
 
-	void sql_deleteFromTable(StringBuilder sb, int id, int toId) {
-		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(id)
+	void sql_deleteFromTable(StringBuilder sb, int fromId, int toId) {
+		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(fromId)
 				.append(" and ").append(toColName).append('=').append(toId);
 
+	}
+
+	void sql_deleteAllFromTable(StringBuilder sb, int fromId) {
+		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(fromId);
 	}
 }
