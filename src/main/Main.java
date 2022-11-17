@@ -43,6 +43,7 @@ class ReqThread extends Thread {
 		}
 		try {
 			////////////////////////////////////////////////////////////
+//			Db.currentTransaction().cache_enabled = false;
 			User u = (User) t.create(User.class);
 			u.setName("hello 'name' name");
 
@@ -52,7 +53,7 @@ class ReqThread extends Thread {
 			f.setName("user file 1");
 			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
 			u.deleteFile(f.id()); // ? relation should check that file id belongs to object?
-
+			
 			f = (File) t.create(File.class);
 			f.setName("user file 2");
 			u.addRefFile(f.id());
@@ -67,7 +68,7 @@ class ReqThread extends Thread {
 			id = u.getProfilePicId();
 			File ff = u.getProfilePic(false);
 			u.addRefFile(f.id());
-			u.deleteProfilePic(); // ? bug! this deletes the file but it still exists in the RefN table
+			u.deleteProfilePic(); // ? bug! this deletes the file but there is orphan entry in RefN table
 			f.setName("profile pic");
 			id = u.getProfilePicId();
 			ff = u.getProfilePic(false);
@@ -78,9 +79,12 @@ class ReqThread extends Thread {
 			u.setGroupPic(f.id());
 			u.setGroupPic(0);
 			u.setGroupPic(f.id());
-			ff = u.getGroupPic(); // ? bug! without cache this returns a different instance of file with same id
+			ff = u.getGroupPic();
+			if (f != ff)
+				throw new RuntimeException("cache issue: " + f + " is not same instance as " + ff);
 			id = u.getGroupPicId();
-//			if(1==1)throw new RuntimeException();
+//			u.setGroupPic(0);
+			f.deleteFromDb(); // ? groupPicId now refers to a deleted object
 
 			Data d = (Data) t.create(Data.class);
 			d.setData(new byte[] { 0, 10, 22, 13 });

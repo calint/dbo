@@ -10,7 +10,8 @@
 [x] order
 [x]   table ref
 [x] limit
-[ ] cache
+[x] cache
+[x]   DbTransaction.cache_enabled
 [x] blob field
 [x]   mysql hex
 [ ] clob field
@@ -19,13 +20,13 @@
 [ ] float field
 [ ] double field
 [*] indexes
-[x]    RefN
-[x]    AggN
-[ ]    fields
+[x]   RefN
+[x]   AggN
+[ ]   fields
 [x] Query.LIKE
 [ ] LONGTEXT
 [ ] full text search
-[ ]    IxFullText(DbField...)
+[ ]   IxFullText(DbField...)
 [ ] Ix(DbField...)
 [ ] check string lengths when setting varchar fields?
 [ ] check Rel.set vs  DbObject?
@@ -41,9 +42,12 @@
 [ ] AggN get
 [ ] RefN get
 [ ] foreign key
-[ ]    cascade delete?
+[ ]   cascade delete?
 [ ] profiling
 [ ] import test data from csv
 [ ] create table: innodb utf8
 [ ] csv reader
 [ ] larger sample data
+[ ] class OID instead of integer
+[ ] test cases
+

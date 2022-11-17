@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -12,6 +13,38 @@ public final class DbTransaction {
 	final Connection con;
 	final Statement stmt;
 	final HashSet<DbObject> dirtyObjects = new HashSet<DbObject>();
+	final Cache cache = new Cache();
+	public boolean cache_enabled = true;
+
+	static final class Cache {
+		final HashMap<Class<? extends DbObject>, HashMap<Integer, DbObject>> clsToIdObjMap = new HashMap<Class<? extends DbObject>, HashMap<Integer, DbObject>>();
+
+		void put(final DbObject o) {
+			HashMap<Integer, DbObject> idToObjMap = clsToIdObjMap.get(o.getClass());
+			if (idToObjMap == null) {
+				idToObjMap = new HashMap<Integer, DbObject>();
+				clsToIdObjMap.put(o.getClass(), idToObjMap);
+			}
+			idToObjMap.put(o.id(), o);
+		}
+
+		DbObject get(Class<? extends DbObject> cls, int id) {
+			HashMap<Integer, DbObject> idToObjMap = clsToIdObjMap.get(cls);
+			if (idToObjMap == null)
+				return null;
+			final DbObject o = idToObjMap.get(id);
+			return o;
+		}
+
+		void remove(final DbObject o) {
+			final HashMap<Integer, DbObject> idToObjMap = clsToIdObjMap.get(o.getClass());
+			idToObjMap.remove(o.id());
+		}
+
+		void clear() {
+			clsToIdObjMap.clear();
+		}
+	}
 
 	DbTransaction(final Connection c) throws Throwable {
 		this.con = c;
@@ -22,6 +55,8 @@ public final class DbTransaction {
 		try {
 			final DbObject o = cls.getConstructor().newInstance();
 			o.createInDb();
+			if (cache_enabled)
+				cache.put(o);
 			return o;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -75,10 +110,26 @@ public final class DbTransaction {
 		try {
 			final Constructor<? extends DbObject> ctor = cls.getConstructor();
 			final ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				final DbObject o = ctor.newInstance();
-				o.readResultSet(dbcls, rs);
-				ls.add(o);
+			if (cache_enabled) {
+				while (rs.next()) {
+					final DbObject cacheObj = cache.get(cls, rs.getInt(1));// ? assumes id index
+					if (cacheObj != null) {
+						ls.add(cacheObj);
+						continue;
+					}
+					final DbObject o = ctor.newInstance();
+					o.readResultSet(dbcls, rs);
+					cache.put(o);
+					ls.add(o);
+				}
+			} else {
+				while (rs.next()) {
+					final DbObject o = ctor.newInstance();
+					o.readResultSet(dbcls, rs);
+					cache.put(o);
+					ls.add(o);
+				}
+
 			}
 		} catch (final Throwable t) {
 			throw new RuntimeException(t);
@@ -92,6 +143,8 @@ public final class DbTransaction {
 
 	public void commit() throws Throwable {
 		flush();
+		if (cache_enabled)
+			cache.clear();
 		stmt.close();
 		con.commit();
 	}
@@ -107,11 +160,14 @@ public final class DbTransaction {
 		}
 
 		dirtyObjects.clear();
+		// ? clear cache?
 		Db.log("*** done flushing connection");
 	}
 
 	public void rollback() throws Throwable {
 		Db.log("*** rollback transaction");
+		if (cache_enabled)
+			cache.clear();
 		stmt.close();
 		con.rollback();
 	}

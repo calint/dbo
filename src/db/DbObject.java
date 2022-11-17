@@ -91,6 +91,7 @@ public abstract class DbObject {
 			throw new RuntimeException(t);
 		}
 		tn.dirtyObjects.remove(this);
+		tn.cache.remove(this);
 	}
 
 	final void setId(int v) {
