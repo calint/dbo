@@ -22,7 +22,7 @@ public final class RelRef extends DbRelation {
 	public void set(final DbObject ths, final int trgId) {
 		try {
 			ths.set(relFld, trgId);
-			ths.updateDb();
+//			ths.updateDb();
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}

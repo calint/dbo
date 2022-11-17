@@ -25,7 +25,7 @@ public final class DbTransaction {
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
-		flush(); // necessary to update db before query
+		flush(); // necessary to update database before query
 
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 		final StringBuilder sbwhere = new StringBuilder(128);

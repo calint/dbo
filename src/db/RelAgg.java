@@ -36,7 +36,7 @@ public final class RelAgg extends DbRelation {
 					final DbObject o = toCls.getConstructor().newInstance();
 					o.createInDb();
 					ths.set(relFld, o.getId());
-					ths.updateDb();
+//					ths.updateDb();
 					return o;
 				} catch (Throwable t) {
 					throw new RuntimeException(t);
@@ -61,7 +61,7 @@ public final class RelAgg extends DbRelation {
 		try {
 			stmt.execute(sql);
 			ths.set(relFld, 0);
-			ths.updateDb();
+//			ths.updateDb();
 		} catch (final Throwable t) {
 			throw new RuntimeException(t);
 		}
