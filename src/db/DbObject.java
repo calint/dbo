@@ -79,15 +79,19 @@ public abstract class DbObject {
 		dirtyFields.clear();
 	}
 
-	final public void deleteFromDb() throws Throwable {
-		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
-		final String sql = sb.toString();
-		Db.log(sql);
-		final DbTransaction t = Db.currentTransaction();
-		t.stmt.execute(sql);
-		t.dirtyObjects.remove(this);
-	}
+//	final public void deleteFromDb() {
+//		final StringBuilder sb = new StringBuilder(256);
+//		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		final DbTransaction tn = Db.currentTransaction();
+//		try {
+//			tn.stmt.execute(sql);
+//		} catch (Throwable t) {
+//			throw new RuntimeException(t);
+//		}
+//		tn.dirtyObjects.remove(this);
+//	}
 
 	final void setId(int v) {
 		fieldValues.put(id, v);
@@ -159,6 +163,5 @@ public abstract class DbObject {
 	public String toString() {
 		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
 	}
-
 
 }
