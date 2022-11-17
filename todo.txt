@@ -28,7 +28,7 @@
 [ ]    IxFullText(DbField...)
 [ ] Ix(DbField...)
 [ ] check string lengths when setting varchar fields?
-[ ] check Rel.set vs  DbObject?W
+[ ] check Rel.set vs  DbObject?
 [ ] check index fields?
 [ ] id field to bigint?
 [ ] FldTimestamp min max too limited?
@@ -42,3 +42,8 @@
 [ ] RefN get
 [ ] foreign key
 [ ]    cascade delete?
+[ ] profiling
+[ ] import test data from csv
+[ ] create table: innodb utf8
+[ ] csv reader
+[ ] larger sample data
