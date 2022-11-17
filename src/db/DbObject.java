@@ -101,6 +101,11 @@ public abstract class DbObject {
 		return ((Integer) fieldValues.get(id)).intValue();
 	}
 
+	/** alias for getId() */
+	final public int id() {
+		return getId();
+	}
+
 	final public String getStr(DbField field) {
 		return (String) fieldValues.get(field);
 	}

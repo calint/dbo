@@ -55,18 +55,18 @@ class ReqThread extends Thread {
 
 			f = (File) t.create(File.class);
 			f.setName("user file 2");
-			u.addRefFile(f.getId());
+			u.addRefFile(f.id());
 
 			f = (File) t.create(File.class);
 			f.setName("user file 3");
-			u.addRefFile(f.getId());
+			u.addRefFile(f.id());
 //			u.removeRefFile(f);
 
 			f = u.getProfilePic(false);
 			f = u.getProfilePic(true);
 			id = u.getProfilePicId();
 			File ff = u.getProfilePic(false);
-			u.addRefFile(f.getId());
+			u.addRefFile(f.id());
 			u.deleteProfilePic(); // ? bug! this deletes the file but it still exists in the RefN table
 			f.setName("profile pic");
 			id = u.getProfilePicId();
@@ -75,9 +75,9 @@ class ReqThread extends Thread {
 			f = (File) t.create(File.class);
 			f.setName("a standalone file");
 			id = u.getGroupPicId();
-			u.setGroupPic(f.getId());
+			u.setGroupPic(f.id());
 			u.setGroupPic(0);
-			u.setGroupPic(f.getId());
+			u.setGroupPic(f.id());
 			ff = u.getGroupPic(); // ? bug! without cache this returns a different instance of file with same id
 			id = u.getGroupPicId();
 //			if(1==1)throw new RuntimeException();
