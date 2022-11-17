@@ -44,39 +44,53 @@ class ReqThread extends Thread {
 		try {
 			////////////////////////////////////////////////////////////
 //			Db.currentTransaction().cache_enabled = false;
-			User u = (User) t.create(User.class);
-			u.setName("hello 'name' name");
-
 			File f;
 			int id = 0;
 			List<DbObject> ls;
 
+			User u = (User) t.create(User.class);
+			u.setName("hello 'name' name");
+
 			f = u.createFile();
 			f.setName("user file 1");
 			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
-//			u.deleteFile(f.id()); // ? relation should check that file id belongs to object?
+			u.deleteFile(f.id()); // ? relation should check that file id belongs to object?
 
 			f = u.createFile();
 			f.setName("user file 11");
 			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
-			final List<File> fls = u.getFiles(null, null, null);
-			for (final File o : fls) {
-				System.out.println(o);
-			}
+
+//			final List<File> fls = u.getFiles(null, null, null);
+//			for (final File o : fls) {
+//				System.out.println(o);
+//			}
 
 			f = (File) t.create(File.class);
-			f.setName("user file 2");
+			f.setName("user refs this file");
 			u.addRefFile(f.id());
 
 			f = (File) t.create(File.class);
-			f.setName("user file 3");
+			f.setName("file 3");
 			u.addRefFile(f.id());
+
+			f = (File) t.create(File.class);
+			f.setName("stand alone file");
+			u.addRefFile(f.id());
+
+//			u.deleteFile(f.id()); // causes exception
+			
+//			ls = u.getRefFiles(new Query(File.name, Query.EQ, "user file 2"), null, null);
+//			for (final DbObject o : ls) {
+//				final File fo = (File) o;
+//				System.out.println(fo);
+//			}
+
+			f = u.getProfilePic(true);
+			f.setName("profile pic");
+
+//			u.deleteFromDb();
+
 //			u.removeRefFile(f);
-			ls = u.getRefFiles(new Query(File.name, Query.EQ, "user file 2"), null, null);
-			for (final DbObject o : ls) {
-				final File fo = (File) o;
-				System.out.println(fo);
-			}
 
 			f = u.getProfilePic(false);
 			f = u.getProfilePic(true);
@@ -100,12 +114,13 @@ class ReqThread extends Thread {
 			id = u.getGroupPicId();
 //			u.setGroupPic(0);
 			f.deleteFromDb(); // ? groupPicId now refers to a deleted object
-
-			Data d = (Data) t.create(Data.class);
-			d.setData(new byte[] { 0, 10, 22, 13 });
-
+			Data d;
+			
 			d = (Data) f.getData(true);
 			d.setData(new byte[] { 0, 1, 2, 1 });
+
+			d = (Data) t.create(Data.class);
+			d.setData(new byte[] { 0, 0xa, 0xb, 0xc });
 
 			u.setNLogins(3);
 
@@ -132,6 +147,16 @@ class ReqThread extends Thread {
 //					System.out.println(o.getId() + " " + ts);
 				System.out.println(fo);
 			}
+
+//			u.deleteFromDb();
+//			
+//			for (DbObject o : Db.currentTransaction().get(File.class, null, null, null)) {
+//				o.deleteFromDb();
+//			}
+//
+//			for (DbObject o : Db.currentTransaction().get(Data.class, null, null, null)) {
+//				o.deleteFromDb();
+//			}
 
 			////////////////////////////////////////////////////////////
 			t.commit();

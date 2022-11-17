@@ -2,7 +2,6 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.List;
 
 public final class RelAggN extends DbRelation {
@@ -42,39 +41,18 @@ public final class RelAggN extends DbRelation {
 	}
 
 	public void delete(final DbObject ths, final int toId) {
-		final Statement stmt = Db.currentTransaction().stmt;
-		final StringBuilder sb = new StringBuilder(256);
-//		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
-//				.append(ths.getId()).append(" and ").append(DbObject.id.columnName).append('=').append(toId);
-		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
-				.append(toId);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-			// ? if object is in diry list it will make an update the will change no rows.
-			// bug?
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+//		final DbObject o = get(ths, new Query(toCls, toId), null, null).get(0);
+		final DbObject o = Db.currentTransaction().get(toCls, new Query(toCls, toId), null, null).get(0);
+
+		if (!o.fieldValues.containsKey(relFld) || o.getInt(relFld) != ths.id())
+			throw new RuntimeException(ths.getClass().getName() + "[" + ths.id() + "] does not contain "
+					+ toCls.getName() + "[" + toId + "] in relation '" + this.name + "'");
+
+		o.deleteFromDb();
 	}
 
-	public void deleteAll(final DbObject ths) {
-		final Statement stmt = Db.currentTransaction().stmt;
-		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
-				.append(ths.id());
-//		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
-//				.append(toId);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-			// ? if object is in diry list it will make an update the will change no rows.
-			// bug?
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+	public void delete(final DbObject ths, final DbObject objToDelete) {
+		objToDelete.deleteFromDb();
 	}
 
 	@Override
@@ -97,4 +75,13 @@ public final class RelAggN extends DbRelation {
 				.append(relFld.columnName).append(')');
 
 	}
+
+	@Override
+	void cascadeDelete(DbObject ths) {
+		final List<DbObject> ls = get(ths, null, null, null);
+		for (final DbObject o : ls) {
+			o.deleteFromDb();
+		}
+	}
+
 }

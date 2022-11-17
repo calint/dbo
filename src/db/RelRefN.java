@@ -95,4 +95,9 @@ public final class RelRefN extends DbRelation {
 				.append(rrm.fromColName).append(')');
 	}
 
+	@Override
+	void cascadeDelete(DbObject ths) {
+		removeAll(ths);
+	}
+
 }

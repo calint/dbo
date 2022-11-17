@@ -53,13 +53,13 @@ public final class Db {
 	////////////////////////////////////////////////////////////
 	private final LinkedList<Connection> conpool = new LinkedList<Connection>();
 	private final ArrayList<DbClass> dbclasses = new ArrayList<DbClass>();
-	private final HashMap<Class<? extends DbObject>, DbClass> jclsToDbCls = new HashMap<Class<? extends DbObject>, DbClass>();
+	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
 	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<MetaRelRefN>();
 
 	public void register(Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);
-		jclsToDbCls.put(cls, dbcls);
+		clsToDbClsMap.put(cls, dbcls);
 	}
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
@@ -79,7 +79,7 @@ public final class Db {
 
 		// create allFields lists
 		for (final DbClass c : dbclasses) {
-			c.initAllFieldsList();
+			c.initAllFieldsAndRelationsLists();
 			Db.log(c.toString());
 		}
 
@@ -197,6 +197,6 @@ public final class Db {
 	}
 
 	DbClass dbClassForJavaClass(final Class<?> c) {
-		return jclsToDbCls.get(c);
+		return clsToDbClsMap.get(c);
 	}
 }

@@ -21,6 +21,9 @@ abstract class DbRelation {
 	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
 	}
 
+	void cascadeDelete(final DbObject ths) {
+	}
+
 	@Override
 	public String toString() {
 		return name;

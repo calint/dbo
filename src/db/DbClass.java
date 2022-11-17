@@ -14,6 +14,7 @@ public final class DbClass {
 	final ArrayList<DbRelation> declaredRelations = new ArrayList<DbRelation>();
 	/** all fields, including inherited */
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
+	final ArrayList<DbRelation> allRelations = new ArrayList<DbRelation>();
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
@@ -41,16 +42,19 @@ public final class DbClass {
 		}
 	}
 
-	void initAllFieldsList() {
-		initAllFieldsRec(allFields, javaClass);
+	void initAllFieldsAndRelationsLists() {
+		initAllFieldsAndRelationsListsRec(allFields, allRelations, javaClass);
 	}
 
-	private static void initAllFieldsRec(final List<DbField> ls, Class<?> cls) {
-		if (!cls.getSuperclass().equals(Object.class)) {
-			initAllFieldsRec(ls, cls.getSuperclass());
+	private static void initAllFieldsAndRelationsListsRec(final List<DbField> lsfld, final List<DbRelation> lsrel,
+			final Class<?> cls) {
+		final Class<?> scls = cls.getSuperclass();
+		if (!scls.equals(Object.class)) {
+			initAllFieldsAndRelationsListsRec(lsfld, lsrel, scls);
 		}
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
-		ls.addAll(dbcls.declaredFields);
+		lsfld.addAll(dbcls.declaredFields);
+		lsrel.addAll(dbcls.declaredRelations);
 	}
 
 	final void sql_createTable(StringBuilder sb, DatabaseMetaData dbm) throws Throwable {

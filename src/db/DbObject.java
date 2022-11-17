@@ -10,7 +10,13 @@ public abstract class DbObject {
 	public final static FldId id = new FldId();
 
 	final HashMap<DbField, Object> fieldValues = new HashMap<DbField, Object>();
-	private final HashSet<DbField> dirtyFields = new HashSet<DbField>();
+	private HashSet<DbField> dirtyFields;
+
+	private void ensureDirtyFieldsIsCreated() {
+		if (dirtyFields != null)
+			return;
+		dirtyFields = new HashSet<DbField>();
+	}
 
 	final void createInDb() throws Throwable {
 		final DbTransaction t = Db.currentTransaction();
@@ -19,13 +25,15 @@ public abstract class DbObject {
 		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass()));
 		final StringBuilder sbFields = new StringBuilder(256);
 		final StringBuilder sbValues = new StringBuilder(256);
-		for (final DbField f : dirtyFields) {
-			f.sql_columnName(sbFields);
-			sbFields.append(',');
-			f.sql_updateValue(sbValues, this);
-			sbValues.append(',');
+		if (dirtyFields != null) {
+			for (final DbField f : dirtyFields) {
+				f.sql_columnName(sbFields);
+				sbFields.append(',');
+				f.sql_updateValue(sbValues, this);
+				sbValues.append(',');
+			}
+			dirtyFields.clear();
 		}
-		dirtyFields.clear();
 		if (sbFields.length() > 0) {
 			sbSql.append('(');
 			sbFields.setLength(sbFields.length() - 1);
@@ -48,21 +56,12 @@ public abstract class DbObject {
 
 		// init default values
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
-		for (final DbField f : dbcls.declaredFields) {
+		for (final DbField f : dbcls.allFields) {// ? allFields
 			f.initDefaultValue(fieldValues);
 		}
 	}
 
-//	final public void updateDb() throws Throwable {
-//		updateDbWithoutRemovingFromDirtyList();
-//		Db.currentTransaction().dirtyObjects.remove(this);
-//	}
-
 	final void updateDb() throws Throwable {
-//		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
-//									// from dirty objects list
-//			return;
-//
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
@@ -80,8 +79,12 @@ public abstract class DbObject {
 	}
 
 	final public void deleteFromDb() {
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
+		for (final DbRelation r : dbcls.allRelations) {
+			r.cascadeDelete(this);
+		}
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(id());
+		sb.append("delete from ").append(dbcls.tableName).append(" where id=").append(id());
 		final String sql = sb.toString();
 		Db.log(sql);
 		final DbTransaction tn = Db.currentTransaction();
@@ -129,30 +132,35 @@ public abstract class DbObject {
 
 	final public void set(DbField field, String value) {
 		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
 	final public void set(DbField field, int value) {
 		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
 	final public void set(DbField field, long value) {
 		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
 	final public void set(DbField field, Timestamp value) {
 		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
 	final public void set(DbField field, byte[] value) {
 		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}

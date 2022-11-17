@@ -1,8 +1,5 @@
 package db;
 
-import java.sql.Statement;
-import java.util.List;
-
 public final class RelAgg extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
@@ -36,7 +33,6 @@ public final class RelAgg extends DbRelation {
 					final DbObject o = toCls.getConstructor().newInstance();
 					o.createInDb();
 					ths.set(relFld, o.id());
-//					ths.updateDb();
 					return o;
 				} catch (Throwable t) {
 					throw new RuntimeException(t);
@@ -44,27 +40,23 @@ public final class RelAgg extends DbRelation {
 			}
 			return null;
 		}
-		final List<? extends DbObject> ls = Db.currentTransaction().get(toCls, new Query(toCls, id), null, null);
-		if (ls.isEmpty())
-			throw new RuntimeException("didnt't expect empty result for " + toCls.getName() + " id=" + id);
-		return ls.get(0);
+		return Db.currentTransaction().get(toCls, new Query(toCls, id), null, null).get(0);
 	}
 
 	public void delete(final DbObject ths) {
-		final Statement stmt = Db.currentTransaction().stmt;
-		final StringBuilder sb = new StringBuilder(256);
-		final int toId = ths.getInt(relFld);
-		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
-				.append(toId);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-			ths.set(relFld, 0);
-//			ths.updateDb();
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+		final DbObject o = get(ths, false);
+		if (o == null)
+			return;
+		o.deleteFromDb();
+		ths.set(relFld, 0);
+	}
+
+	@Override
+	void cascadeDelete(DbObject ths) {
+		final DbObject o = get(ths, false);
+		if (o == null)
+			return;
+		o.deleteFromDb();
 	}
 
 }
