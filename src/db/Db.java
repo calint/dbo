@@ -13,7 +13,11 @@ import java.util.LinkedList;
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
+	static boolean log_enable = true;
+
 	static void log(String s) {
+		if (!log_enable)
+			return;
 		System.out.println(s);
 	}
 
@@ -144,14 +148,13 @@ public final class Db {
 				Db.log(sb.toString());
 			}
 			rscols.close();
-			
+
 			final ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
 			while (rsix.next()) {
-				System.out.println(
-						"  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
+				Db.log("  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
 			}
 			rsix.close();
-			System.out.println(" ");
+			Db.log("");
 		}
 		rstbls.close();
 
