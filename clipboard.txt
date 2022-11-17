@@ -61,6 +61,7 @@ show indexes from File;
 create index User_files on File(User_files);
 alter table File drop index User_files;
 
+show create table User;
 
 create index User_refFiles on User_refFiles(User);
 

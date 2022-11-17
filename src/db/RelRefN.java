@@ -23,7 +23,7 @@ public final class RelRefN extends DbRelation {
 	public void add(final DbObject from, final int toId) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		rrm.sql_addToTable(sb, from.getId(), toId);
+		rrm.sql_addToTable(sb, from.id(), toId);
 		final String sql = sb.toString();
 		Db.log(sql);
 		try {
@@ -40,7 +40,7 @@ public final class RelRefN extends DbRelation {
 	public void remove(final DbObject from, final int toId) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		rrm.sql_deleteFromTable(sb, from.getId(), toId);
+		rrm.sql_deleteFromTable(sb, from.id(), toId);
 		final String sql = sb.toString();
 		Db.log(sql);
 		try {
@@ -53,7 +53,7 @@ public final class RelRefN extends DbRelation {
 	public void removeAll(final DbObject from) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		rrm.sql_deleteAllFromTable(sb, from.getId());
+		rrm.sql_deleteAllFromTable(sb, from.id());
 		final String sql = sb.toString();
 		Db.log(sql);
 		try {

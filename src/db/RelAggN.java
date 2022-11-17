@@ -25,7 +25,7 @@ public final class RelAggN extends DbRelation {
 	public DbObject create(final DbObject ths) {
 		try {
 			final DbObject o = toCls.getConstructor().newInstance();
-			o.set(relFld, ths.getId());
+			o.set(relFld, ths.id());
 			o.createInDb();
 			return o;
 		} catch (Throwable t) {
@@ -55,7 +55,7 @@ public final class RelAggN extends DbRelation {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
-				.append(ths.getId());
+				.append(ths.id());
 //		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
 //				.append(toId);
 		final String sql = sb.toString();

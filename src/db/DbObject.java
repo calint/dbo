@@ -72,7 +72,7 @@ public abstract class DbObject {
 			sb.append(',');
 		}
 		sb.setLength(sb.length() - 1);
-		sb.append(" where id=").append(getId());
+		sb.append(" where id=").append(id());
 		final String sql = sb.toString();
 		Db.log(sql);
 		t.stmt.execute(sql);
@@ -81,7 +81,7 @@ public abstract class DbObject {
 
 	final public void deleteFromDb() {
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(getId());
+		sb.append("delete from ").append(Db.tableNameForJavaClass(getClass())).append(" where id=").append(id());
 		final String sql = sb.toString();
 		Db.log(sql);
 		final DbTransaction tn = Db.currentTransaction();
@@ -97,13 +97,13 @@ public abstract class DbObject {
 		fieldValues.put(id, v);
 	}
 
-	final public int getId() {
+	/** alias for getId() */
+	final public int id() {
 		return ((Integer) fieldValues.get(id)).intValue();
 	}
 
-	/** alias for getId() */
-	final public int id() {
-		return getId();
+	final public int getId() {
+		return id();
 	}
 
 	final public String getStr(DbField field) {

@@ -35,7 +35,7 @@ public final class RelAgg extends DbRelation {
 				try {
 					final DbObject o = toCls.getConstructor().newInstance();
 					o.createInDb();
-					ths.set(relFld, o.getId());
+					ths.set(relFld, o.id());
 //					ths.updateDb();
 					return o;
 				} catch (Throwable t) {
