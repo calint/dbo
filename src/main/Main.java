@@ -51,7 +51,7 @@ class ReqThread extends Thread {
 			f = u.createFile();
 			f.setName("user file 1");
 			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
-			u.deleteFile(f.getId());
+			u.deleteFile(f.getId()); // ? relation should check that file id belongs to object?
 
 			f = (File) t.create(File.class);
 			f.setName("user file 2");

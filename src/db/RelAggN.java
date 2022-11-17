@@ -36,8 +36,10 @@ public final class RelAggN extends DbRelation {
 	public void delete(final DbObject ths, final int toId) {
 		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
-				.append(ths.getId()).append(" and ").append(DbObject.id.columnName).append('=').append(toId);
+//		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
+//				.append(ths.getId()).append(" and ").append(DbObject.id.columnName).append('=').append(toId);
+		sb.append("delete from ").append(toTableName).append(" where ").append(DbObject.id.columnName).append('=')
+				.append(toId);
 		final String sql = sb.toString();
 		Db.log(sql);
 		try {
