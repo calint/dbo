@@ -77,14 +77,14 @@ public final class DbTransaction {
 //		dirtyObjects.remove(o);
 //	}
 
-	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
+	public List<DbObject> get(final Class<? extends DbObject> cls, final Query qry, final Order ord, final Limit lmt) {
 		flush(); // necessary to update database before query
 
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 		final StringBuilder sbwhere = new StringBuilder(128);
-		if (q != null) {
+		if (qry != null) {
 			sbwhere.append("where ");
-			q.sql_build(sbwhere, tam);
+			qry.sql_build(sbwhere, tam);
 		}
 
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);

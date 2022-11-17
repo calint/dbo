@@ -1,11 +1,15 @@
 package main;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import db.DbObject;
 import db.FldInt;
 import db.FldString;
 import db.FldTimestamp;
+import db.Limit;
+import db.Order;
+import db.Query;
 import db.RelAgg;
 import db.RelAggN;
 import db.RelRef;
@@ -53,6 +57,15 @@ public final class User extends DbObject {
 		return (File) files.create(this);
 	}
 
+//	public List<DbObject> getFiles(final Query qry, final Order ord, final Limit lmt) {
+//		return files.get(this, qry, ord, lmt);
+//	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })// ? uggly
+	public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
+		return (List<File>) (List) files.get(this, qry, ord, lmt);
+	}
+
 	public void deleteFile(int id) {
 		files.delete(this, id);
 	}
@@ -86,6 +99,10 @@ public final class User extends DbObject {
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public void addRefFile(int id) {
 		refFiles.add(this, id);
+	}
+
+	public List<DbObject> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
+		return refFiles.get(this, qry, ord, lmt);
 	}
 
 	public void removeRefFile(int id) {

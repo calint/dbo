@@ -3,6 +3,7 @@ package db;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 public final class RelAggN extends DbRelation {
 	final Class<? extends DbObject> toCls;
@@ -31,6 +32,13 @@ public final class RelAggN extends DbRelation {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+
+	public List<DbObject> get(final DbObject ths, final Query qry, final Order ord, final Limit lmt) {
+		final Query q = new Query(ths.getClass(), ths.id()).and(this);
+		if (qry != null)
+			q.and(qry);
+		return Db.currentTransaction().get(toCls, q, ord, lmt);
 	}
 
 	public void delete(final DbObject ths, final int toId) {

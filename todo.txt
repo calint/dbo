@@ -39,8 +39,8 @@
 [x] AggN delete object
 [x] Agg delete object
 [x] Ref remove object
-[ ] AggN get
-[ ] RefN get
+[x] AggN get
+[x] RefN get
 [ ] foreign key
 [ ]   cascade delete?
 [ ] profiling
@@ -50,4 +50,8 @@
 [ ] larger sample data
 [ ] class OID instead of integer
 [ ] test cases
+[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? uggly
+		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
+			return (List<File>) (List) files.get(this, qry, ord, lmt);
+		}
 
