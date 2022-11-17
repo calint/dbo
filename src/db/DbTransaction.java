@@ -28,19 +28,19 @@ public final class DbTransaction {
 		}
 	}
 
-	public void delete(final DbObject o) {
-		final StringBuilder sb = new StringBuilder(256);
-		sb.append("delete from ").append(Db.tableNameForJavaClass(o.getClass())).append(" where id=").append(o.getId());
-		final String sql = sb.toString();
-		Db.log(sql);
-		final DbTransaction tn = Db.currentTransaction();
-		try {
-			tn.stmt.execute(sql);
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
-		dirtyObjects.remove(o);
-	}
+//	public void delete(final DbObject o) {
+//		final StringBuilder sb = new StringBuilder(256);
+//		sb.append("delete from ").append(Db.tableNameForJavaClass(o.getClass())).append(" where id=").append(o.getId());
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		final DbTransaction tn = Db.currentTransaction();
+//		try {
+//			tn.stmt.execute(sql);
+//		} catch (Throwable t) {
+//			throw new RuntimeException(t);
+//		}
+//		dirtyObjects.remove(o);
+//	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query q, final Order ord, final Limit lmt) {
 		flush(); // necessary to update database before query
