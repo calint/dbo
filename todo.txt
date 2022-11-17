@@ -14,7 +14,10 @@
 [x]   DbTransaction.cache_enabled
 [x] blob field
 [x]   mysql hex
-[ ] clob field
+[ ] clob field LONGTEXT
+[ ] full text search
+[ ]   IxFullText(DbField...)
+[ ] Ix(DbField...)
 [x] datetime field
 [ ] bool field
 [ ] float field
@@ -24,12 +27,8 @@
 [x]   AggN
 [ ]   fields
 [x] Query.LIKE
-[ ] LONGTEXT
-[ ] full text search
-[ ]   IxFullText(DbField...)
-[ ] Ix(DbField...)
 [ ] check string lengths when setting varchar fields?
-[ ] check Rel.set vs  DbObject?
+[ ] check Rel.set vs DbObject?
 [ ] check index fields?
 [ ] id field to bigint?
 [ ] FldTimestamp min max too limited?
@@ -41,7 +40,7 @@
 [x] Ref remove object
 [x] AggN get
 [x] RefN get
-[ ] foreign key
+[ ] foreign key?
 [ ]   cascade delete?
 [ ] profiling
 [ ] import test data from csv
@@ -55,5 +54,4 @@
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
 		}
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
-
-
+[ ] removing referenced DbObject fix

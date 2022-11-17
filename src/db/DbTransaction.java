@@ -63,22 +63,12 @@ public final class DbTransaction {
 		}
 	}
 
-//	public void delete(final DbObject o) {
-//		final StringBuilder sb = new StringBuilder(256);
-//		sb.append("delete from ").append(Db.tableNameForJavaClass(o.getClass())).append(" where id=").append(o.getId());
-//		final String sql = sb.toString();
-//		Db.log(sql);
-//		final DbTransaction tn = Db.currentTransaction();
-//		try {
-//			tn.stmt.execute(sql);
-//		} catch (Throwable t) {
-//			throw new RuntimeException(t);
-//		}
-//		dirtyObjects.remove(o);
-//	}
+	public void delete(final DbObject o) {
+		o.deleteFromDb();
+	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query qry, final Order ord, final Limit lmt) {
-		flush(); // necessary to update database before query
+		flush(); // update database before query
 
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 		final StringBuilder sbwhere = new StringBuilder(128);
@@ -126,10 +116,8 @@ public final class DbTransaction {
 				while (rs.next()) {
 					final DbObject o = ctor.newInstance();
 					o.readResultSet(dbcls, rs);
-					cache.put(o);
 					ls.add(o);
 				}
-
 			}
 		} catch (final Throwable t) {
 			throw new RuntimeException(t);

@@ -35,9 +35,9 @@ public class Main {
 class ReqThread extends Thread {
 	@Override
 	public void run() {
-		DbTransaction t;
+		DbTransaction tn;
 		try {
-			t = Db.initCurrentTransaction();
+			tn = Db.initCurrentTransaction();
 		} catch (Throwable t1) {
 			throw new RuntimeException(t1);
 		}
@@ -48,7 +48,7 @@ class ReqThread extends Thread {
 			int id = 0;
 			List<DbObject> ls;
 
-			User u = (User) t.create(User.class);
+			User u = (User) tn.create(User.class);
 			u.setName("hello 'name' name");
 
 			f = u.createFile();
@@ -65,15 +65,15 @@ class ReqThread extends Thread {
 //				System.out.println(o);
 //			}
 
-			f = (File) t.create(File.class);
+			f = (File) tn.create(File.class);
 			f.setName("user refs this file");
 			u.addRefFile(f.id());
 
-			f = (File) t.create(File.class);
+			f = (File) tn.create(File.class);
 			f.setName("file 3");
 			u.addRefFile(f.id());
 
-			f = (File) t.create(File.class);
+			f = (File) tn.create(File.class);
 			f.setName("stand alone file");
 			u.addRefFile(f.id());
 
@@ -102,7 +102,7 @@ class ReqThread extends Thread {
 			id = u.getProfilePicId();
 			ff = u.getProfilePic(false);
 
-			f = (File) t.create(File.class);
+			f = (File) tn.create(File.class);
 			f.setName("a standalone file");
 			id = u.getGroupPicId();
 			u.setGroupPic(f.id());
@@ -113,13 +113,15 @@ class ReqThread extends Thread {
 				throw new RuntimeException("cache issue: " + f + " is not same instance as " + ff);
 			id = u.getGroupPicId();
 //			u.setGroupPic(0);
-			f.deleteFromDb(); // ? groupPicId now refers to a deleted object
+			tn.delete(f);
+//			f.deleteFromDb(); // ? groupPicId now refers to a deleted object
+			
 			Data d;
 			
 			d = (Data) f.getData(true);
 			d.setData(new byte[] { 0, 1, 2, 1 });
 
-			d = (Data) t.create(Data.class);
+			d = (Data) tn.create(Data.class);
 			d.setData(new byte[] { 0, 0xa, 0xb, 0xc });
 
 			u.setNLogins(3);
@@ -138,7 +140,7 @@ class ReqThread extends Thread {
 
 			final Limit lmt = null;
 //			final Limit lmt = new Limit(0, 2);
-			ls = t.get(File.class, qry, ord, lmt);
+			ls = tn.get(File.class, qry, ord, lmt);
 //			final List<DbObject> ls = t.get(File.class, null, null, null);
 			for (final DbObject o : ls) {
 				final File fo = (File) o;
@@ -159,10 +161,10 @@ class ReqThread extends Thread {
 //			}
 
 			////////////////////////////////////////////////////////////
-			t.commit();
+			tn.commit();
 		} catch (Throwable t1) {
 			try {
-				t.rollback();
+				tn.rollback();
 			} catch (Throwable t2) {
 				t2.printStackTrace();
 			}

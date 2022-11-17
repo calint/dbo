@@ -78,7 +78,7 @@ public abstract class DbObject {
 		dirtyFields.clear();
 	}
 
-	final public void deleteFromDb() {
+	final void deleteFromDb() {
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
 		for (final DbRelation r : dbcls.allRelations) {
 			r.cascadeDelete(this);
