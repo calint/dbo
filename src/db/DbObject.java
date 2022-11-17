@@ -9,7 +9,7 @@ import java.util.HashSet;
 public abstract class DbObject {
 	public final static FldId id = new FldId();
 
-	private final HashMap<DbField, Object> fieldValues = new HashMap<DbField, Object>();
+	final HashMap<DbField, Object> fieldValues = new HashMap<DbField, Object>();
 	private final HashSet<DbField> dirtyFields = new HashSet<DbField>();
 
 	final void createInDb() throws Throwable {
@@ -54,6 +54,11 @@ public abstract class DbObject {
 	}
 
 	final public void updateDb() throws Throwable {
+		updateDbWithoutRemovingFromDirtyList();
+		Db.currentTransaction().dirtyObjects.remove(this);
+	}
+
+	final void updateDbWithoutRemovingFromDirtyList() throws Throwable {
 		if (dirtyFields.isEmpty()) // ? fishy, when relation field changes object updates db but is not removed
 									// from dirty objects list
 			return;
@@ -142,11 +147,7 @@ public abstract class DbObject {
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	public String toString() {
-		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
-	}
-
-	void readResultSet(DbClass cls, ResultSet rs) throws Throwable {
+	final void readResultSet(DbClass cls, ResultSet rs) throws Throwable {
 		int i = 1;
 		for (final DbField f : cls.allFields) {
 			final Object v = rs.getObject(i);
@@ -154,5 +155,10 @@ public abstract class DbObject {
 			i++;
 		}
 	}
+
+	public String toString() {
+		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
+	}
+
 
 }

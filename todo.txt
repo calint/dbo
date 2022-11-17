@@ -32,3 +32,8 @@
 [ ] FldTimestamp min max too limited?
 [ ] FldTimestamp using java.sql type. ok?
 [ ] inheritance
+[x] RefN remove object
+[x] AggN delete object
+[x] Agg delete object
+[x] Ref remove object
+

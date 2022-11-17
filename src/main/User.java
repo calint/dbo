@@ -45,25 +45,69 @@ public final class User extends DbObject {
 		set(nlogins, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public File createFile() {
 		return (File) files.create(this);
 	}
 
-	public File createProfilePic() {
-		return (File) profilePic.create(this);
+	public void deleteFile(int id) {
+		files.delete(this, id);
 	}
 
-	public void setGroupPic(File o) {
-		groupPic.set(this, o);
+//	public void deleteFile(File o) {
+//		files.delete(this, o.getId());
+//	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public int getProfilePicId() {
+		return profilePic.getId(this);
 	}
 
-	public void addRefFile(File o) {
-		refFiles.add(this, o.getId());
+	public File getProfilePic(final boolean createIfNone) {
+		return (File) profilePic.get(this, createIfNone);
 	}
 
+	public void deleteProfilePic() {
+		profilePic.delete(this);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public int getGroupPicId() {
+		return groupPic.getId(this);
+	}
+
+	public File getGroupPic() {
+		return (File) groupPic.get(this);
+	}
+
+	public void setGroupPic(int id) {
+		groupPic.set(this, id);
+	}
+
+//	public void setGroupPic(File o) {
+//		setGroupPic(o.getId());
+//	}
+
+//	public void removeGroupPic() {// ? same as setGroupPic(0);
+//		groupPic.remove(this);
+//	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public void addRefFile(int id) {
 		refFiles.add(this, id);
 	}
+
+//	public void addRefFile(File o) {
+//		refFiles.add(this, o.getId());
+//	}
+//
+	public void removeRefFile(int id) {
+		refFiles.remove(this, id);
+	}
+
+//	public void removeRefFile(DbObject o) {
+//		refFiles.remove(this, o.getId());
+//	}
 
 //	public List<File> getRefFiles(Query qry, Order ord, Limit lmt) {
 //		

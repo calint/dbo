@@ -38,8 +38,8 @@ public final class File extends DbObject {
 		set(created_ts, v);
 	}
 
-	public Data createData() {
-		return (Data) data.create(this);
+	public Data getData(final boolean createIfNone) {
+		return (Data) data.get(this, createIfNone);
 	}
 
 }

@@ -37,6 +37,12 @@ final class MetaRelRefN {
 
 	void sql_addToTable(final StringBuilder sb, final int fromId, final int toId) {
 		sb.append("insert into ").append(tableName).append(" values(").append(fromId).append(',').append(toId)
-				.append(')').toString();
+				.append(')');
+	}
+
+	void sql_deleteFromTable(StringBuilder sb, int id, int toId) {
+		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(id)
+				.append(" and ").append(toColName).append('=').append(toId);
+
 	}
 }

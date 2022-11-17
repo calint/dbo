@@ -45,34 +45,50 @@ class ReqThread extends Thread {
 			////////////////////////////////////////////////////////////
 			User u = (User) t.create(User.class);
 			u.setName("hello 'name' name");
-			u.setNLogins(3);
 
-			File f = u.createFile();
+			File f;
+			int id = 0;
+			f = u.createFile();
 			f.setName("user file 1");
 			f.setCreatedTs(Timestamp.valueOf("2022-11-14 02:27:12"));
+			u.deleteFile(f.getId());
 
-			f = u.createFile();
+			f = (File) t.create(File.class);
 			f.setName("user file 2");
 			u.addRefFile(f.getId());
 
-			f = u.createFile();
+			f = (File) t.create(File.class);
 			f.setName("user file 3");
-			u.addRefFile(f);
+			u.addRefFile(f.getId());
+//			u.removeRefFile(f);
 
-			f = u.createProfilePic();
+			f = u.getProfilePic(false);
+			f = u.getProfilePic(true);
+			id = u.getProfilePicId();
+			File ff = u.getProfilePic(false);
+			u.addRefFile(f.getId());
+			u.deleteProfilePic(); // ? bug! this deletes the file but it still exists in the RefN table
 			f.setName("profile pic");
-			u.addRefFile(f);
+			id = u.getProfilePicId();
+			ff = u.getProfilePic(false);
 
 			f = (File) t.create(File.class);
 			f.setName("a standalone file");
-			u.setGroupPic(f);
+			id = u.getGroupPicId();
+			u.setGroupPic(f.getId());
+			u.setGroupPic(0);
+			u.setGroupPic(f.getId());
+			ff = u.getGroupPic(); // ? bug! without cache this returns a different instance of file with same id
+			id = u.getGroupPicId();
 //			if(1==1)throw new RuntimeException();
 
 			Data d = (Data) t.create(Data.class);
 			d.setData(new byte[] { 0, 10, 22, 13 });
 
-			d = (Data) f.createData();
+			d = (Data) f.getData(true);
 			d.setData(new byte[] { 0, 1, 2, 1 });
+
+			u.setNLogins(3);
 
 			t.flush();
 

@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public final class RelAggN extends DbRelation {
 	final Class<? extends DbObject> toCls;
@@ -28,6 +29,22 @@ public final class RelAggN extends DbRelation {
 			o.createInDb();
 			return o;
 		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
+	public void delete(final DbObject ths, final int toId) {
+		final Statement stmt = Db.currentTransaction().stmt;
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("delete from ").append(toTableName).append(" where ").append(relFld.columnName).append('=')
+				.append(ths.getId()).append(" and ").append(DbObject.id.columnName).append('=').append(toId);
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			stmt.execute(sql);
+			// ? if object is in diry list it will make an update the will change no rows.
+			// bug?
+		} catch (final Throwable t) {
 			throw new RuntimeException(t);
 		}
 	}

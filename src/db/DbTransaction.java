@@ -79,7 +79,7 @@ public final class DbTransaction {
 	public void flush() throws Throwable {
 		Db.log("*** flush connection ***");
 		for (final DbObject o : dirtyObjects) {
-			o.updateDb();
+			o.updateDbWithoutRemovingFromDirtyList();
 		}
 		dirtyObjects.clear();
 		Db.log("*** done flushing connection ***");
