@@ -79,4 +79,5 @@ explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id
 create index name on File (name);
 
 
+drop table User;drop table File;drop table Data;drop table User_refFiles;drop table Book;
 

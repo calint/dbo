@@ -131,6 +131,11 @@ public final class DbTransaction {
 
 	public void commit() throws Throwable {
 		flush();
+		con.commit();
+	}
+
+	public void finishTransaction() throws Throwable {
+		flush();
 		if (cache_enabled)
 			cache.clear();
 		stmt.close();
@@ -152,12 +157,16 @@ public final class DbTransaction {
 		Db.log("*** done flushing connection");
 	}
 
-	public void rollback() throws Throwable {
+	public void rollback() {
 		Db.log("*** rollback transaction");
 		if (cache_enabled)
 			cache.clear();
-		stmt.close();
-		con.rollback();
+		try {
+			stmt.close();
+			con.rollback();
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 
 	public String toString() {

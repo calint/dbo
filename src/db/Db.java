@@ -1,5 +1,6 @@
 package db;
 
+import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -13,7 +14,7 @@ import java.util.LinkedList;
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
-	static boolean log_enable = true;
+	public static boolean log_enable = true;
 
 	static void log(String s) {
 		if (!log_enable)
@@ -21,17 +22,23 @@ public final class Db {
 		System.out.println(s);
 	}
 
-	public static DbTransaction initCurrentTransaction() throws Throwable {
+	public static DbTransaction initCurrentTransaction() {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)// ? fix
 			throw new RuntimeException("connection pool empty");// ?
-		final DbTransaction t = new DbTransaction(c);
-		tn.set(t);
-		return t;
+		try {
+			final DbTransaction t = new DbTransaction(c);
+			tn.set(t);
+			return t;
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void deinitCurrentTransaction() {
-		inst.conpool.add(tn.get().con);
+		DbTransaction t = tn.get();
+//		t.stmt.close();
+		inst.conpool.add(t.con);
 		tn.remove();
 	}
 
@@ -158,11 +165,11 @@ public final class Db {
 		}
 		rstbls.close();
 
-//		final ResultSet rs3 = stmt.executeQuery("select * from Data");
+//		final ResultSet rs3 = stmt.executeQuery("select * from Book");
 //		while (rs3.next()) {
-//			Object o1 = rs3.getObject(2);
+//			Object o1 = rs3.getObject(3);
 //			System.out.println(o1 == null ? "null" : o1.getClass().getName());
-//			InputStream o2 = rs3.getBinaryStream(2);
+//			InputStream o2 = rs3.getBinaryStream(3);
 //			System.out.println(o2 == null ? "null" : o2.getClass().getName());
 //		}
 //		rs3.close();
