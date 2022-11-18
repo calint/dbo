@@ -55,3 +55,5 @@
 		}
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
 [ ] removing referenced DbObject fix
+[ ] more escape string in FldString, FldClob
+
