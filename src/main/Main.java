@@ -39,7 +39,7 @@ class ReqThread extends Thread {
 		try {
 			////////////////////////////////////////////////////////////
 			// import batch, disable cache
-			Db.currentTransaction().cache_enabled = false;
+//			Db.currentTransaction().cache_enabled = false;
 //			Db.log_enable = false;
 
 			int i = 0;

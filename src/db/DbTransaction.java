@@ -102,6 +102,8 @@ public final class DbTransaction {
 			final ResultSet rs = stmt.executeQuery(sql);
 			if (cache_enabled) {
 				while (rs.next()) {
+//					final Integer id = (Integer) rs.getObject(1);// ? assumes id index, slower
+//					final DbObject cacheObj = cache.get(cls, id.intValue());
 					final DbObject cacheObj = cache.get(cls, rs.getInt(1));// ? assumes id index
 					if (cacheObj != null) {
 						ls.add(cacheObj);

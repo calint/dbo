@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+/** reads CSV file. note: it does not handle empty trailing lines */
 public final class CsvReader {
 	private char columnSeparator = ',';
 	private char stringDelim = '"';
