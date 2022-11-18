@@ -34,7 +34,7 @@ show variables like 'max_allowed_packet';
 mysql --max_allowed_packet=32M
 SET GLOBAL max_allowed_packet=524288000;
 
-
+# config
 [mysqld]
 max_allowed_packet=128M
 
@@ -42,11 +42,6 @@ max_allowed_packet=128M
 # display table columns
 desc File;
 SHOW FULL COLUMNS FROM File;
-
-
-
-
-
 
 create table Data (id int auto_increment primary key, data longblob);
 insert into Data (data) values (0x19c0300dc90e7cedf64703ed8ae8683b);
@@ -170,3 +165,8 @@ public String MysqlRealScapeString(String str){
 sed -n 41215p < books_data.csv
 awk 'NR==5' file
 head -n $line file | tail -1
+
+
+explain select count(*) from Book, DataText where Book.data=DataText.id;
+
+
