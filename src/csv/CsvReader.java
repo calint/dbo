@@ -8,38 +8,39 @@ import java.util.List;
 
 public final class CsvReader {
 	private char columnSeparator = ',';
-	private char stringMarker = '"';
+	private char stringDelim = '"';
 	private BufferedReader reader;
 
 	public CsvReader(Reader reader) {
-		this(reader, ',');
+		this(reader, ',', '"');
 	}
 
-	public CsvReader(Reader reader, char columnSeparator) {
+	public CsvReader(Reader reader, char columnSeparator, char stringDelim) {
 		this.reader = new BufferedReader(reader);
 		this.columnSeparator = columnSeparator;
+		this.stringDelim = stringDelim;
 	}
 
 	public List<String> nextRecord() throws IOException {
 		final ArrayList<String> ls = new ArrayList<String>();
+		final StringBuilder sb = new StringBuilder();
 		boolean inString = false;
-		StringBuilder sb = new StringBuilder();
 		while (true) {
 			final int chi = reader.read();
 			if (chi == -1) {
 				if (ls.isEmpty())
 					return null;
-				throw new RuntimeException("unexpected end of stream");
+				throw new RuntimeException("unexpected end of stream");// ? break? return ls?
 			}
 			final char ch = (char) chi;
 			if (inString) {
-				if (ch == stringMarker) {// example ... "the quote ""hello"" ", ...
-					reader.mark(2);
+				if (ch == stringDelim) {// example ... "the quote ""hello"" ", ...
+					reader.mark(2); // ? probably 1
 					final int nxtChr = reader.read();
 					if (nxtChr == -1)
 						throw new RuntimeException("unexpected end of stream");
-					if ((char) nxtChr == stringMarker) {
-						sb.append(stringMarker);
+					if ((char) nxtChr == stringDelim) {
+						sb.append(stringDelim);
 						continue;
 					}
 					inString = false;
@@ -54,7 +55,7 @@ public final class CsvReader {
 				sb.setLength(0);
 				continue;
 			}
-			if (ch == stringMarker) {
+			if (ch == stringDelim) {
 				inString = true;
 				continue;
 			}

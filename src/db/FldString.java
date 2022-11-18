@@ -28,20 +28,28 @@ public final class FldString extends DbField {
 
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append('\'').append(o.getStr(this).replace("'", "''")).append('\'');
+		sb.append('\'');
+		escapeString(sb, o.getStr(this));
+		sb.append('\'');
 	}
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
 		sb.append(columnName).append(" varchar(").append(size).append(")");
 		if (defval != null) {
-			sb.append(" default '").append(defval.replace("'", "''")).append("'");
+			sb.append(" default '");
+			escapeString(sb, defval);
+			sb.append("'");
 		}
 	}
 
 	@Override
 	void initDefaultValue(Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
+	}
+
+	private static void escapeString(final StringBuilder sb, final String s) {
+		sb.append(s.replace("'", "''").replace("\\", "\\\\")); // ? make better escape
 	}
 
 }

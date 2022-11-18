@@ -1,6 +1,5 @@
 package db;
 
-import java.io.InputStream;
 import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

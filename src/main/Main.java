@@ -5,6 +5,7 @@ import java.util.List;
 
 import csv.CsvReader;
 import db.Db;
+import db.DbObject;
 import db.DbTransaction;
 
 public class Main {
@@ -14,6 +15,7 @@ public class Main {
 		Db.instance().register(File.class);
 		Db.instance().register(Data.class);
 		Db.instance().register(Book.class);
+		Db.instance().register(Game.class);
 		Db.instance().init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 
 		Thread t1 = new ReqThread();
@@ -21,7 +23,7 @@ public class Main {
 //		Thread t3=new ReqThread();
 		t1.start();
 //		t2.start();
-//		t3.start();
+//		t3.start(); 
 		t1.join();
 //		t2.join();
 //		t3.join();
@@ -37,27 +39,18 @@ class ReqThread extends Thread {
 		try {
 			////////////////////////////////////////////////////////////
 			// import batch, disable cache
-//			Db.currentTransaction().cache_enabled = false;
+			Db.currentTransaction().cache_enabled = false;
 //			Db.log_enable = false;
 
-			final FileReader in=new FileReader(new java.io.File("/home/c/Downloads/sample-books.csv"));
-			final CsvReader csv = new CsvReader(in);
-			List<String> ls = csv.nextRecord();// read headers
-//			System.out.println(ls);
-//			int i = 0;
+			int i = 0;
 			while (true) {
-				ls = csv.nextRecord();
-				if (ls == null)
+				List<DbObject> ls = tn.get(Game.class, null, null, null);
+				System.out.println(ls.size());
+				if (i++ % 100 == 0)
+					System.out.println(i);
+				if (i == 1000)
 					break;
-//				System.out.println(ls);
-				Book book = (Book) tn.create(Book.class);
-				book.setName(ls.get(1));
-				book.setDescription(ls.get(8));
-//				if (i++ % 100 == 0)
-//					System.out.println(i);
-//				tn.commit();
 			}
-			in.close();
 			////////////////////////////////////////////////////////////
 			tn.finishTransaction();
 		} catch (Throwable t1) {
@@ -67,6 +60,82 @@ class ReqThread extends Thread {
 			Db.deinitCurrentTransaction();
 		}
 	}
+
+//class ReqThread extends Thread {
+//	@Override
+//	public void run() {
+//		final DbTransaction tn = Db.initCurrentTransaction();
+//		try {
+//			////////////////////////////////////////////////////////////
+//			// import batch, disable cache
+//			Db.currentTransaction().cache_enabled = false;
+////			Db.log_enable = false;
+//
+//			final FileReader in = new FileReader(new java.io.File("/home/c/Downloads/steam-games.csv"));
+////			final FileReader in = new FileReader(new java.io.File("/home/c/Downloads/prob.csv"));
+//			final CsvReader csv = new CsvReader(in, ';', '"');
+//			List<String> ls = csv.nextRecord();// read headers
+////			System.out.println(ls);
+//			int i = 0;
+//			while (true) {
+//				ls = csv.nextRecord();
+//				if (ls == null)
+//					break;
+////				System.out.println(ls);
+//				final Game o = (Game) tn.create(Game.class);
+//				o.setName(ls.get(1));
+//				o.setDescription(ls.get(2));
+//				if (i++ % 100 == 0)
+//					System.out.println(i);
+////				tn.commit();
+//			}
+//			in.close();
+//			////////////////////////////////////////////////////////////
+//			tn.finishTransaction();
+//		} catch (Throwable t1) {
+//			tn.rollback();
+//			throw new RuntimeException(t1);
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
+//	}
+
+//	@Override
+//	public void run() {
+//		final DbTransaction tn = Db.initCurrentTransaction();
+//		try {
+//			////////////////////////////////////////////////////////////
+//			// import batch, disable cache
+//			Db.currentTransaction().cache_enabled = false;
+////			Db.log_enable = false;
+//
+//			final FileReader in=new FileReader(new java.io.File("/home/c/Downloads/sample-books.csv"));
+//			final CsvReader csv = new CsvReader(in);
+//			List<String> ls = csv.nextRecord();// read headers
+////			System.out.println(ls);
+////			int i = 0;
+//			while (true) {
+//				ls = csv.nextRecord();
+//				if (ls == null)
+//					break;
+////				System.out.println(ls);
+//				Book book = (Book) tn.create(Book.class);
+//				book.setName(ls.get(1));
+//				book.setDescription(ls.get(8));
+////				if (i++ % 100 == 0)
+////					System.out.println(i);
+////				tn.commit();
+//			}
+//			in.close();
+//			////////////////////////////////////////////////////////////
+//			tn.finishTransaction();
+//		} catch (Throwable t1) {
+//			tn.rollback();
+//			throw new RuntimeException(t1);
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
+//	}
 
 	//
 //	@Override
