@@ -5,7 +5,6 @@ import java.util.List;
 
 import csv.CsvReader;
 import db.Db;
-import db.DbObject;
 import db.DbTransaction;
 
 public class Main {
@@ -13,7 +12,8 @@ public class Main {
 		Db.initInstance();
 		Db.instance().register(User.class);
 		Db.instance().register(File.class);
-		Db.instance().register(Data.class);
+		Db.instance().register(DataBinary.class);
+		Db.instance().register(DataText.class);
 		Db.instance().register(Book.class);
 		Db.instance().register(Game.class);
 		Db.instance().init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
@@ -30,6 +30,7 @@ public class Main {
 
 		Db.instance().deinitConnectionPool();
 	}
+
 }
 
 class ReqThread extends Thread {
@@ -39,18 +40,60 @@ class ReqThread extends Thread {
 		try {
 			////////////////////////////////////////////////////////////
 			// import batch, disable cache
-//			Db.currentTransaction().cache_enabled = false;
-//			Db.log_enable = false;
+			Db.currentTransaction().cache_enabled = false;
+			Db.log_enable = false;
 
-			int i = 0;
+			// sanity check
+			FileReader in = new FileReader(new java.io.File("/home/c/Downloads/books_data.csv"));
+			CsvReader csv = new CsvReader(in, ',', '"');
+			List<String> ls = csv.nextRecord();// read headers
+			int i = 2; // skip headers
+			System.out.println("bounds check");
 			while (true) {
-				List<DbObject> ls = tn.get(Game.class, null, null, null);
-				System.out.println(ls.size());
-				if (i++ % 100 == 0)
-					System.out.println(i);
-				if (i == 1000)
+				ls = csv.nextRecord();
+				if (ls == null)
 					break;
+				final String name = ls.get(0);
+				if (name.length() > Book.name.getSize())
+					throw new RuntimeException("record " + i + " has size of name " + name.length()
+							+ " but field length is " + Book.name.getSize());
+				
+				final String authors = ls.get(2);
+				if (authors.length() > Book.authors.getSize())
+					throw new RuntimeException("record " + i + " has size of authors " + authors.length()
+							+ " but field length is " + Book.authors.getSize());
+				
+				final String publisher = ls.get(5);
+				if (publisher.length() > Book.publisher.getSize())
+					throw new RuntimeException("record " + i + " has size of publisher " + publisher.length()
+							+ " but field length is " + Book.publisher.getSize());
+
+				if (++i % 100 == 0)
+					System.out.println(i);
 			}
+			in.close();
+			System.out.println("bounds check done");
+			
+			// import
+			System.out.println("import");
+			in = new FileReader(new java.io.File("/home/c/Downloads/books_data.csv"));
+			csv = new CsvReader(in, ',', '"');
+			i = 0;
+			while (true) {
+				ls = csv.nextRecord();
+				if (ls == null)
+					break;
+				final Book o = (Book) tn.create(Book.class);
+				o.setName(ls.get(0));
+				o.setAuthors(ls.get(2));
+				o.setPublisher(ls.get(5));
+				final DataText d = o.getData(true);
+				d.setData(ls.get(1));
+				if (++i % 100 == 0)
+					System.out.println(i);
+			}
+			in.close();
+			System.out.println("import done. do commit");
 			////////////////////////////////////////////////////////////
 			tn.finishTransaction();
 		} catch (Throwable t1) {
@@ -60,6 +103,34 @@ class ReqThread extends Thread {
 			Db.deinitCurrentTransaction();
 		}
 	}
+//class ReqThread extends Thread {
+//	@Override
+//	public void run() {
+//		final DbTransaction tn = Db.initCurrentTransaction();
+//		try {
+//			////////////////////////////////////////////////////////////
+//			// import batch, disable cache
+////			Db.currentTransaction().cache_enabled = false;
+////			Db.log_enable = false;
+//
+//			int i = 0;
+//			while (true) {
+//				List<DbObject> ls = tn.get(Game.class, null, null, null);
+//				System.out.println(ls.size());
+//				if (i++ % 100 == 0)
+//					System.out.println(i);
+//				if (i == 1000)
+//					break;
+//			}
+//			////////////////////////////////////////////////////////////
+//			tn.finishTransaction();
+//		} catch (Throwable t1) {
+//			tn.rollback();
+//			throw new RuntimeException(t1);
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
+//	}
 
 //class ReqThread extends Thread {
 //	@Override

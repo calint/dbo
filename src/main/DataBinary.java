@@ -3,7 +3,7 @@ package main;
 import db.DbObject;
 import db.FldBlob;
 
-public final class Data extends DbObject {
+public final class DataBinary extends DbObject {
 	public final static FldBlob data = new FldBlob();
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -

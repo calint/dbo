@@ -25,6 +25,10 @@ public final class FldString extends DbField {
 		this.size = size;
 		this.defval = def;
 	}
+	
+	public int getSize() {
+		return size;
+	}
 
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
@@ -51,5 +55,4 @@ public final class FldString extends DbField {
 	static void escapeString(final StringBuilder sb, final String s) {
 		sb.append(s.replace("'", "''").replace("\\", "\\\\")); // ? make better escape
 	}
-
 }

@@ -12,7 +12,7 @@ public final class File extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldLong size_B = new FldLong();
 	public final static FldTimestamp created_ts = new FldTimestamp();
-	public final static RelAgg data = new RelAgg(Data.class);
+	public final static RelAgg data = new RelAgg(DataBinary.class);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {
@@ -42,8 +42,8 @@ public final class File extends DbObject {
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public Data getData(final boolean createIfNone) {
-		return (Data) data.get(this, createIfNone);
+	public DataBinary getData(final boolean createIfNone) {
+		return (DataBinary) data.get(this, createIfNone);
 	}
 
 	public void deleteData() {
