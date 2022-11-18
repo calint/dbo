@@ -3,7 +3,9 @@ package db;
 public final class FldClob extends DbField {
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append('\'').append(o.getStr(this).replace("'", "''")).append('\'');
+		sb.append('\'');
+		FldString.escapeString(sb, o.getStr(this));
+		sb.append('\'');
 	}
 
 	@Override

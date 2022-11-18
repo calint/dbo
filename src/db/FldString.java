@@ -48,7 +48,7 @@ public final class FldString extends DbField {
 		kvm.put(this, defval);
 	}
 
-	private static void escapeString(final StringBuilder sb, final String s) {
+	static void escapeString(final StringBuilder sb, final String s) {
 		sb.append(s.replace("'", "''").replace("\\", "\\\\")); // ? make better escape
 	}
 
