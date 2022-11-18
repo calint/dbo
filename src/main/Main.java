@@ -30,21 +30,19 @@ public class Main {
 
 		Db.instance().deinitConnectionPool();
 	}
-
 }
 
+// import-200000-book
 class ReqThread extends Thread {
 	@Override
 	public void run() {
 		final DbTransaction tn = Db.initCurrentTransaction();
 		try {
-			////////////////////////////////////////////////////////////
-			// import batch, disable cache
-			Db.currentTransaction().cache_enabled = false;
+			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			Db.log_enable = false;
 
 			// sanity check
-			FileReader in = new FileReader(new java.io.File("/home/c/Downloads/books_data.csv"));
+			FileReader in = new FileReader("../cvs-samples/books_data.csv");
 			CsvReader csv = new CsvReader(in, ',', '"');
 			List<String> ls = csv.nextRecord();// read headers
 			int i = 2; // skip headers
@@ -57,12 +55,12 @@ class ReqThread extends Thread {
 				if (name.length() > Book.name.getSize())
 					throw new RuntimeException("record " + i + " has size of name " + name.length()
 							+ " but field length is " + Book.name.getSize());
-				
+
 				final String authors = ls.get(2);
 				if (authors.length() > Book.authors.getSize())
 					throw new RuntimeException("record " + i + " has size of authors " + authors.length()
 							+ " but field length is " + Book.authors.getSize());
-				
+
 				final String publisher = ls.get(5);
 				if (publisher.length() > Book.publisher.getSize())
 					throw new RuntimeException("record " + i + " has size of publisher " + publisher.length()
@@ -73,12 +71,13 @@ class ReqThread extends Thread {
 			}
 			in.close();
 			System.out.println("bounds check done");
-			
+
 			// import
 			System.out.println("import");
-			in = new FileReader(new java.io.File("/home/c/Downloads/books_data.csv"));
+			in = new FileReader("../cvs-samples/books_data.csv");
 			csv = new CsvReader(in, ',', '"');
-			i = 0;
+			ls = csv.nextRecord();// read headers
+			i = 2; // skip headers
 			while (true) {
 				ls = csv.nextRecord();
 				if (ls == null)
@@ -89,12 +88,14 @@ class ReqThread extends Thread {
 				o.setPublisher(ls.get(5));
 				final DataText d = o.getData(true);
 				d.setData(ls.get(1));
-				if (++i % 100 == 0)
+				if (++i % 100 == 0) {
 					System.out.println(i);
+					tn.commit();
+				}
 			}
 			in.close();
-			System.out.println("import done. do commit");
-			////////////////////////////////////////////////////////////
+			System.out.println("import done. finnish transaction");
+			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			tn.finishTransaction();
 		} catch (Throwable t1) {
 			tn.rollback();
@@ -103,26 +104,33 @@ class ReqThread extends Thread {
 			Db.deinitCurrentTransaction();
 		}
 	}
+}
+
+//// jdbc-select-book-10req-1M
 //class ReqThread extends Thread {
 //	@Override
 //	public void run() {
 //		final DbTransaction tn = Db.initCurrentTransaction();
 //		try {
-//			////////////////////////////////////////////////////////////
-//			// import batch, disable cache
-////			Db.currentTransaction().cache_enabled = false;
-////			Db.log_enable = false;
-//
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+//			final Statement stmt = tn.getJdbcStatement();
+//			final int nreq = 10;
 //			int i = 0;
 //			while (true) {
-//				List<DbObject> ls = tn.get(Game.class, null, null, null);
-//				System.out.println(ls.size());
-//				if (i++ % 100 == 0)
-//					System.out.println(i);
-//				if (i == 1000)
+//				final String sql = "select t1.* from Book as t1 limit 0,1000000";
+//				System.out.println(sql);
+//				final ResultSet rs = stmt.executeQuery(sql);
+//				while (rs.next()) {
+//					final String desc = rs.getString(2);
+////					System.out.println(desc);
+//				}
+//				rs.close();
+//				i++;
+//				System.out.println("requests: " + i);
+//				if (i == nreq)
 //					break;
 //			}
-//			////////////////////////////////////////////////////////////
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 //			tn.finishTransaction();
 //		} catch (Throwable t1) {
 //			tn.rollback();
@@ -131,6 +139,40 @@ class ReqThread extends Thread {
 //			Db.deinitCurrentTransaction();
 //		}
 //	}
+//}
+
+//// get-book-10req-1M
+//class ReqThread extends Thread {
+//	@Override
+//	public void run() {
+//		final DbTransaction tn = Db.initCurrentTransaction();
+//		try {
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+//			tn.cache_enabled = false;
+//			final int nreq = 10;
+//			int i = 0;
+//			while (true) {
+//				final List<DbObject> ls = tn.get(Book.class, null, null, new Limit(0, 1000000));
+////				for (final DbObject o : ls) {
+////					final Book bo = (Book) o;
+////					System.out.println(bo.getName());
+////				}
+//				System.out.println("objects retrieved: " + ls.size());
+//				i++;
+//				System.out.println("requests: " + i);
+//				if (i == nreq)
+//					break;
+//			}
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+//			tn.finishTransaction();
+//		} catch (Throwable t1) {
+//			tn.rollback();
+//			throw new RuntimeException(t1);
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
+//	}
+//}
 
 //class ReqThread extends Thread {
 //	@Override
@@ -170,6 +212,7 @@ class ReqThread extends Thread {
 //			Db.deinitCurrentTransaction();
 //		}
 //	}
+//}
 
 //	@Override
 //	public void run() {
@@ -208,7 +251,7 @@ class ReqThread extends Thread {
 //		}
 //	}
 
-	//
+//
 //	@Override
 //	public void run() {
 //		DbTransaction tn;
@@ -349,4 +392,3 @@ class ReqThread extends Thread {
 //			Db.deinitCurrentTransaction();
 //		}
 //	}
-}

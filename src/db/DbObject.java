@@ -18,7 +18,7 @@ public abstract class DbObject {
 		dirtyFields = new HashSet<DbField>();
 	}
 
-	final void createInDb() throws Throwable {
+	final void createInDb() throws Throwable {// ? move code to DbTransaction?
 		final DbTransaction t = Db.currentTransaction();
 		final Statement s = t.stmt;
 		final StringBuilder sbSql = new StringBuilder(256);
@@ -61,7 +61,7 @@ public abstract class DbObject {
 		}
 	}
 
-	final void updateDb() throws Throwable {
+	final void updateDb() throws Throwable {// ? move code to DbTransaction?
 		final DbTransaction t = Db.currentTransaction();
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(getClass())).append(" set ");
@@ -78,7 +78,7 @@ public abstract class DbObject {
 		dirtyFields.clear();
 	}
 
-	final void deleteFromDb() {
+	final void deleteFromDb() {// ? move code to DbTransaction?
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
 		for (final DbRelation r : dbcls.allRelations) {
 			r.cascadeDelete(this);
@@ -165,7 +165,7 @@ public abstract class DbObject {
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final void readResultSet(DbClass cls, ResultSet rs) throws Throwable {
+	final void readResultSet(DbClass cls, ResultSet rs) throws Throwable {// ? move code to DbTransaction?
 		int i = 1;
 		for (final DbField f : cls.allFields) {
 			final Object v = rs.getObject(i);

@@ -169,4 +169,6 @@ head -n $line file | tail -1
 
 explain select count(*) from Book, DataText where Book.data=DataText.id;
 
+select * from Book limit 0,1 into outfile "sqlres.txt";
+
 

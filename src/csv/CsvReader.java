@@ -6,17 +6,17 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-/** reads CSV file. note: it does not handle empty trailing lines */
+/** reads CSV file */
 public final class CsvReader {
 	private char columnSeparator = ',';
 	private char stringDelim = '"';
 	private BufferedReader reader;
 
-	public CsvReader(Reader reader) {
+	public CsvReader(final Reader reader) {
 		this(reader, ',', '"');
 	}
 
-	public CsvReader(Reader reader, char columnSeparator, char stringDelim) {
+	public CsvReader(final Reader reader, final char columnSeparator, final char stringDelim) {
 		this.reader = new BufferedReader(reader);
 		this.columnSeparator = columnSeparator;
 		this.stringDelim = stringDelim;
@@ -24,19 +24,19 @@ public final class CsvReader {
 
 	public List<String> nextRecord() throws IOException {
 		final ArrayList<String> ls = new ArrayList<String>();
-		final StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder(128);
 		boolean inString = false;
 		while (true) {
 			final int chi = reader.read();
 			if (chi == -1) {
 				if (ls.isEmpty())
 					return null;
-				throw new RuntimeException("unexpected end of stream");// ? break? return ls?
+				throw new RuntimeException("unexpected end of stream");
 			}
 			final char ch = (char) chi;
 			if (inString) {
 				if (ch == stringDelim) {// example ... "the quote ""hello"" ", ...
-					reader.mark(2); // ? probably 1
+					reader.mark(1);
 					final int nxtChr = reader.read();
 					if (nxtChr == -1)
 						throw new RuntimeException("unexpected end of stream");
@@ -60,7 +60,7 @@ public final class CsvReader {
 				inString = true;
 				continue;
 			}
-			if (ch == '\r') {
+			if (ch == '\r') {// ? ok?
 				continue;
 			}
 			if (ch == '\n') {
@@ -74,9 +74,9 @@ public final class CsvReader {
 	}
 
 //	public static void main(String[] args) throws Throwable {
-//		CsvReader csv = new CsvReader(new FileReader(new File("/home/c/Downloads/sample-books.csv")), true, ',');
+//		CsvReader csv = new CsvReader(new FileReader("/home/c/Downloads/prob.csv"), ',', '"');
 //		List<String> ls = csv.nextRecord();
-//		System.out.println(ls);
+//		System.out.println(ls);	
 //		while (true) {
 //			ls = csv.nextRecord();
 //			if (ls == null)
@@ -84,5 +84,4 @@ public final class CsvReader {
 //			System.out.println(ls);
 //		}
 //	}
-
 }

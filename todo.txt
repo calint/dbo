@@ -44,12 +44,12 @@
 [ ]   cascade delete?
 [ ] profiling
 [x] import test data from csv
-[ ] create table: innodb utf8
+[ ] create table: innodb utf8. utf8mb4 better. is default?
 [x] csv reader
 [x] larger sample data
 [ ] class OID instead of integer
 [ ] test cases
-[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? uggly
+[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly
 		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
 		}
