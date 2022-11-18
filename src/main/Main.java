@@ -116,8 +116,8 @@ class ReqThread extends Thread {
 //			final Statement stmt = tn.getJdbcStatement();
 //			final int nreq = 10;
 //			int i = 0;
+//			final String sql = "select t1.* from Book as t1 limit 0,1000000";
 //			while (true) {
-//				final String sql = "select t1.* from Book as t1 limit 0,1000000";
 //				System.out.println(sql);
 //				final ResultSet rs = stmt.executeQuery(sql);
 //				while (rs.next()) {
