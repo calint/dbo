@@ -145,6 +145,7 @@ public class SQLInjectionEscaper {
                 sBuilder.append(c);
             }
         }
+   }
 
 public String MysqlRealScapeString(String str){
   String data = null;

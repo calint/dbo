@@ -25,7 +25,7 @@ public final class FldString extends DbField {
 		this.size = size;
 		this.defval = def;
 	}
-	
+
 	public int getSize() {
 		return size;
 	}
@@ -33,7 +33,7 @@ public final class FldString extends DbField {
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append('\'');
-		escapeString(sb, o.getStr(this));
+		sqlEscapeString(sb, o.getStr(this));
 		sb.append('\'');
 	}
 
@@ -42,7 +42,7 @@ public final class FldString extends DbField {
 		sb.append(columnName).append(" varchar(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '");
-			escapeString(sb, defval);
+			sqlEscapeString(sb, defval);
 			sb.append("'");
 		}
 	}
@@ -52,7 +52,48 @@ public final class FldString extends DbField {
 		kvm.put(this, defval);
 	}
 
-	static void escapeString(final StringBuilder sb, final String s) {
-		sb.append(s.replace("'", "''").replace("\\", "\\\\")); // ? make better escape
+//	static void escapeString(final StringBuilder sb, final String s) {
+//		sb.append(s.replace("'", "''").replace("\\", "\\\\").replace("\0", "\\0")); // ? make better escape
+//	}
+
+	// note: from
+	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
+	static void sqlEscapeString(final StringBuilder sb, final String x) {
+		final int len = x.length();
+		for (int i = 0; i < len; ++i) {
+			final char ch = x.charAt(i);
+			switch (ch) {
+			case 0: // Must be escaped for 'mysql'
+				sb.append('\\');
+				sb.append('0');
+				break;
+			case '\n': // Must be escaped for logs
+				sb.append('\\');
+				sb.append('n');
+				break;
+			case '\r':
+				sb.append('\\');
+				sb.append('r');
+				break;
+			case '\\':
+				sb.append('\\');
+				sb.append('\\');
+				break;
+			case '\'':
+				sb.append('\\');
+				sb.append('\'');
+				break;
+			case '\032': // This gives problems on Win32
+				sb.append('\\');
+				sb.append('Z');
+				break;
+			case '\u00a5':
+			case '\u20a9':
+				// escape characters interpreted as backslash by mysql
+				// fall through
+			default:
+				sb.append(ch);
+			}
+		}
 	}
 }

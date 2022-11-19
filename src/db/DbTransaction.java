@@ -133,10 +133,6 @@ public final class DbTransaction {
 		return ls;
 	}
 
-//	public void delete(final DbObject o) throws Throwable {
-//		o.delete();
-//	}
-
 	public void commit() throws Throwable {
 		flush();
 		if (cache_enabled) // will keep memory usage down at batch imports
@@ -149,7 +145,7 @@ public final class DbTransaction {
 		stmt.close();
 	}
 
-	void flush() {
+	private void flush() {
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
@@ -160,7 +156,6 @@ public final class DbTransaction {
 		}
 
 		dirtyObjects.clear();
-		// ? clear cache?
 		Db.log("*** done flushing connection");
 	}
 

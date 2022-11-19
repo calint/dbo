@@ -114,8 +114,10 @@ public final class Query {
 	public final static int OR = 2;
 
 	private static String sqlStr(final String s) {
-		final StringBuilder sb = new StringBuilder(128);
-		sb.append('\'').append(s.replace("'", "''")).append('\'');
+		final StringBuilder sb = new StringBuilder(s.length() + 10); // ? magic number
+		sb.append('\'');
+		FldString.sqlEscapeString(sb, s);
+		sb.append('\'');
 		return sb.toString();
 	}
 
@@ -278,7 +280,7 @@ public final class Query {
 		final TableAliasMap tam = new TableAliasMap();
 		final StringBuilder sbw = new StringBuilder(256);
 		sql_build(sbw, tam);
-		
+
 		final StringBuilder sbf = new StringBuilder(256);
 		tam.sql_appendSelectFromTables(sbf);
 		sbf.append(" where ");

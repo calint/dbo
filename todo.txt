@@ -42,9 +42,9 @@
 [x] RefN get
 [ ] foreign key?
 [ ]   cascade delete?
-[ ] profiling
+[x] profiling
 [x] import test data from csv
-[ ] create table: innodb utf8. utf8mb4 better. is default?
+[ ] create table: innodb utf8. resolved: utf8mb4 is better. is default?
 [x] csv reader
 [x] larger sample data
 [ ] class OID instead of integer
@@ -55,6 +55,6 @@
 		}
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
 [ ] removing referenced DbObject fix
-[ ] more escape string in FldString, FldClob
+[x] more escape string in FldString, FldClob
 [ ] FldString check string length vs field length at set
 
