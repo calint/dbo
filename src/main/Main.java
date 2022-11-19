@@ -265,11 +265,17 @@ class ReqThread extends Thread {
 			Query q;
 
 			User u = (User) tn.create(User.class);
-			u.setName("hello \0 'name' name"); // ! bug generated: update User set name='hello
+			u.setName("hello 'name' name"); // ! bug generated: update User set name='hello
 			u.setFlt(1.2f);
 			u.setDbl(1.2);
 			u.setBool(true);
 			q = new Query(User.bool, Query.EQ, true);
+			ls = tn.get(User.class, q, null, null);
+			for (final DbObject o : ls) {
+				System.out.println(o);
+			}
+
+			q = new Query(User.birthTime, Query.GT, Timestamp.valueOf("1970-01-01 00:00:00"));
 			ls = tn.get(User.class, q, null, null);
 			for (final DbObject o : ls) {
 				System.out.println(o);

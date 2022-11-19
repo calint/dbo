@@ -144,6 +144,7 @@ public final class Query {
 	}
 
 	public Query(DbField lh, int op, Timestamp ts) {
+//		append(NOP, lh.tableName, lh.columnName, op, null, ts.toString());
 		append(NOP, lh.tableName, lh.columnName, op, null, "'" + ts.toString() + "'");
 	}
 

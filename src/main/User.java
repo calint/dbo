@@ -1,6 +1,5 @@
 package main;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
@@ -25,7 +24,8 @@ public final class User extends DbObject {
 	public final static FldFloat flt = new FldFloat();
 	public final static FldDouble dbl = new FldDouble();
 	public final static FldBoolean bool = new FldBoolean();
-	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
+//	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
+	public final static FldTimestamp birthTime = new FldTimestamp();
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
