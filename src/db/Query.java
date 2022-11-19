@@ -14,7 +14,7 @@ public final class Query {
 	public final static int LTE = 6;
 	public final static int LIKE = 7;
 
-	static class Elem {
+	final static class Elem {
 		int elemOp;
 		String lhtbl;// left hand table name
 		String lh; // left hand field name
@@ -84,7 +84,7 @@ public final class Query {
 		}
 	}
 
-	static class TableAliasMap {
+	final static class TableAliasMap {
 		private int seq;
 		final private HashMap<String, String> tblToAlias = new HashMap<String, String>();
 
@@ -107,7 +107,7 @@ public final class Query {
 		}
 	}
 
-	private ArrayList<Elem> elems = new ArrayList<Elem>();
+	private final ArrayList<Elem> elems = new ArrayList<Elem>();
 
 	public final static int NOP = 0;
 	public final static int AND = 1;
