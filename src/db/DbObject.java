@@ -123,6 +123,18 @@ public abstract class DbObject {
 		return ((Long) fieldValues.get(field)).longValue();
 	}
 
+	final public float getFloat(DbField field) {
+		return ((Float) fieldValues.get(field)).floatValue();
+	}
+
+	final public double getDouble(DbField field) {
+		return ((Double) fieldValues.get(field)).doubleValue();
+	}
+
+	final public boolean getBoolean(DbField field) {
+		return ((Boolean) fieldValues.get(field)).booleanValue();
+	}
+
 	final public Timestamp getTimestamp(DbField field) {
 		return (Timestamp) fieldValues.get(field);
 	}
@@ -160,6 +172,27 @@ public abstract class DbObject {
 	}
 
 	final public void set(DbField field, byte[] value) {
+		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
+		dirtyFields.add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final public void set(DbField field, float value) {
+		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
+		dirtyFields.add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final public void set(DbField field, double value) {
+		fieldValues.put(field, value);
+		ensureDirtyFieldsIsCreated();
+		dirtyFields.add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final public void set(DbField field, boolean value) {
 		fieldValues.put(field, value);
 		ensureDirtyFieldsIsCreated();
 		dirtyFields.add(field);

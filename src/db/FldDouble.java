@@ -2,25 +2,25 @@ package db;
 
 import java.util.Map;
 
-public final class FldInt extends DbField {
-	private int defval;
+public final class FldDouble extends DbField {
+	private double defval;
 
-	public FldInt(final int def) {
+	public FldDouble(final double def) {
 		defval = def;
 	}
 
-	public FldInt() {
-		this(0);
+	public FldDouble() {
+		this(0.0);
 	}
 
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append(o.getInt(this));
+		sb.append(o.getDouble(this));
 	}
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" integer default ").append(defval);
+		sb.append(columnName).append(" double default ").append(defval);
 	}
 
 	@Override

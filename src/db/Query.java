@@ -151,6 +151,18 @@ public final class Query {
 		append(NOP, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
 
+	public Query(DbField lh, int op, float rh) {
+		append(NOP, lh.tableName, lh.columnName, op, null, Float.toString(rh));
+	}
+
+	public Query(DbField lh, int op, double rh) {
+		append(NOP, lh.tableName, lh.columnName, op, null, Double.toString(rh));
+	}
+
+	public Query(DbField lh, int op, boolean rh) {
+		append(NOP, lh.tableName, lh.columnName, op, null, Boolean.toString(rh));
+	}
+
 	public Query(RelAggN rel) {
 		append(NOP, rel.tableName, DbObject.id.columnName, EQ, rel.toTableName, rel.relFld.columnName);
 	}
@@ -215,6 +227,18 @@ public final class Query {
 		return append(AND, lh.tableName, lh.columnName, op, null, "'" + ts.toString() + "'");
 	}
 
+	public Query and(DbField lh, int op, float rh) {
+		return append(AND, lh.tableName, lh.columnName, op, null, Float.toString(rh));
+	}
+
+	public Query and(DbField lh, int op, double rh) {
+		return append(AND, lh.tableName, lh.columnName, op, null, Double.toString(rh));
+	}
+
+	public Query and(DbField lh, int op, boolean rh) {
+		return append(AND, lh.tableName, lh.columnName, op, null, Boolean.toString(rh));
+	}
+
 	public Query and(DbField lh, int op, DbField rh) {
 		return append(AND, lh.tableName, lh.columnName, op, rh.tableName, rh.columnName);
 	}
@@ -248,6 +272,18 @@ public final class Query {
 
 	public Query or(DbField lh, int op, int rh) {
 		return append(OR, lh.tableName, lh.columnName, op, null, Integer.toString(rh));
+	}
+
+	public Query or(DbField lh, int op, float rh) {
+		return append(OR, lh.tableName, lh.columnName, op, null, Float.toString(rh));
+	}
+
+	public Query or(DbField lh, int op, double rh) {
+		return append(OR, lh.tableName, lh.columnName, op, null, Double.toString(rh));
+	}
+
+	public Query or(DbField lh, int op, boolean rh) {
+		return append(OR, lh.tableName, lh.columnName, op, null, Boolean.toString(rh));
 	}
 
 	public Query or(DbField lh, int op, Timestamp ts) {

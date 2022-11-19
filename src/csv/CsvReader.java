@@ -37,7 +37,7 @@ public final class CsvReader {
 			if (inString) {
 				if (ch == stringDelim) {// example ... "the quote ""hello"" ", ...
 					reader.mark(1);
-					final int nxtChr = reader.read();
+					final int nxtChr = reader.read(); // check if ""
 					if (nxtChr == -1)
 						throw new RuntimeException("unexpected end of stream");
 					if ((char) nxtChr == stringDelim) {
@@ -60,7 +60,7 @@ public final class CsvReader {
 				inString = true;
 				continue;
 			}
-			if (ch == '\r') {// ? ok?
+			if (ch == '\r') {// skip ok
 				continue;
 			}
 			if (ch == '\n') {

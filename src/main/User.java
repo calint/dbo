@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
+import db.FldBoolean;
+import db.FldDouble;
+import db.FldFloat;
 import db.FldInt;
 import db.FldString;
 import db.FldTimestamp;
@@ -19,6 +22,9 @@ public final class User extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldString passhash = new FldString(32);
 	public final static FldInt nlogins = new FldInt();
+	public final static FldFloat flt = new FldFloat();
+	public final static FldDouble dbl = new FldDouble();
+	public final static FldBoolean bool = new FldBoolean();
 	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilePic = new RelAgg(File.class);
@@ -53,6 +59,33 @@ public final class User extends DbObject {
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public float getFlt() {
+		return getFloat(flt);
+	}
+
+	public void setFlt(float v) {
+		set(flt, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public double getDbl() {
+		return getDouble(dbl);
+	}
+
+	public void setDbl(double v) {
+		set(dbl, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public boolean getBool() {
+		return getBoolean(bool);
+	}
+
+	public void setBool(boolean v) {
+		set(bool, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public File createFile() {
 		return (File) files.create(this);
 	}
@@ -61,7 +94,7 @@ public final class User extends DbObject {
 //		return files.get(this, qry, ord, lmt);
 //	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })// ? uggly
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // ? uggly
 	public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 		return (List<File>) (List) files.get(this, qry, ord, lmt);
 	}

@@ -13,7 +13,7 @@ import db.Query;
 public class Main {
 	public static final void main(String[] args) throws Throwable {
 		Db.initInstance();
-		Db db=Db.instance();
+		Db db = Db.instance();
 		db.register(User.class);
 		db.register(File.class);
 		db.register(DataBinary.class);
@@ -35,6 +35,34 @@ public class Main {
 		db.deinitConnectionPool();
 	}
 }
+
+//class ReqThread extends Thread {
+//	@Override
+//	public void run() {
+//		final DbTransaction tn = Db.initCurrentTransaction();
+//		try {
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+//			final Statement stmt = tn.getJdbcStatement();
+//			final String sql = "select t1.* from User as t1 limit 0,1";
+//			System.out.println(sql);
+//			final ResultSet rs = stmt.executeQuery(sql);
+//			final ResultSetMetaData rsm = rs.getMetaData();
+//			final int ncols = rsm.getColumnCount();
+//			for (int i = 0; i < ncols; i++) {
+//				System.out.println(rsm.getColumnName(i + 1) + " " + rsm.getColumnTypeName(i + 1) + " "
+//						+ rsm.getColumnClassName(i + 1));
+//			}
+//			rs.close();
+//			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+//			tn.finishTransaction();
+//		} catch (Throwable t1) {
+//			tn.rollback();
+//			throw new RuntimeException(t1);
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
+//	}
+//}
 
 //// import-200000-book
 //class ReqThread extends Thread {
@@ -219,7 +247,6 @@ public class Main {
 //	}
 //}
 
-
 class ReqThread extends Thread {
 	@Override
 	public void run() {
@@ -235,9 +262,18 @@ class ReqThread extends Thread {
 			File f;
 			int id = 0;
 			List<DbObject> ls;
+			Query q;
 
 			User u = (User) tn.create(User.class);
-			u.setName("hello \0 'name' name"); // ! bug generated: update User set name='hello  
+			u.setName("hello \0 'name' name"); // ! bug generated: update User set name='hello
+			u.setFlt(1.2f);
+			u.setDbl(1.2);
+			u.setBool(true);
+			q = new Query(User.bool, Query.EQ, true);
+			ls = tn.get(User.class, q, null, null);
+			for (final DbObject o : ls) {
+				System.out.println(o);
+			}
 
 			f = u.createFile();
 			f.setName("user file 1");
@@ -266,7 +302,7 @@ class ReqThread extends Thread {
 			u.addRefFile(f.id());
 
 //			u.deleteFile(f.id()); // causes exception
-			
+
 //			ls = u.getRefFiles(new Query(File.name, Query.EQ, "user file 2"), null, null);
 //			for (final DbObject o : ls) {
 //				final File fo = (File) o;
@@ -303,9 +339,9 @@ class ReqThread extends Thread {
 //			u.setGroupPic(0);
 			tn.delete(f);
 //			f.deleteFromDb(); // ? groupPicId now refers to a deleted object
-			
+
 			DataBinary d;
-			
+
 			d = (DataBinary) f.getData(true);
 			d.setData(new byte[] { 0, 1, 2, 1 });
 
@@ -314,7 +350,7 @@ class ReqThread extends Thread {
 
 			u.setNLogins(3);
 
-			final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user file %");
+			final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user refs %");
 //			System.out.println(qry.toString());
 //			final Query qry = new Query(User.class, 1).and(User.files);
 //			final Query qry = new Query(User.class, 1).and(User.profilePic);
@@ -338,7 +374,21 @@ class ReqThread extends Thread {
 				System.out.println(fo);
 			}
 
-			tn.delete(u);
+			final Query qry2 = new Query(User.flt, Query.EQ, 1.2f); // ? does not find user. >= works
+			ls = tn.get(User.class, qry2, null, null);
+			for (final DbObject o : ls) {
+				final User uo = (User) o;
+				System.out.println("  flt=" + uo.getFlt());
+			}
+
+			final Query qry3 = new Query(User.dbl, Query.EQ, 1.2);
+			ls = tn.get(User.class, qry3, null, null);
+			for (final DbObject o : ls) {
+				final User uo = (User) o;
+				System.out.println("  dbl=" + uo.getDbl());
+			}
+
+//			tn.delete(u);
 //			
 //			for (DbObject o : Db.currentTransaction().get(File.class, null, null, null)) {
 //				o.deleteFromDb();
