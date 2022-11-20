@@ -30,5 +30,4 @@ public final class IndexFt extends Index {
 		sb.setLength(sb.length() - 1);
 		sb.append(')');
 	}
-
 }

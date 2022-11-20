@@ -86,5 +86,4 @@ public final class RelAggN extends DbRelation {
 			o.deleteFromDb();
 		}
 	}
-
 }

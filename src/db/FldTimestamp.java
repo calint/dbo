@@ -32,5 +32,4 @@ public final class FldTimestamp extends DbField {
 		if (defval != null)
 			kvm.put(this, defval);
 	}
-
 }

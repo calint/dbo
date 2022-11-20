@@ -4,14 +4,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import db.Db;
-import db.DbTransaction;
 
 //// jdbc-select-book-10req-1M
 public class jdbc_select_books extends DbRunnable {
 	@Override
 	public void doRun() throws Throwable {
-		final DbTransaction tn = Db.currentTransaction();
-		final Statement stmt = tn.getJdbcStatement();
+		final Statement stmt = Db.currentTransaction().getJdbcStatement();
 		final int nreq = 10;
 		int i = 0;
 		final String sql = "select t1.* from Book as t1 limit 0,1000000";
