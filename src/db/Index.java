@@ -30,7 +30,6 @@ public class Index {
 		if (found == true)
 			return;
 
-		// create index User_refFiles on User_refFiles(User);
 		sb.append("create index ").append(name).append(" on ").append(tableName).append('(');
 		for (final DbField f : fields) {
 			sb.append(f.columnName).append(',');
