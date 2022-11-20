@@ -51,6 +51,7 @@
 [ ]   oracle?
 [ ]   ms sql server?
 [ ]   ibm db2?
+[ ] refactor file. example: rename main.User main.Person, rename main.User.name fullName, delete main.User.hashCode etc
 
 [x] delete
 [x]    cascade
