@@ -71,9 +71,6 @@ explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id
 
 create index name on File (name);
 
-
-drop table User;drop table File;drop table DataBinary;drop table User_refFiles;drop table Book;drop table DataText;
-
 # print a line in file
 sed -n 41215p < books_data.csv
 awk 'NR==5' file
@@ -108,3 +105,6 @@ select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and (match(t1.na
 # fast
 create index data on Book(data);
 select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and match(t2.data) against('+guide +admission' in boolean mode) limit 0,25;
+
+# drop all tables
+drop table User;drop table File;drop table DataBinary;drop table User_refFiles;drop table Book;drop table DataText;drop table Game;

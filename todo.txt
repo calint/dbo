@@ -1,3 +1,4 @@
+[ ] getCount(Query):int does select count(t1.*) from Book t1 where <query>
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
 [ ]   test case
 [ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
@@ -40,6 +41,7 @@
 		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
+[ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
 [ ] cluster
 [ ]   connections to multiple servers
 [ ]   write to all

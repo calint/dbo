@@ -178,15 +178,6 @@ public final class Db {
 		}
 		rstbls.close();
 
-//		final ResultSet rs3 = stmt.executeQuery("select * from Book");
-//		while (rs3.next()) {
-//			Object o1 = rs3.getObject(3);
-//			System.out.println(o1 == null ? "null" : o1.getClass().getName());
-//			InputStream o2 = rs3.getBinaryStream(3);
-//			System.out.println(o2 == null ? "null" : o2.getClass().getName());
-//		}
-//		rs3.close();
-
 		stmt.close();
 		con.close();
 
@@ -198,7 +189,6 @@ public final class Db {
 		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
-
 	}
 
 	public void deinitConnectionPool() {
@@ -209,6 +199,7 @@ public final class Db {
 				e.printStackTrace();
 			}
 		}
+		conpool.clear();
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
