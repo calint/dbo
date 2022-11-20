@@ -38,6 +38,6 @@ public class Main {
 //		run(delete_books.class);
 //		run(print_column_types.class);
 
-		db.deinitConnectionPool();
+		db.shutdown();
 	}
 }

@@ -132,7 +132,7 @@ public final class Db {
 				stmt.execute(sql);
 			}
 		}
-		
+
 		// create indexes
 		for (final DbClass dbcls : dbclasses) {
 			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
@@ -145,7 +145,6 @@ public final class Db {
 				stmt.execute(sql);
 			}
 		}
-
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -191,7 +190,8 @@ public final class Db {
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 	}
 
-	public void deinitConnectionPool() {
+	public void shutdown() {
+		Db.inst = null;
 		for (final Connection c : conpool) {
 			try {
 				c.close();
