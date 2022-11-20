@@ -4,12 +4,20 @@ import db.Db;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
+import db.test.DbRunnable;
 import db.test.File;
 import db.test.Game;
 import db.test.User;
-import db.test.print_column_types;
+import db.test.jdbc_select_books;
 
 public class Main {
+	private static void run(Class<? extends DbRunnable> cls) throws Throwable {
+		final DbRunnable r = cls.getConstructor().newInstance();
+		final Thread t = new Thread(r);
+		t.start();
+		t.join();
+	}
+
 	public static final void main(String[] args) throws Throwable {
 		Db.initInstance();
 		Db db = Db.instance();
@@ -21,16 +29,14 @@ public class Main {
 		db.register(Game.class);
 		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 
-//		final Thread t = new Thread(new import_books());
-//		final Thread t = new Thread(new jdbc_select_books());
-//		final Thread t = new Thread(new get_books());
-//		final Thread t = new Thread(new fulltext_search_books());
-//		final Thread t = new Thread(new delete_books());
-//		final Thread t = new Thread(new import_games());
-//		final Thread t = new Thread(new test());
-		final Thread t = new Thread(new print_column_types());
-		t.start();
-		t.join();
+//		run(import_books.class);
+		run(jdbc_select_books.class);
+//		run(get_books.class);
+//		run(fulltext_search_books.class);
+//		run(import_games.class);
+//		run(test.class);
+//		run(delete_books.class);
+//		run(print_column_types.class);
 
 		db.deinitConnectionPool();
 	}
