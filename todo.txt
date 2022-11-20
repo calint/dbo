@@ -1,6 +1,12 @@
-[x] Index(DbField...)
-[ ]    Collation asc or desc
-[x] Query(IndexFt,String)
+[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
+[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
+[ ] foreign key? implemented in Db.
+[x]   cascade delete? recursively get() and delete
+[ ]     cascade delete with delete from ... where ... if aggregated does not have any aggregations itself
+[ ] Index(DbField...)
+[x]    Collation asc
+[ ]    Collation desc
+[ ] Query(IndexFt,String)
 [x]   IN BOOLEAN MODE (default)
 [ ]   IN NATURAL LANGUAGE MODE
 [ ]   IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
@@ -8,7 +14,7 @@
 [x] datetime field
 [ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [ ]   FldTimestamp using java.sql type. ok?
-[ ] check RelRef.set vs DbObject type? requires get(). maybe when Db.mode_safe_ref_set=true
+[ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. maybe when Db.mode_safe_ref_set=true
 [ ] check index fields
 [ ]   drop and recreate index if mismatch
 [ ] check columns to match fields order and type
@@ -18,31 +24,27 @@
 [ ] id field to bigint?
 [ ] inheritance
 [ ]   like 'aaabbb%'
-[x] RefN get
-[ ] foreign key? implemented in Db.
-[x]   cascade delete?
-[x] profiling
-[x]   create
-[x]   get
-[ ]   delete
 [ ] class OID instead of integer
 [ ] test cases
 [ ]   create
 [ ]   get
 [ ]     no query
 [ ]     query
-[ ]     fulltext
+[ ]       fulltext
 [ ]   update
 [ ]   delete 
 [ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly vs comfort
 		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
-		}
-[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
-[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null? 
+		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
+[ ] profiling
+[x]   create
+[x]   get
+[ ]   delete
 [ ] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
+[x]   mysql
 [ ]   postgresql
 [ ]   oracle?
 [ ]   ms sql server?
@@ -88,3 +90,4 @@
 [x] csv reader
 [x] larger sample data
 [x] more escapes for string in FldString, FldClob, Query
+[x] RefN get

@@ -94,24 +94,17 @@ ft_min_word_len=2
 
 alter table DataText add fulltext(data);
 show keys in DataText;
-alter table DataText drop index data;
-
+	alter table DataText drop index data;
 select id from DataText where match(data) against('guide' in boolean mode);
 
-
-alter table Book add fulltext(name);
 show indexes from Book;
-	alter table Book drop index name;
-select * from Book where match(name) against('guide' in boolean mode) limit 0,10;
-
-create fulltext index ix_name_authors_publisher on Book(name,authors,publisher);
-select * from Book where match(name,authors,publisher) against('+active +guide -wiley' in boolean mode) limit 0,10;
-
-create index Book_data on Book(data);
-select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and match(t2.data) against('guide' in boolean mode) limit 0,10;
-explain select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and (match(t2.data) against('guide walden' in boolean mode) or match(name,authors) against('murray' in boolean mode)) limit 0,10;
-
+alter table Book drop index name;
 
 OPTIMIZE TABLE Book;
 
+# slow
+select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and (match(t1.name,t1.authors,t1.publisher) against('+guide' in boolean mode) or match(t2.data) against('+guide' in boolean mode)) limit 0,25;
 
+# fast
+create index data on Book(data);
+select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and match(t2.data) against('+guide +admission' in boolean mode) limit 0,25;
