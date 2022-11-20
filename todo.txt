@@ -40,10 +40,6 @@
 		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
-[.] profiling
-[x]   create
-[x]   get
-[ ]   delete
 [.] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
 [x]   mysql
 [ ]   sqlite
@@ -94,3 +90,7 @@
 [x] larger sample data
 [x] more escapes for string in FldString, FldClob, Query
 [x] RefN get
+[x] profiling
+[x]   create
+[x]   get
+[x]   delete
