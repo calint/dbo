@@ -1,3 +1,53 @@
+[x] Index(DbField...)
+[ ]    Collation asc or desc
+[x] Query(IndexFt,String)
+[x]   IN BOOLEAN MODE (default)
+[ ]   IN NATURAL LANGUAGE MODE
+[ ]   IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
+[ ]   WITH QUERY EXPANSION
+[x] datetime field
+[ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
+[ ]   FldTimestamp using java.sql type. ok?
+[ ] check RelRef.set vs DbObject type? requires get(). maybe when Db.mode_safe_ref_set=true
+[ ] check index fields
+[ ]   drop and recreate index if mismatch
+[ ] check columns to match fields order and type
+[ ]   to add new column: alter table <tableName> add <columnName columnDef>
+[ ]   if columns order do not match fields see: https://stackoverflow.com/questions/2934312/how-to-rearrange-mysql-columns
+[ ]   if column type has changed: ALTER TABLE table_name MODIFY COLUMN column_name datatype 
+[ ] id field to bigint?
+[ ] inheritance
+[ ]   like 'aaabbb%'
+[x] RefN get
+[ ] foreign key? implemented in Db.
+[x]   cascade delete?
+[x] profiling
+[x]   create
+[x]   get
+[ ]   delete
+[ ] class OID instead of integer
+[ ] test cases
+[ ]   create
+[ ]   get
+[ ]     no query
+[ ]     query
+[ ]     fulltext
+[ ]   update
+[ ]   delete 
+[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly vs comfort
+		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
+			return (List<File>) (List) files.get(this, qry, ord, lmt);
+		}
+[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
+[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null? 
+[ ] FldString check string length vs field length at set? DbField.getSize()?
+[ ] Db.tableNameForJavaClass does not include package name
+[ ] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
+[ ]   postgresql
+[ ]   oracle?
+[ ]   ms sql server?
+[ ]   ibm db2?
+
 [x] delete
 [x]    cascade
 [x] transaction.get
@@ -17,61 +67,24 @@
 [x] clob field LONGTEXT
 [x] full text search
 [x]   IndexFullText(DbField...)
-[x] Index(DbField...)
-[x] datetime field
-[ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
-[ ]   FldTimestamp using java.sql type. ok?
 [x] bool field
 [x] float field
-[ ]   set 1.2f then query 1.2f does not work. see 
+[x]   set 1.2f then query 1.2f does not work. see 
          https://dev.mysql.com/doc/refman/8.0/en/floating-point-types.html
          https://dev.mysql.com/doc/refman/8.0/en/problems-with-float.html
 [x] double field
-[ ] indexes
+[x] indexes
 [x]   RefN
 [x]   AggN
 [x] Query.LIKE
 [x] check string lengths when setting varchar fields? resolved: generates sql exception in driver
-[ ] check RelRef.set vs DbObject type? requires get()
-[ ] check index fields?
-[ ] id field to bigint?
-[ ] inheritance
 [x] RefN remove object
 [x] AggN delete object
 [x] Agg delete object
 [x] Ref remove object
 [x] AggN get
-[x] RefN get
-[ ] foreign key?
-[ ]   cascade delete?
-[x] profiling
-[x]   create
-[x]   get
-[ ]   delete
 [x] import test data from csv
 [x] create table: innodb utf8. resolved: utf8mb4 is better. specified by sysadm when creating database
 [x] csv reader
 [x] larger sample data
-[ ] class OID instead of integer
-[ ] test cases
-[ ]   create
-[ ]   get
-[ ]     no query
-[ ]     query
-[ ]     fulltext
-[ ]   update
-[ ]   delete 
-[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly
-		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
-			return (List<File>) (List) files.get(this, qry, ord, lmt);
-		}
-[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
-[ ] removing referenced DbObject fix
 [x] more escapes for string in FldString, FldClob, Query
-[ ] FldString check string length vs field length at set?
-[ ] Db.tableNameForJavaClass does not include package name
-[ ] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
-[ ]   postgresql
-[ ]   oracle?
-[ ]   ms sql server?
-[ ]   ibm db2?

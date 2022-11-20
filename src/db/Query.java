@@ -13,7 +13,7 @@ public final class Query {
 	public final static int LT = 5;
 	public final static int LTE = 6;
 	public final static int LIKE = 7;
-	public final static int FTQ = 8;
+	public final static int FTQ = 8;// full text query
 
 	final static class Elem {
 		int elemOp;
@@ -22,8 +22,8 @@ public final class Query {
 		int op;
 		String rhtbl;
 		String rh;
-		Query query;
-		IndexFt ftix;
+		Query query;// if not null then this is a sub query
+		IndexFt ftix;// if not null then this is a full text query
 
 		public void sql_build(final StringBuilder sb, TableAliasMap tam) {
 			switch (elemOp) {
@@ -47,7 +47,7 @@ public final class Query {
 				return;
 			}
 
-			// fulltext query
+			// full text query
 			if (ftix != null) {
 				sb.append("match(");
 				for (final DbField f : ftix.fields) {

@@ -90,6 +90,9 @@ public final class DbClass {
 
 	@Override
 	public String toString() {
-		return javaClass.getName() + " fields:" + allFields + " relations:" + allRelations;
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append(javaClass.getName()).append(" fields:").append(allFields).append(" relations:").append(allRelations)
+				.append(" indexes:").append(allIndexes);
+		return sb.toString();
 	}
 }

@@ -37,4 +37,11 @@ public class Index {
 		sb.setLength(sb.length() - 1);
 		sb.append(')');
 	}
+	
+	@Override
+	public String toString() {
+		final StringBuilder sb=new StringBuilder(128);
+		sb.append(name);//.append(" on ").append(tableName).append('(');
+		return sb.toString();
+	}
 }

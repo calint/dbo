@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import db.DbObject;
 import db.FldString;
 import db.FldTimestamp;
+import db.IndexFt;
 import db.RelAgg;
 
 public final class Book extends DbObject {
@@ -13,6 +14,8 @@ public final class Book extends DbObject {
 	public final static FldString publisher = new FldString(400);
 	public final static FldTimestamp publishedDate = new FldTimestamp();
 	public final static RelAgg data = new RelAgg(DataText.class);
+
+	public final static IndexFt ft = new IndexFt(name, authors, publisher);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {

@@ -2,9 +2,12 @@ package main;
 
 import db.DbObject;
 import db.FldClob;
+import db.IndexFt;
 
 public final class DataText extends DbObject {
 	public final static FldClob data = new FldClob();
+	
+	public final static IndexFt ft = new IndexFt(data);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getData() {
