@@ -1,12 +1,13 @@
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
+[ ]   test case
 [ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
-[ ] foreign key? implemented in Db.
+[.] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
-[ ]     cascade delete with delete from ... where ... if aggregated does not have any aggregations itself
+[ ]     cascade delete with "delete from ... where ..." if aggregated does not have any Agg,AggN,RefN itself
 [ ] Index(DbField...)
 [x]    Collation asc
 [ ]    Collation desc
-[ ] Query(IndexFt,String)
+[.] Query(IndexFt,String)
 [x]   IN BOOLEAN MODE (default)
 [ ]   IN NATURAL LANGUAGE MODE
 [ ]   IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
@@ -14,7 +15,7 @@
 [x] datetime field
 [ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [ ]   FldTimestamp using java.sql type. ok?
-[ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. maybe when Db.mode_safe_ref_set=true
+[ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
 [ ] check index fields
 [ ]   drop and recreate index if mismatch
 [ ] check columns to match fields order and type
@@ -23,7 +24,7 @@
 [ ]   if column type has changed: ALTER TABLE table_name MODIFY COLUMN column_name datatype 
 [ ] id field to bigint?
 [ ] inheritance
-[ ]   like 'aaabbb%'
+[ ]   example: select t1.* from File where t1.clspth like 'aaabbb%'; selects all objects that are File or inherits from File 
 [ ] class OID instead of integer
 [ ] test cases
 [ ]   create
@@ -39,12 +40,13 @@
 		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
-[ ] profiling
+[.] profiling
 [x]   create
 [x]   get
 [ ]   delete
-[ ] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
+[.] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
 [x]   mysql
+[ ]   sqlite
 [ ]   postgresql
 [ ]   oracle?
 [ ]   ms sql server?
