@@ -1,7 +1,5 @@
 package db;
 
-import java.util.Map;
-
 public final class FldId extends DbField {
 	@Override
 	void sql_updateValue(final StringBuilder sb, final DbObject o) {
@@ -12,9 +10,4 @@ public final class FldId extends DbField {
 	void sql_createColumn(final StringBuilder sb) {
 		sb.append(columnName).append(" integer primary key auto_increment");// ? maybe bigint
 	}
-
-	@Override
-	void initDefaultValue(final Map<DbField, Object> kvm) {
-	}
-
 }

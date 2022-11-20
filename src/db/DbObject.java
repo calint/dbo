@@ -57,7 +57,7 @@ public abstract class DbObject {
 		// init default values
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(getClass());
 		for (final DbField f : dbcls.allFields) {// ? allFields
-			f.initDefaultValue(fieldValues);
+			f.putDefaultValue(fieldValues);
 		}
 	}
 
@@ -208,6 +208,7 @@ public abstract class DbObject {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
 	}

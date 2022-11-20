@@ -274,6 +274,16 @@ class ReqThread extends Thread {
 			for (final DbObject o : ls) {
 				System.out.println(o);
 			}
+			q = new Query(User.ixFt, "name");
+			ls = tn.get(User.class, q, null, null);
+			for (final DbObject o : ls) {
+				System.out.println(o);
+			}
+			q = new Query(User.class, 1).and(User.ixFt, "name");
+			ls = tn.get(User.class, q, null, null);
+			for (final DbObject o : ls) {
+				System.out.println(o);
+			}
 
 			q = new Query(User.birthTime, Query.GT, Timestamp.valueOf("1970-01-01 00:00:00"));
 			ls = tn.get(User.class, q, null, null);

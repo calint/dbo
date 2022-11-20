@@ -15,11 +15,10 @@
 [x] blob field
 [x]   mysql hex
 [x] clob field LONGTEXT
-[ ] full text search
-[ ]   IxFullText(DbField...)
-[ ] Ix(DbField...)
+[x] full text search
+[x]   IndexFullText(DbField...)
+[x] Index(DbField...)
 [x] datetime field
-[ ]   default value is timestamp '1970-01-01 01:00:01.0'. ok?
 [ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [ ]   FldTimestamp using java.sql type. ok?
 [x] bool field
@@ -31,10 +30,9 @@
 [ ] indexes
 [x]   RefN
 [x]   AggN
-[ ]   fields
 [x] Query.LIKE
 [x] check string lengths when setting varchar fields? resolved: generates sql exception in driver
-[ ] check Rel.set vs DbObject type?
+[ ] check RelRef.set vs DbObject type? requires get()
 [ ] check index fields?
 [ ] id field to bigint?
 [ ] inheritance
@@ -47,12 +45,22 @@
 [ ] foreign key?
 [ ]   cascade delete?
 [x] profiling
+[x]   create
+[x]   get
+[ ]   delete
 [x] import test data from csv
 [x] create table: innodb utf8. resolved: utf8mb4 is better. specified by sysadm when creating database
 [x] csv reader
 [x] larger sample data
 [ ] class OID instead of integer
 [ ] test cases
+[ ]   create
+[ ]   get
+[ ]     no query
+[ ]     query
+[ ]     fulltext
+[ ]   update
+[ ]   delete 
 [ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly
 		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
@@ -60,7 +68,7 @@
 [ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
 [ ] removing referenced DbObject fix
 [x] more escapes for string in FldString, FldClob, Query
-[ ] FldString check string length vs field length at set
+[ ] FldString check string length vs field length at set?
 [ ] Db.tableNameForJavaClass does not include package name
 [ ] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
 [ ]   postgresql

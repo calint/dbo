@@ -13,6 +13,7 @@ public final class Query {
 	public final static int LT = 5;
 	public final static int LTE = 6;
 	public final static int LIKE = 7;
+	public final static int FTQ = 8;
 
 	final static class Elem {
 		int elemOp;
@@ -22,6 +23,7 @@ public final class Query {
 		String rhtbl;
 		String rh;
 		Query query;
+		IndexFt ftix;
 
 		public void sql_build(final StringBuilder sb, TableAliasMap tam) {
 			switch (elemOp) {
@@ -42,6 +44,21 @@ public final class Query {
 				sb.append('(');
 				query.sql_build(sb, tam);
 				sb.append(") ");
+				return;
+			}
+
+			// fulltext query
+			if (ftix != null) {
+				sb.append("match(");
+				for (final DbField f : ftix.fields) {
+					final String tblalias = tam.getAliasForTableName(ftix.tableName);
+					sb.append(tblalias).append('.').append(f.columnName).append(',');
+				}
+				sb.setLength(sb.length() - 1);
+				sb.append(')');
+				sb.append(" against('");
+				FldString.sqlEscapeString(sb, rh);
+				sb.append("' in boolean mode) ");
 				return;
 			}
 
@@ -72,6 +89,9 @@ public final class Query {
 				break;
 			case LIKE:
 				sb.append(" like ");
+				break;
+			case FTQ:
+				sb.append(' ');
 				break;
 			default:
 				throw new RuntimeException("op " + op + " not supported");
@@ -181,6 +201,14 @@ public final class Query {
 		append(NOP, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
+	public Query(IndexFt ix, String ftquery) {
+		final Elem e = new Elem();
+		e.elemOp = NOP;
+		e.ftix = ix;
+		e.rh = ftquery;
+		elems.add(e);
+	}
+
 	///////////////////////////////////////////////////////////////////////
 	public Query and(Query q) {
 		return append(AND, q);
@@ -261,6 +289,15 @@ public final class Query {
 		return append(AND, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
 	}
 
+	public Query and(IndexFt ix, String ftquery) {
+		final Elem e = new Elem();
+		e.elemOp = AND;
+		e.ftix = ix;
+		e.rh = ftquery;
+		elems.add(e);
+		return this;
+	}
+
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
 	public Query or(Class<? extends DbObject> c, int id) {
@@ -310,6 +347,15 @@ public final class Query {
 
 	public Query or(RelRef rel) {
 		return append(OR, rel.tableName, rel.relFld.columnName, EQ, rel.toTableName, DbObject.id.columnName);
+	}
+
+	public Query or(IndexFt ix, String ftquery) {
+		final Elem e = new Elem();
+		e.elemOp = OR;
+		e.ftix = ix;
+		e.rh = ftquery;
+		elems.add(e);
+		return this;
 	}
 
 	@Override

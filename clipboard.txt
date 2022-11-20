@@ -62,8 +62,6 @@ create index User_refFiles on User_refFiles(User);
 
 drop table User;drop table File;drop table Data;drop table User_refFiles;
 
-
-
 explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id=1 and t1.id=t2.User and t2.File=t3.id order by t3.created_ts desc;
 
 explain select t2.* from User as t1, File as t2 where t1.id=1 and t1.id=t2.User_files order by t2.created_ts desc;
@@ -74,7 +72,7 @@ explain select t3.* from User as t1, File as t3, User_refFiles as t2 where t1.id
 create index name on File (name);
 
 
-drop table User;drop table File;drop table DataBinary;drop table DataText;drop table User_refFiles;drop table Book;
+drop table User;drop table File;drop table DataBinary;drop table User_refFiles;drop table Book;drop table DataText;
 
 # print a line in file
 sed -n 41215p < books_data.csv
@@ -85,5 +83,35 @@ head -n $line file | tail -1
 explain select count(*) from Book, DataText where Book.data=DataText.id;
 
 select * from Book limit 0,1 into outfile "sqlres.txt";
+
+
+# fulltext
+[mysqld]
+innodb_ft_min_token_size=2
+ft_min_word_len=2
+
+
+
+alter table DataText add fulltext(data);
+show keys in DataText;
+alter table DataText drop index data;
+
+select id from DataText where match(data) against('guide' in boolean mode);
+
+
+alter table Book add fulltext(name);
+show indexes from Book;
+	alter table Book drop index name;
+select * from Book where match(name) against('guide' in boolean mode) limit 0,10;
+
+create fulltext index ix_name_authors_publisher on Book(name,authors,publisher);
+select * from Book where match(name,authors,publisher) against('+active +guide -wiley' in boolean mode) limit 0,10;
+
+create index Book_data on Book(data);
+select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and match(t2.data) against('guide' in boolean mode) limit 0,10;
+explain select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and (match(t2.data) against('guide walden' in boolean mode) or match(name,authors) against('murray' in boolean mode)) limit 0,10;
+
+
+OPTIMIZE TABLE Book;
 
 

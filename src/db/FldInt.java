@@ -24,7 +24,7 @@ public final class FldInt extends DbField {
 	}
 
 	@Override
-	void initDefaultValue(Map<DbField, Object> kvm) {
+	void putDefaultValue(Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

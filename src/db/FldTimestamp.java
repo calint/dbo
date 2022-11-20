@@ -28,7 +28,7 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	void initDefaultValue(Map<DbField, Object> kvm) {
+	void putDefaultValue(Map<DbField, Object> kvm) {
 		if (defval != null)
 			kvm.put(this, defval);
 	}

@@ -83,7 +83,7 @@ public final class Db {
 				r.connect(c);
 		}
 
-		// create allFields lists
+		// create allFields, allRelations, allIndexes lists
 		for (final DbClass c : dbclasses) {
 			c.initAllFieldsAndRelationsLists();
 			Db.log(c.toString());
@@ -120,9 +120,9 @@ public final class Db {
 
 		// all tables have been created
 
-		// create indexes
+		// create indexes for relations
 		for (final DbClass dbcls : dbclasses) {
-			for (final DbRelation dbrel : dbcls.declaredRelations) {// ? what about inherited relations
+			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
 				final StringBuilder sb = new StringBuilder(256);
 				dbrel.sql_createIndex(sb, dbm);
 				if (sb.length() == 0)
@@ -132,6 +132,20 @@ public final class Db {
 				stmt.execute(sql);
 			}
 		}
+		
+		// create indexes
+		for (final DbClass dbcls : dbclasses) {
+			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
+				final StringBuilder sb = new StringBuilder(256);
+				ix.sql_createIndex(sb, dbm);
+				if (sb.length() == 0)
+					continue;
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
+			}
+		}
+
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 

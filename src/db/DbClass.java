@@ -16,6 +16,9 @@ public final class DbClass {
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 	final ArrayList<DbRelation> allRelations = new ArrayList<DbRelation>();
 
+	final ArrayList<Index> declaredIndexes = new ArrayList<Index>();
+	final ArrayList<Index> allIndexes = new ArrayList<Index>();
+
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
 		tableName = Db.tableNameForJavaClass(c);
@@ -26,7 +29,7 @@ public final class DbClass {
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 //				dbf.cls = c;
-				dbf.tableName = Db.tableNameForJavaClass(c);
+				dbf.tableName = tableName;
 				dbf.columnName = f.getName();
 				declaredFields.add(dbf);
 				continue;
@@ -34,27 +37,37 @@ public final class DbClass {
 			if (DbRelation.class.isAssignableFrom(f.getType())) {
 				final DbRelation dbr = (DbRelation) f.get(null);
 				dbr.cls = c;
-				dbr.tableName = Db.tableNameForJavaClass(c);
+				dbr.tableName = tableName;
 				dbr.name = f.getName();
 				declaredRelations.add(dbr);
+				continue;
+			}
+			if (Index.class.isAssignableFrom(f.getType())) {
+				final Index ix = (Index) f.get(null);
+				ix.cls = c;
+				ix.name = f.getName();
+				ix.tableName = tableName;
+				declaredIndexes.add(ix);
 				continue;
 			}
 		}
 	}
 
+	/** recurse initiates allFields, allRelations, allIndexes lists */
 	void initAllFieldsAndRelationsLists() {
-		initAllFieldsAndRelationsListsRec(allFields, allRelations, javaClass);
+		initAllFieldsAndRelationsListsRec(allFields, allRelations, allIndexes, javaClass);
 	}
 
 	private static void initAllFieldsAndRelationsListsRec(final List<DbField> lsfld, final List<DbRelation> lsrel,
-			final Class<?> cls) {
+			final List<Index> lsix, final Class<?> cls) {
 		final Class<?> scls = cls.getSuperclass();
 		if (!scls.equals(Object.class)) {
-			initAllFieldsAndRelationsListsRec(lsfld, lsrel, scls);
+			initAllFieldsAndRelationsListsRec(lsfld, lsrel, lsix, scls);
 		}
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		lsfld.addAll(dbcls.declaredFields);
 		lsrel.addAll(dbcls.declaredRelations);
+		lsix.addAll(dbcls.declaredIndexes);
 	}
 
 	final void sql_createTable(StringBuilder sb, DatabaseMetaData dbm) throws Throwable {
@@ -77,6 +90,6 @@ public final class DbClass {
 
 	@Override
 	public String toString() {
-		return javaClass.getName() + " fields:" + allFields + " relations:" + declaredRelations;
+		return javaClass.getName() + " fields:" + allFields + " relations:" + allRelations;
 	}
 }

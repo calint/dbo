@@ -2,7 +2,7 @@ package db;
 
 import java.util.Map;
 
-abstract class DbField {
+public abstract class DbField {
 //	Class<? extends DbObject> cls;
 	String tableName;
 	String columnName;
@@ -17,7 +17,7 @@ abstract class DbField {
 	void sql_createColumn(StringBuilder sb) {
 	}
 
-	void initDefaultValue(Map<DbField, Object> kvm) {
+	void putDefaultValue(Map<DbField, Object> kvm) {
 	}
 
 	@Override

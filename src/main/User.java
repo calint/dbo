@@ -9,6 +9,8 @@ import db.FldFloat;
 import db.FldInt;
 import db.FldString;
 import db.FldTimestamp;
+import db.Index;
+import db.IndexFt;
 import db.Limit;
 import db.Order;
 import db.Query;
@@ -30,6 +32,9 @@ public final class User extends DbObject {
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
 	public final static RelRefN refFiles = new RelRefN(File.class);
+
+	public final static Index ixName = new Index(name);
+	public final static IndexFt ixFt = new IndexFt(name, passhash);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {

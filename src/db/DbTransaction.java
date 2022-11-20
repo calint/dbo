@@ -104,7 +104,7 @@ public final class DbTransaction {
 
 		final String sql = sb.toString();
 		Db.log(sql);
-		final ArrayList<DbObject> ls = new ArrayList<DbObject>(128); // ?  magic number
+		final ArrayList<DbObject> ls = new ArrayList<DbObject>(128); // ? magic number
 		try {
 			final Constructor<? extends DbObject> ctor = cls.getConstructor();
 			final ResultSet rs = stmt.executeQuery(sql);
@@ -172,6 +172,7 @@ public final class DbTransaction {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "dirtyObjects=" + dirtyObjects;
 	}
