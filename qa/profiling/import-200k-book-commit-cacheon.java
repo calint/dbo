@@ -1,16 +1,19 @@
 import db.DbTransaction;
 
+// import-200k-book-commit-cacheon
+//   imports ~200k books
+//   download csv at https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews
 class ReqThread extends Thread {
 	@Override
 	public void run() {
 		final DbTransaction tn = Db.initCurrentTransaction();
 		try {
-			////////////////////////////////////////////////////////////
+// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			Db.log_enable = false;
 
 			// sanity check
 			FileReader in = new FileReader("../cvs-samples/books_data.csv");
-			CsvReader csv = new CsvReader(in, ',', '"');
+			CsvReader csv = new CsvReader(in);
 			List<String> ls = csv.nextRecord(); // read headers
 			int i = 2; // skip headers
 			System.out.println("bounds check");
@@ -42,8 +45,9 @@ class ReqThread extends Thread {
 			// import
 			System.out.println("import");
 			in = new FileReader("../cvs-samples/books_data.csv");
-			csv = new CsvReader(in, ',', '"');
-			i = 0;
+			csv = new CsvReader(in);
+			List<String> ls = csv.nextRecord(); // read headers
+			i = 2; // skip headers
 			while (true) {
 				ls = csv.nextRecord();
 				if (ls == null)
@@ -61,7 +65,7 @@ class ReqThread extends Thread {
 			}
 			in.close();
 			System.out.println("import done. finnish transaction");
-			////////////////////////////////////////////////////////////
+// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			tn.finishTransaction();
 		} catch (Throwable t1) {
 			tn.rollback();

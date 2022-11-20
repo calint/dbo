@@ -40,6 +40,11 @@
 		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
+[ ] cluster
+[ ]   connections to multiple servers
+[ ]   write to all
+[ ]   read round robin
+[ ] refactor commands. example: rename main.User main.Person, rename main.User.name fullName, delete main.User.hashCode etc
 [.] drivers for other (open source) rdbms. see https://www.databasestar.com/sql-data-types/
 [x]   mysql
 [ ]   sqlite
@@ -47,7 +52,6 @@
 [ ]   oracle?
 [ ]   ms sql server?
 [ ]   ibm db2?
-[ ] refactor file. example: rename main.User main.Person, rename main.User.name fullName, delete main.User.hashCode etc
 
 [x] delete
 [x]    cascade

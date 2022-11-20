@@ -5,7 +5,8 @@ import db.DbObject;
 import db.DbTransaction;
 import main.Book;
 
-// delete all books (cascading delete of aggregated DataText)
+// delete-book-200k
+// 	delete all books (cascading delete of aggregated DataText)
 class ReqThread extends Thread {
 	@Override
 	public void run() {

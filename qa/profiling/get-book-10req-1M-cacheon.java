@@ -6,12 +6,13 @@ import db.DbTransaction;
 import db.Limit;
 import main.Book;
 
+//get-book-10req-1M-cacheon
 class ReqThread extends Thread {
 	@Override
 	public void run() {
 		final DbTransaction tn = Db.initCurrentTransaction();
 		try {
-			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			final int nreq = 10;
 			int i = 0;
 			while (true) {
@@ -26,7 +27,7 @@ class ReqThread extends Thread {
 				if (i == nreq)
 					break;
 			}
-			// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
+// ---- - - --- -- -------- -- - - -- -- -- -- - -- --- - --- --- - -- -- -- --
 			tn.finishTransaction();
 		} catch (Throwable t1) {
 			tn.rollback();
