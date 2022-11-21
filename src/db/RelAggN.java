@@ -25,8 +25,8 @@ public final class RelAggN extends DbRelation {
 	public DbObject create(final DbObject ths) {
 		try {
 			final DbObject o = toCls.getConstructor().newInstance();
-			o.set(relFld, ths.id());
 			o.createInDb();
+			o.set(relFld, ths.id());
 			return o;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -38,6 +38,13 @@ public final class RelAggN extends DbRelation {
 		if (qry != null)
 			q.and(qry);
 		return Db.currentTransaction().get(toCls, q, ord, lmt);
+	}
+
+	public int getCount(final DbObject ths, final Query qry) {
+		final Query q = new Query(ths.getClass(), ths.id()).and(this);
+		if (qry != null)
+			q.and(qry);
+		return Db.currentTransaction().getCount(toCls, q);
 	}
 
 	public void delete(final DbObject ths, final int toId) {

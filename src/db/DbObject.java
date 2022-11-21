@@ -22,26 +22,27 @@ public abstract class DbObject {
 		final DbTransaction t = Db.currentTransaction();
 		final Statement s = t.stmt;
 		final StringBuilder sbSql = new StringBuilder(256);
-		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass()));
-		final StringBuilder sbFields = new StringBuilder(256);
-		final StringBuilder sbValues = new StringBuilder(256);
-		if (dirtyFields != null) {
-			for (final DbField f : dirtyFields) {
-				f.sql_columnName(sbFields);
-				sbFields.append(',');
-				f.sql_updateValue(sbValues, this);
-				sbValues.append(',');
-			}
-			dirtyFields.clear();
-		}
-		if (sbFields.length() > 0) {
-			sbSql.append('(');
-			sbFields.setLength(sbFields.length() - 1);
-			sbSql.append(sbFields);
-			sbValues.setLength(sbValues.length() - 1);
-			sbSql.append(") values(").append(sbValues).append(")");
-		} else
-			sbSql.append(" values()");
+//		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass()));
+//		final StringBuilder sbFields = new StringBuilder(256);
+//		final StringBuilder sbValues = new StringBuilder(256);
+//		if (dirtyFields != null) {
+//			for (final DbField f : dirtyFields) {
+//				f.sql_columnName(sbFields);
+//				sbFields.append(',');
+//				f.sql_updateValue(sbValues, this);
+//				sbValues.append(',');
+//			}
+//			dirtyFields.clear();
+//		}
+//		if (sbFields.length() > 0) {
+//			sbSql.append('(');
+//			sbFields.setLength(sbFields.length() - 1);
+//			sbSql.append(sbFields);
+//			sbValues.setLength(sbValues.length() - 1);
+//			sbSql.append(") values(").append(sbValues).append(")");
+//		} else
+//			sbSql.append(" values()");
+		sbSql.append("insert into ").append(Db.tableNameForJavaClass(getClass())).append(" values()");
 
 		final String sql = sbSql.toString();
 		Db.log(sql);

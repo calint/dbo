@@ -4,11 +4,11 @@ import db.Db;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
-import db.test.TestCase;
 import db.test.File;
 import db.test.Game;
+import db.test.TestCase;
 import db.test.User;
-import db.test.refn_orphans;
+import db.test.count;
 
 public class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -37,7 +37,8 @@ public class Main {
 //		run(test.class);
 //		run(delete_books.class);
 //		run(print_column_types.class);
-		run(refn_orphans.class);
+//		run(refn_orphans.class);
+		run(count.class);
 		
 		db.shutdown();
 	}

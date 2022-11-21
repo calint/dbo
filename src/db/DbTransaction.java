@@ -133,6 +133,38 @@ public final class DbTransaction {
 		return ls;
 	}
 
+	public int getCount(final Class<? extends DbObject> cls, final Query qry) {
+		flush(); // update database before query
+
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("select count(*) from ");
+		
+		final Query.TableAliasMap tam = new Query.TableAliasMap();
+
+		if (qry != null) {
+			final StringBuilder sbwhere = new StringBuilder(128);
+			qry.sql_build(sbwhere, tam);
+			tam.sql_appendSelectFromTables(sb);
+			sb.append(" where ");
+			sb.append(sbwhere);
+			sb.setLength(sb.length() - 1);
+		}else {
+			final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
+			sb.append(dbcls.tableName);
+		}
+
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			final ResultSet rs = stmt.executeQuery(sql);
+			if (!rs.next())
+				throw new RuntimeException("expected result from " + sql);
+			return rs.getInt(1);
+		} catch (final Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
 	public void commit() throws Throwable {
 		flush();
 		if (cache_enabled) // will keep memory usage down at batch imports

@@ -39,6 +39,13 @@ public final class RelRefN extends DbRelation {
 		return Db.currentTransaction().get(toCls, q, ord, lmt);
 	}
 
+	public int getCount(final DbObject ths, final Query qry) {
+		final Query q = new Query(ths.getClass(), ths.id()).and(this);
+		if (qry != null)
+			q.and(qry);
+		return Db.currentTransaction().getCount(toCls, q);
+	}
+
 	public void remove(final DbObject from, final int toId) {
 		final StringBuilder sb = new StringBuilder(256);
 		rrm.sql_deleteFromTable(sb, from.id(), toId);

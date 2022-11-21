@@ -122,7 +122,7 @@ public final class Query {
 			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
 				sb.append(kv.getKey()).append(" ").append(kv.getValue()).append(", ");
 			}
-			if (sb.length() > 2)
+			if (!tblToAlias.isEmpty())
 				sb.setLength(sb.length() - 2);
 		}
 	}

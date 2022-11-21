@@ -104,6 +104,10 @@ public final class User extends DbObject {
 		return (List<File>) (List) files.get(this, qry, ord, lmt);
 	}
 
+	public int getFilesCount(final Query qry) {
+		return files.getCount(this, qry);
+	}
+
 	public void deleteFile(int id) {
 		files.delete(this, id);
 	}
@@ -141,6 +145,10 @@ public final class User extends DbObject {
 
 	public List<DbObject> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
 		return refFiles.get(this, qry, ord, lmt);
+	}
+
+	public int getRefFilesCount(final Query qry) {
+		return refFiles.getCount(this, qry);
 	}
 
 	public void removeRefFile(int id) {

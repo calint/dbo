@@ -1,4 +1,4 @@
-[ ] getCount(Query):int does select count(t1.*) from Book t1 where <query>
+[ ] DbTransaction.getCount(Query):int does select count(t1.*) from <class> t1 where <query>
 [ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
 [.] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
