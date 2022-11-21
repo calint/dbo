@@ -11,6 +11,7 @@ import db.FldString;
 import db.FldTimestamp;
 import db.Index;
 import db.IndexFt;
+import db.IndexRel;
 import db.Limit;
 import db.Order;
 import db.Query;
@@ -34,7 +35,8 @@ public final class User extends DbObject {
 	public final static RelRefN refFiles = new RelRefN(File.class);
 
 	public final static Index ixName = new Index(name);
-	public final static IndexFt ixFt = new IndexFt(name, passhash);
+	public final static IndexFt ixFt = new IndexFt(name);
+	public final static IndexRel ixGroupPic = new IndexRel(groupPic);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {

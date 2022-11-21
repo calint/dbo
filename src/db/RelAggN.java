@@ -8,7 +8,7 @@ import java.util.List;
 public final class RelAggN extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
-	FldRel relFld;
+//	FldRel relFld;
 
 	public RelAggN(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -16,10 +16,10 @@ public final class RelAggN extends DbRelation {
 	}
 
 	@Override
-	void connect(final DbClass dbcls) {
+	void init(final DbClass dbcls) {
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		relFld = new FldRel();
-		relFld.columnName = dbcls.tableName + "_" + name;
+		relFld.name = dbcls.tableName + "_" + name;
 		toDbCls.declaredFields.add(relFld);
 	}
 
@@ -50,7 +50,6 @@ public final class RelAggN extends DbRelation {
 			throw new RuntimeException(ths.getClass().getName() + "[" + ths.id() + "] does not contain "
 					+ toCls.getName() + "[" + toId + "] in relation '" + this.name + "'");
 
-//		o.deleteFromDb();
 		Db.currentTransaction().delete(o);
 	}
 
@@ -59,7 +58,6 @@ public final class RelAggN extends DbRelation {
 			throw new RuntimeException(ths.getClass().getName() + "[" + ths.id() + "] does not contain "
 					+ toCls.getName() + "[" + o.id() + "] in relation '" + this.name + "'");
 
-//		o.deleteFromDb();
 		Db.currentTransaction().delete(o);
 	}
 
@@ -69,7 +67,7 @@ public final class RelAggN extends DbRelation {
 		boolean found = false;
 		while (rs.next()) {
 			final String indexName = rs.getString("INDEX_NAME");
-			if (indexName.equals(relFld.columnName)) {
+			if (indexName.equals(relFld.name)) {
 				found = true;
 				break;
 			}
@@ -79,8 +77,8 @@ public final class RelAggN extends DbRelation {
 			return;
 
 		final StringBuilder sb = new StringBuilder(128);
-		sb.append("create index ").append(relFld.columnName).append(" on ").append(toTableName).append('(')
-				.append(relFld.columnName).append(')');
+		sb.append("create index ").append(relFld.name).append(" on ").append(toTableName).append('(')
+				.append(relFld.name).append(')');
 
 		final String sql = sb.toString();
 		Db.log(sql);

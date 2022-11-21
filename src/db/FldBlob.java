@@ -12,7 +12,7 @@ public final class FldBlob extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" longblob");
+		sb.append(name).append(" longblob");
 	}
 
 	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

@@ -147,11 +147,11 @@ public final class DbTransaction {
 
 		sb.setLength(sb.length() - 1);
 
-		final String sql = sb.toString();
-		Db.log(sql);
 		final ArrayList<DbObject> ls = new ArrayList<DbObject>(128); // ? magic number
 		try {
 			final Constructor<? extends DbObject> ctor = cls.getConstructor();
+			final String sql = sb.toString();
+			Db.log(sql);
 			final ResultSet rs = stmt.executeQuery(sql);
 			if (cache_enabled) {
 				while (rs.next()) {
@@ -249,7 +249,7 @@ public final class DbTransaction {
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(o.getClass())).append(" set ");
 		for (final DbField f : o.dirtyFields) {
-			sb.append(f.columnName).append('=');
+			sb.append(f.name).append('=');
 			f.sql_updateValue(sb, o);
 			sb.append(',');
 		}
@@ -266,8 +266,8 @@ public final class DbTransaction {
 		if (cache_enabled)
 			cache.clear();
 		try {
-			stmt.close();
 			con.rollback();
+			stmt.close();
 			Db.log("*** rollback done");
 		} catch (Throwable t) {
 			throw new RuntimeException(t);

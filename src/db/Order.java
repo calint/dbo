@@ -23,7 +23,7 @@ public final class Order {
 	public Order(Class<? extends DbObject> cls, boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = Db.tableNameForJavaClass(cls);
-		e.columnName = DbObject.id.columnName;
+		e.columnName = DbObject.id.name;
 		e.dir = ascending ? "" : "desc";
 		elems.add(e);
 	}
@@ -40,7 +40,7 @@ public final class Order {
 	public Order append(DbField fld, boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = fld.tableName;
-		e.columnName = fld.columnName;
+		e.columnName = fld.name;
 		e.dir = ascending ? "" : "desc";
 		elems.add(e);
 		return this;

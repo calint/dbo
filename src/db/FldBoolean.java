@@ -20,7 +20,7 @@ public final class FldBoolean extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" boolean default ").append(defval);
+		sb.append(name).append(" boolean default ").append(defval);
 	}
 
 	@Override

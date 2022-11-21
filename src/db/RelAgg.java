@@ -3,7 +3,7 @@ package db;
 public final class RelAgg extends DbRelation {
 	final Class<? extends DbObject> toCls;
 	final String toTableName;
-	FldRel relFld;
+//	FldRel relFld;
 
 	public RelAgg(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -11,9 +11,9 @@ public final class RelAgg extends DbRelation {
 	}
 
 	@Override
-	void connect(final DbClass dbcls) {
+	void init(final DbClass dbcls) {
 		relFld = new FldRel();
-		relFld.columnName = name;
+		relFld.name = name;
 		dbcls.declaredFields.add(relFld);
 	}
 

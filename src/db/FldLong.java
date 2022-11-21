@@ -20,7 +20,7 @@ public final class FldLong extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" bigint default ").append(defval);
+		sb.append(name).append(" bigint default ").append(defval);
 	}
 
 	@Override

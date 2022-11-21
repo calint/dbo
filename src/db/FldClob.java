@@ -10,6 +10,6 @@ public final class FldClob extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" longtext");
+		sb.append(name).append(" longtext");
 	}
 }

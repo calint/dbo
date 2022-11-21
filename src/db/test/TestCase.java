@@ -14,12 +14,14 @@ public abstract class TestCase implements Runnable {
 		try {
 			doRun();
 			tn.finishTransaction();
+			System.out.println("test: " + getClass().getName() + " passed");
 		} catch (Throwable t1) {
 			try {
 				tn.rollback();
 			} catch (Throwable t2) {
 				t2.printStackTrace();
 			}
+			System.out.println("test: " + getClass().getName() + " failed");
 			throw new RuntimeException(t1);
 		} finally {
 			Db.deinitCurrentTransaction();

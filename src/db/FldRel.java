@@ -14,6 +14,6 @@ final class FldRel extends DbField {
 
 	@Override
 	void sql_createColumn(final StringBuilder sb) {
-		sb.append(columnName).append(" int");
+		sb.append(name).append(" int");
 	}
 }

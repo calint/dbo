@@ -74,7 +74,7 @@ public final class Db {
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
 	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
-	public void register(Class<? extends DbObject> cls) throws Throwable {
+	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);
 		clsToDbClsMap.put(cls, dbcls);
@@ -92,12 +92,18 @@ public final class Db {
 		// allow DbClass relations to add necessary fields to other DbClasses
 		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.declaredRelations)// ? what about inherited relations
-				r.connect(c);
+				r.init(c);
+		}
+
+		// allow Indexes to initiate using fully constructed DbRelations
+		for (final DbClass c : dbclasses) {
+			for (final Index ix : c.declaredIndexes)
+				ix.init(c);
 		}
 
 		// create allFields, allRelations, allIndexes lists
 		for (final DbClass c : dbclasses) {
-			c.initAllFieldsAndRelationsLists();
+			c.init();
 			Db.log(c.toString());
 		}
 

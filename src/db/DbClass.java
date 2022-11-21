@@ -30,24 +30,24 @@ public final class DbClass {
 				continue;
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
+				dbf.name = f.getName();
 //				dbf.cls = c;
 				dbf.tableName = tableName;
-				dbf.columnName = f.getName();
 				declaredFields.add(dbf);
 				continue;
 			}
 			if (DbRelation.class.isAssignableFrom(f.getType())) {
 				final DbRelation dbr = (DbRelation) f.get(null);
+				dbr.name = f.getName();
 				dbr.cls = c;
 				dbr.tableName = tableName;
-				dbr.name = f.getName();
 				declaredRelations.add(dbr);
 				continue;
 			}
 			if (Index.class.isAssignableFrom(f.getType())) {
 				final Index ix = (Index) f.get(null);
-				ix.cls = c;
 				ix.name = f.getName();
+				ix.cls = c;
 				ix.tableName = tableName;
 				declaredIndexes.add(ix);
 				continue;
@@ -56,15 +56,15 @@ public final class DbClass {
 	}
 
 	/** recurse initiates allFields, allRelations, allIndexes lists */
-	void initAllFieldsAndRelationsLists() {
-		initAllFieldsAndRelationsListsRec(allFields, allRelations, allIndexes, javaClass);
+	void init() {
+		init_rec(allFields, allRelations, allIndexes, javaClass);
 	}
 
-	private static void initAllFieldsAndRelationsListsRec(final List<DbField> lsfld, final List<DbRelation> lsrel,
+	private static void init_rec(final List<DbField> lsfld, final List<DbRelation> lsrel,
 			final List<Index> lsix, final Class<?> cls) {
 		final Class<?> scls = cls.getSuperclass();
 		if (!scls.equals(Object.class)) {
-			initAllFieldsAndRelationsListsRec(lsfld, lsrel, lsix, scls);
+			init_rec(lsfld, lsrel, lsix, scls);
 		}
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 		lsfld.addAll(dbcls.declaredFields);

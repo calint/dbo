@@ -27,7 +27,7 @@ public final class IndexFt extends Index {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create fulltext index ").append(name).append(" on ").append(tableName).append('(');
 		for (final DbField f : fields) {
-			sb.append(f.columnName).append(',');
+			sb.append(f.name).append(',');
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(')');

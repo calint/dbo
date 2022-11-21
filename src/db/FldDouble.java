@@ -20,7 +20,7 @@ public final class FldDouble extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" double default ").append(defval);
+		sb.append(name).append(" double default ").append(defval);
 	}
 
 	@Override

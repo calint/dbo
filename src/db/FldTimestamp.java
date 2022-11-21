@@ -21,7 +21,7 @@ public final class FldTimestamp extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" timestamp");
+		sb.append(name).append(" timestamp");
 		if (defval != null) {
 			sb.append(" default '").append(defval).append("'");
 		}

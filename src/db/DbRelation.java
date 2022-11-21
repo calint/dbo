@@ -7,12 +7,13 @@ abstract class DbRelation {
 	Class<? extends DbObject> cls;
 	String tableName;
 	String name;
+	FldRel relFld;
 
 	/**
-	 * Called after all DbClasses have been created and necessary relation fields
-	 * can be added to other DbClasses.
+	 * Called after all DbClasses have been created. Necessary relation fields can
+	 * be added to other DbClasses.
 	 */
-	void connect(final DbClass c) {
+	void init(final DbClass c) {
 	}
 
 	/**

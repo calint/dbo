@@ -20,7 +20,7 @@ public final class FldFloat extends DbField {
 
 	@Override
 	void sql_createColumn(StringBuilder sb) {
-		sb.append(columnName).append(" float default ").append(defval);
+		sb.append(name).append(" float default ").append(defval);
 	}
 
 	@Override
