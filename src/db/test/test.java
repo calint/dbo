@@ -16,7 +16,6 @@ public class test extends TestCase {
 		final DbTransaction tn = Db.currentTransaction();
 //		tn.cache_enabled = false;
 		File f;
-		int id = 0;
 		List<DbObject> ls;
 		Query q;
 
@@ -92,6 +91,7 @@ public class test extends TestCase {
 
 		f = u.getProfilePic(false);
 		f = u.getProfilePic(true);
+		int id = 0;
 		id = u.getProfilePicId();
 		File ff = u.getProfilePic(false);
 		u.addRefFile(f.id());

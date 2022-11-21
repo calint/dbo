@@ -3,7 +3,6 @@ package db.test;
 import db.Db;
 import db.DbTransaction;
 
-/** wrapper for transaction */
 public abstract class TestCase implements Runnable {
 	public final void run() {
 		final DbTransaction tn;
