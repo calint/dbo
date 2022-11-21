@@ -1,7 +1,7 @@
 [o] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
 [ ]     cascade delete with "delete from ... where ..." if aggregated does not have any Agg,AggN,RefN itself
-[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
+[ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [o] Index(DbField...)
 [x]    Collation asc
 [ ]    Collation desc

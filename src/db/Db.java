@@ -253,8 +253,7 @@ public final class Db {
 	}
 
 	/**
-	 * !!! deletes all and recreates tables and indexes. used by testing
-	 * framework
+	 * !!! deletes all and recreates tables and indexes. used by testing framework
 	 */
 	public void reset() {
 		Db.log("*** reseting database");
@@ -307,7 +306,8 @@ public final class Db {
 	}
 
 	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
-		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
+//		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
+		final String tblnm = cls.getName().replace('.', '_');
 		return tblnm;
 	}
 

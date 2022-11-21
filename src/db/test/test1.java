@@ -214,17 +214,19 @@ public class test1 extends TestCase {
 		for (final DbObject o : ls5) {
 			tn.delete(o);
 		}
-		if (!ls5.isEmpty())
+		
+		final List<DbObject> ls6 = tn.get(User.class, null, null, null);
+		if (!ls6.isEmpty())
 			throw new RuntimeException();
 
-		final List<DbObject> ls6 = tn.get(File.class, null, null, null);
-		for (final DbObject o : ls6) {
-			tn.delete(o);
-		}
-
-		final List<DbObject> ls7 = tn.get(Book.class, null, null, null);
-		for (final DbObject o : ls7) {
-			tn.delete(o);
-		}
+//		final List<DbObject> ls6 = tn.get(File.class, null, null, null);
+//		for (final DbObject o : ls6) {
+//			tn.delete(o);
+//		}
+//
+//		final List<DbObject> ls7 = tn.get(Book.class, null, null, null);
+//		for (final DbObject o : ls7) {
+//			tn.delete(o);
+//		}
 	}
 }
