@@ -4,7 +4,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
 // represents the relation table
-final class MetaRelRefN {
+final class RelRefNMeta {
 //	final Class<? extends DbObject> fromCls;
 //	final Class<? extends DbObject> toCls;
 	final String tableName; // the table name for this association NN table
@@ -13,7 +13,7 @@ final class MetaRelRefN {
 	final String toTableName; // table name of "to" class
 	final String toColName; // column name where id to referencing target
 
-	MetaRelRefN(final Class<? extends DbObject> fromCls, final String relName, final Class<? extends DbObject> toCls) {
+	RelRefNMeta(final Class<? extends DbObject> fromCls, final String relName, final Class<? extends DbObject> toCls) {
 //		this.fromCls = fromCls;
 //		this.toCls = toCls;
 		this.fromTableName = Db.tableNameForJavaClass(fromCls);

@@ -60,7 +60,7 @@ public final class Db {
 	private final LinkedList<Connection> conpool = new LinkedList<Connection>();
 	private final ArrayList<DbClass> dbclasses = new ArrayList<DbClass>();
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
-	final ArrayList<MetaRelRefN> relRefNMeta = new ArrayList<MetaRelRefN>();
+	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
 	public void register(Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
@@ -108,7 +108,7 @@ public final class Db {
 		}
 
 		// create RefN tables
-		for (final MetaRelRefN rrm : relRefNMeta) {
+		for (final RelRefNMeta rrm : relRefNMeta) {
 			final StringBuilder sb = new StringBuilder(256);
 			rrm.sql_createTable(sb, dbm);
 			if (sb.length() == 0)

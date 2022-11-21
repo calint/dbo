@@ -7,7 +7,7 @@ import java.util.List;
 public final class RelRefN extends DbRelation {
 	private final Class<? extends DbObject> toCls;
 	final String toTableName;
-	MetaRelRefN rrm;
+	RelRefNMeta rrm;
 
 	public RelRefN(Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
@@ -16,7 +16,7 @@ public final class RelRefN extends DbRelation {
 
 	@Override
 	void connect(final DbClass c) {
-		rrm = new MetaRelRefN(c.javaClass, name, toCls);
+		rrm = new RelRefNMeta(c.javaClass, name, toCls);
 		Db.instance().relRefNMeta.add(rrm);
 		final DbClass todbcls = Db.instance().dbClassForJavaClass(toCls);
 		todbcls.referingRefN.add(this);
