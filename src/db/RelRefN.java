@@ -2,7 +2,6 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.List;
 
 public final class RelRefN extends DbRelation {
@@ -19,19 +18,14 @@ public final class RelRefN extends DbRelation {
 	void connect(final DbClass c) {
 		rrm = new MetaRelRefN(c.javaClass, name, toCls);
 		Db.instance().relRefNMeta.add(rrm);
+		final DbClass todbcls = Db.instance().dbClassForJavaClass(toCls);
+		todbcls.referingRefN.add(this);
 	}
 
 	public void add(final DbObject from, final int toId) {
-		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
 		rrm.sql_addToTable(sb, from.id(), toId);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+		Db.currentTransaction().execSql(sb);
 	}
 
 //	public void add(final DbObject from, final DbObject to) {
@@ -46,34 +40,22 @@ public final class RelRefN extends DbRelation {
 	}
 
 	public void remove(final DbObject from, final int toId) {
-		final Statement stmt = Db.currentTransaction().stmt;
 		final StringBuilder sb = new StringBuilder(256);
 		rrm.sql_deleteFromTable(sb, from.id(), toId);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+		Db.currentTransaction().execSql(sb);
 	}
 
-	public void removeAll(final DbObject from) {
-		final Statement stmt = Db.currentTransaction().stmt;
+	void removeAll(final int id) {
 		final StringBuilder sb = new StringBuilder(256);
-		rrm.sql_deleteAllFromTable(sb, from.id());
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-		} catch (final Throwable t) {
-			throw new RuntimeException(t);
-		}
+		rrm.sql_deleteAllFromTable(sb, id);
+		Db.currentTransaction().execSql(sb);
 	}
 
-//	public void remove(final DbObject from, final DbObject to) {
-//		remove(from, to.getId());
-//	}
+	void deleteReferencesTo(final int id) {
+		final StringBuilder sb = new StringBuilder(256);
+		rrm.sql_deleteReferencesTo(sb, id);
+		Db.currentTransaction().execSql(sb);
+	}
 
 	@Override
 	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
@@ -97,7 +79,6 @@ public final class RelRefN extends DbRelation {
 
 	@Override
 	void cascadeDelete(DbObject ths) {
-		removeAll(ths);
+		removeAll(ths.id());
 	}
-
 }

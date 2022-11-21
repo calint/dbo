@@ -9,7 +9,7 @@ import db.DbTransaction;
 
 // import-200k-book
 //   download csv at https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews
-public class import_books extends DbRunnable {
+public class import_books extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();

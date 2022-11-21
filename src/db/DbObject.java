@@ -83,6 +83,13 @@ public abstract class DbObject {
 		for (final DbRelation r : dbcls.allRelations) {
 			r.cascadeDelete(this);
 		}
+
+		// delete orphans
+		for (final RelRefN r : dbcls.referingRefN) {
+			r.deleteReferencesTo(id());
+		}
+
+		// delete this
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(dbcls.tableName).append(" where id=").append(id());
 		final String sql = sb.toString();

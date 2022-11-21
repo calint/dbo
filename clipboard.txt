@@ -108,3 +108,7 @@ select t1.* from Book as t1, DataText as t2 where t1.data=t2.id and match(t2.dat
 
 # drop all tables
 drop table User;drop table File;drop table DataBinary;drop table User_refFiles;drop table Book;drop table DataText;drop table Game;
+
+bash -vx source-stats.sh
+
+

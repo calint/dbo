@@ -1,6 +1,4 @@
 [ ] getCount(Query):int does select count(t1.*) from Book t1 where <query>
-[ ] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
-[ ]   test case
 [ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
 [.] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
@@ -54,6 +52,9 @@
 [ ]   oracle?
 [ ]   ms sql server?
 [ ]   ibm db2?
+[ ]  Query.TableAliasMap: User -> u. if u present try us etc
+[ ]  Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
+
 
 [x] delete
 [x]    cascade
@@ -100,3 +101,6 @@
 [x]   create
 [x]   get
 [x]   delete
+[x] orphan RefN fix Map<Class,List<MetaRelRefN>> in Db, delete from <relRefTable> where <toId>=<deletedObjectId>
+[x]   impl instead: dbclass.referingRefN, dbobject.deleteFromDb() etc
+[x]   test case

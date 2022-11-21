@@ -6,7 +6,7 @@ import java.sql.Statement;
 import db.Db;
 
 //// jdbc-select-book-10req-1M
-public class jdbc_select_books extends DbRunnable {
+public class jdbc_select_books extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final Statement stmt = Db.currentTransaction().getJdbcStatement();

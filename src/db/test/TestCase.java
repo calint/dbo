@@ -4,7 +4,7 @@ import db.Db;
 import db.DbTransaction;
 
 /** wrapper for transaction */
-public abstract class DbRunnable implements Runnable {
+public abstract class TestCase implements Runnable {
 	public final void run() {
 		DbTransaction tn;
 		try {

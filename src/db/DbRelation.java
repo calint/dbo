@@ -18,6 +18,7 @@ abstract class DbRelation {
 	 * Called after all tables have been created and relations can create necessary
 	 * indexes. DatabaseMetaData is used to check if index already exists.
 	 */
+	// ? createIndex(DatabaseMetadata) instead, relations executes sql already
 	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
 	}
 

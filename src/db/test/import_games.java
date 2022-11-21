@@ -8,7 +8,7 @@ import db.Db;
 import db.DbTransaction;
 
 // import games
-public class import_games extends DbRunnable {
+public class import_games extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();

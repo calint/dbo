@@ -10,7 +10,7 @@ import db.Limit;
 import db.Order;
 import db.Query;
 
-public class test extends DbRunnable {
+public class test extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();

@@ -4,15 +4,15 @@ import db.Db;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
-import db.test.DbRunnable;
+import db.test.TestCase;
 import db.test.File;
 import db.test.Game;
 import db.test.User;
-import db.test.jdbc_select_books;
+import db.test.refn_orphans;
 
 public class Main {
-	private static void run(Class<? extends DbRunnable> cls) throws Throwable {
-		final DbRunnable r = cls.getConstructor().newInstance();
+	private static void run(Class<? extends TestCase> cls) throws Throwable {
+		final TestCase r = cls.getConstructor().newInstance();
 		final Thread t = new Thread(r);
 		t.start();
 		t.join();
@@ -30,14 +30,15 @@ public class Main {
 		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 
 //		run(import_books.class);
-		run(jdbc_select_books.class);
+//		run(jdbc_select_books.class);
 //		run(get_books.class);
 //		run(fulltext_search_books.class);
 //		run(import_games.class);
 //		run(test.class);
 //		run(delete_books.class);
 //		run(print_column_types.class);
-
+		run(refn_orphans.class);
+		
 		db.shutdown();
 	}
 }

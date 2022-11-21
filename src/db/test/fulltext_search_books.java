@@ -8,7 +8,7 @@ import db.DbTransaction;
 import db.Limit;
 import db.Query;
 
-public class fulltext_search_books extends DbRunnable {
+public class fulltext_search_books extends TestCase {
 	@Override
 	public void doRun() {
 		final DbTransaction tn = Db.currentTransaction();

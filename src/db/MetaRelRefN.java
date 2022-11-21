@@ -49,4 +49,15 @@ final class MetaRelRefN {
 	void sql_deleteAllFromTable(StringBuilder sb, int fromId) {
 		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(fromId);
 	}
+
+	void sql_deleteReferencesTo(final StringBuilder sb, int id) {
+		sb.append("delete from ").append(tableName).append(" where ").append(toColName).append('=').append(id);
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(this.tableName);
+		return super.toString();
+	}
 }

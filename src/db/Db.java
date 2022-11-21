@@ -210,4 +210,15 @@ public final class Db {
 	DbClass dbClassForJavaClass(final Class<?> c) {
 		return clsToDbClsMap.get(c);
 	}
+
+//	// convenience
+//	static void execSql(StringBuilder sb) {
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		try {
+//			Db.currentTransaction().stmt.execute(sql);
+//		} catch (final Throwable t) {
+//			throw new RuntimeException(t);
+//		}
+//	}
 }

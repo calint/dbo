@@ -172,6 +172,16 @@ public final class DbTransaction {
 		}
 	}
 
+	void execSql(final StringBuilder sb) {
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			stmt.execute(sql);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "dirtyObjects=" + dirtyObjects;

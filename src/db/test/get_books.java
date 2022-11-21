@@ -8,7 +8,7 @@ import db.DbTransaction;
 import db.Limit;
 
 //// get-book-10req-1M
-public class get_books extends DbRunnable {
+public class get_books extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();

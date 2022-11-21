@@ -18,6 +18,8 @@ public final class DbClass {
 
 	final ArrayList<Index> declaredIndexes = new ArrayList<Index>();
 	final ArrayList<Index> allIndexes = new ArrayList<Index>();
+	
+	final ArrayList<RelRefN> referingRefN = new ArrayList<RelRefN>();
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
