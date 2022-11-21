@@ -18,4 +18,13 @@ public final class DataText extends DbObject {
 	public void setData(String v) {
 		set(data, v);
 	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public String getMeta() {
+		return getStr(meta);
+	}
+
+	public void setMeta(String v) {
+		set(meta, v);
+	}
 }

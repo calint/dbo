@@ -29,6 +29,8 @@ public class Main {
 		db.register(Game.class);
 		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 
+//		Db.log_enable = false;
+		
 //		run(import_books.class);
 //		run(jdbc_select_books.class);
 //		run(get_books.class);

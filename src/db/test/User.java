@@ -1,5 +1,6 @@
 package db.test;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
@@ -7,6 +8,7 @@ import db.FldBoolean;
 import db.FldDouble;
 import db.FldFloat;
 import db.FldInt;
+import db.FldLong;
 import db.FldString;
 import db.FldTimestamp;
 import db.Index;
@@ -24,6 +26,7 @@ public final class User extends DbObject {
 	public final static FldString name = new FldString();
 	public final static FldString passhash = new FldString(32);
 	public final static FldInt nlogins = new FldInt();
+	public final static FldLong lng = new FldLong();
 	public final static FldFloat flt = new FldFloat();
 	public final static FldDouble dbl = new FldDouble();
 	public final static FldBoolean bool = new FldBoolean();
@@ -57,12 +60,30 @@ public final class User extends DbObject {
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public Timestamp getBirthTime() {
+		return getTimestamp(birthTime);
+	}
+
+	public void setBirthTime(Timestamp v) {
+		set(birthTime, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public int getNLogins() {
 		return getInt(nlogins);
 	}
 
 	public void setNLogins(int v) {
 		set(nlogins, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public long getLng() {
+		return getLong(lng);
+	}
+
+	public void setLng(long v) {
+		set(lng, v);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -

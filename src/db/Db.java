@@ -14,6 +14,9 @@ public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
 	public static boolean log_enable = true;
+	private String jdbcUrl;
+	private String jdbcUser;
+	private String jdbcPasswd;
 
 	static void log(String s) {
 		if (!log_enable)
@@ -21,11 +24,16 @@ public final class Db {
 		System.out.println(s);
 	}
 
+	public Connection createJdbcConnection() throws Throwable {
+		final Connection c = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPasswd);
+		return c;
+	}
+
 	/** initiates thread local for Db.currentTransaction() */
 	public static DbTransaction initCurrentTransaction() {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)// ? fix
-			throw new RuntimeException("connection pool empty");// ?
+			throw new RuntimeException("connection pool empty");
 		try {
 			final DbTransaction t = new DbTransaction(c);
 			tn.set(t);
@@ -81,6 +89,9 @@ public final class Db {
 	}
 
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
+		jdbcUrl = url;
+		jdbcUser = user;
+		jdbcPasswd = password;
 		Db.log("jdbc connection: " + url);
 		final Connection con = DriverManager.getConnection(url, user, password);
 
@@ -111,6 +122,93 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
+		createTablesAndIndexes(con, dbm);
+//		// create tables
+//		final Statement stmt = con.createStatement();
+//		for (final DbClass dbcls : dbclasses) {
+//			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
+//				continue;
+//			final StringBuilder sb = new StringBuilder(256);
+//			dbcls.sql_createTable(sb, dbm);
+//			if (sb.length() == 0)
+//				continue;
+//			final String sql = sb.toString();
+//			Db.log(sql);
+//			stmt.execute(sql);
+//		}
+//
+//		// create RefN tables
+//		for (final RelRefNMeta rrm : relRefNMeta) {
+//			final StringBuilder sb = new StringBuilder(256);
+//			rrm.sql_createTable(sb, dbm);
+//			if (sb.length() == 0)
+//				continue;
+//			final String sql = sb.toString();
+//			Db.log(sql);
+//			stmt.execute(sql);
+//		}
+//
+//		// all tables have been created
+//
+//		// create indexes for relations
+//		for (final DbClass dbcls : dbclasses) {
+//			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
+//				dbrel.sql_createIndex(stmt, dbm);
+//			}
+//		}
+//
+//		// create indexes
+//		for (final DbClass dbcls : dbclasses) {
+//			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
+//				ix.sql_createIndex(stmt, dbm);
+//			}
+//		}
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+
+		// output tables, columns, indexes
+		final ResultSet rstbls = dbm.getTables(null, null, null, new String[] { "TABLE" });
+		while (rstbls.next()) {
+			final String tblname = rstbls.getString("TABLE_NAME");
+			Db.log("[" + tblname + "]");
+			ResultSet rscols = dbm.getColumns(null, null, tblname, null);
+			while (rscols.next()) {
+				String columnName = rscols.getString("COLUMN_NAME");
+				String datatype = rscols.getString("TYPE_NAME");
+				String defval = rscols.getString("COLUMN_DEF");
+				final StringBuilder sb = new StringBuilder();
+				sb.append("    ").append(columnName).append(' ').append(datatype).append(' ');
+				if (defval != null) {
+					sb.append('\'').append(defval).append('\'');
+				}
+
+				Db.log(sb.toString());
+			}
+			rscols.close();
+
+			final ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
+			while (rsix.next()) {
+				Db.log("  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
+			}
+			rsix.close();
+			Db.log("");
+		}
+		rstbls.close();
+
+//		stmt.close();
+		con.close();
+
+		// create connection pool
+		for (int i = 0; i < ncons; i++) {
+			final Connection c = DriverManager.getConnection(url, user, password);
+			c.setAutoCommit(false);
+			conpool.add(c);
+		}
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+	}
+
+	private void createTablesAndIndexes(final Connection con, final DatabaseMetaData dbm) throws Throwable {
 		// create tables
 		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
@@ -152,48 +250,48 @@ public final class Db {
 			}
 		}
 
-		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+	}
 
-		// output tables, columns, indexes
-		final ResultSet rstbls = dbm.getTables(null, null, null, new String[] { "TABLE" });
-		while (rstbls.next()) {
-			final String tblname = rstbls.getString("TABLE_NAME");
-			Db.log("[" + tblname + "]");
-			ResultSet rscols = dbm.getColumns(null, null, tblname, null);
-			while (rscols.next()) {
-				String columnName = rscols.getString("COLUMN_NAME");
-				String datatype = rscols.getString("TYPE_NAME");
-				String defval = rscols.getString("COLUMN_DEF");
-				final StringBuilder sb = new StringBuilder();
-				sb.append("    ").append(columnName).append(' ').append(datatype).append(' ');
-				if (defval != null) {
-					sb.append('\'').append(defval).append('\'');
-				}
-
-				Db.log(sb.toString());
+	/**
+	 * !!! deletes all and recreates tables and indexes. used by testing
+	 * framework
+	 */
+	public void reset() {
+		Db.log("*** reseting database");
+		Connection con = null;
+		try {
+			con = createJdbcConnection();
+			final Statement stmt = con.createStatement();
+			final StringBuilder sb = new StringBuilder();
+			for (final DbClass dbc : dbclasses) {
+				if (Modifier.isAbstract(dbc.javaClass.getModifiers()))
+					continue;
+				sb.setLength(0);
+				sb.append("drop table ").append(dbc.tableName);
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
 			}
-			rscols.close();
-
-			final ResultSet rsix = dbm.getIndexInfo(null, null, tblname, false, false);
-			while (rsix.next()) {
-				Db.log("  index " + rsix.getString("INDEX_NAME") + " on " + rsix.getString("COLUMN_NAME"));
+			for (final RelRefNMeta rnm : relRefNMeta) {
+				sb.setLength(0);
+				sb.append("drop table ").append(rnm.tableName);
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
 			}
-			rsix.close();
-			Db.log("");
+			stmt.close();
+
+			createTablesAndIndexes(con, con.getMetaData());
+		} catch (Throwable t) {
+			t.printStackTrace();
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
 		}
-		rstbls.close();
-
-		stmt.close();
-		con.close();
-
-		// create connection pool
-		for (int i = 0; i < ncons; i++) {
-			final Connection c = DriverManager.getConnection(url, user, password);
-			c.setAutoCommit(false);
-			conpool.add(c);
-		}
-
-		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 	}
 
 	public void shutdown() {

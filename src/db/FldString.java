@@ -11,16 +11,16 @@ public final class FldString extends DbField {
 		this("", 255);
 	}
 
-	public FldString(final String def) {
-		this(def, 255);
-	}
-
 	public FldString(int size) {
 		this("", size);
 	}
 
+	public FldString(final String def) {
+		this(def, 255);
+	}
+
 	public FldString(final String def, final int size) {
-		if (size > max_size)
+		if (size > max_size) // ? mysql specifc
 			throw new RuntimeException("size " + size + " exceeds maximum of " + max_size);
 		this.size = size;
 		this.defval = def;
@@ -32,8 +32,13 @@ public final class FldString extends DbField {
 
 	@Override
 	void sql_updateValue(StringBuilder sb, DbObject o) {
+		final String s = o.getStr(this);
+		if (s == null) {
+			sb.append("null");
+			return;
+		}
 		sb.append('\'');
-		sqlEscapeString(sb, o.getStr(this));
+		sqlEscapeString(sb, s);
 		sb.append('\'');
 	}
 

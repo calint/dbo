@@ -1,5 +1,6 @@
 package db.test;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import db.Db;
@@ -8,6 +9,16 @@ import db.DbTransaction;
 import db.Query;
 
 public class test1 extends TestCase {
+	@Override
+	protected boolean isRunWithCache() {
+		return true;
+	}
+
+	@Override
+	protected boolean isRunWithoutCache() {
+		return true;
+	}
+
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
@@ -80,6 +91,13 @@ public class test1 extends TestCase {
 		if (!tn.cache_enabled && f2 == f4)
 			throw new RuntimeException("expected different instances. is cache on?");
 
+		u1.setGroupPic(0);
+		final File ref3 = u1.getGroupPic();
+		if (ref3 != null)
+			throw new RuntimeException("expected null");
+
+		u1.setGroupPic(0);
+
 		final Book b1 = (Book) tn.create(Book.class);
 		final DataText d = b1.getData(false);
 		if (d != null)
@@ -125,5 +143,72 @@ public class test1 extends TestCase {
 				throw new RuntimeException("gotten byte array does not match set array");
 			}
 		}
+
+		// test min max
+
+		final User u4 = (User) tn.create(User.class);
+		final int u4id = u4.id();
+		u4.setName(null);
+		u4.setBool(false);
+		u4.setNLogins(Integer.MIN_VALUE);
+		u4.setLng(Long.MIN_VALUE);
+		u4.setFlt(Float.MIN_VALUE);
+		u4.setDbl(Double.MIN_VALUE);
+//		final Timestamp ts1 = Timestamp.valueOf("1970-01-01 00:00:01"); // ? mysql cannot be written to Database
+//		u4.setBirthTime(ts1);
+
+		tn.commit(); // flush cache to retrieve the user from database
+		final List<DbObject> ls = tn.get(User.class, new Query(User.class, u4id), null, null);
+		if (ls.size() != 1)
+			throw new RuntimeException("expected to find one user with id " + u4id);
+		final User u5 = (User) ls.get(0);
+		if (u5.getName() != null)
+			throw new RuntimeException();
+		if (u5.getBool() != false)
+			throw new RuntimeException();
+		if (u5.getNLogins() != Integer.MIN_VALUE)
+			throw new RuntimeException();
+		if (u5.getLng() != Long.MIN_VALUE)
+			throw new RuntimeException();
+		if (u5.getFlt() != Float.MIN_VALUE)
+			throw new RuntimeException();
+		if (u5.getDbl() != Double.MIN_VALUE)
+			throw new RuntimeException();
+//		if (!u5.getBirthTime().equals(ts1))
+//			throw new RuntimeException();
+
+		final String s1 = "testing string \0 \' \" \r \n \\";
+//		final String s1 = "testing string \' \" \r \n \\";
+		u4.setName(s1);
+		u4.setBool(true);
+		u4.setNLogins(Integer.MAX_VALUE);
+		u4.setLng(Long.MAX_VALUE);
+//		u4.setFlt(Float.MAX_VALUE); // ? mysql problems with float
+//		u4.setFlt(3.402823466E+38f); // ? mysql max is 3.402823466E+38 but it does not work
+		u4.setDbl(Double.MAX_VALUE);
+		final Timestamp ts2 = Timestamp.valueOf("2038-01-19 03:14:07");
+		u4.setBirthTime(ts2);
+
+		tn.commit(); // flush cache to retrieve the user from database
+
+		final List<DbObject> ls3 = tn.get(User.class, new Query(User.class, u4id), null, null);
+		if (ls3.size() != 1)
+			throw new RuntimeException("expected to find one user with id " + u4id);
+		final User u6 = (User) ls3.get(0);
+
+		if (!s1.equals(u6.getName()))
+			throw new RuntimeException();
+		if (u6.getBool() != true)
+			throw new RuntimeException();
+		if (u6.getNLogins() != Integer.MAX_VALUE)
+			throw new RuntimeException();
+		if (u6.getLng() != Long.MAX_VALUE)
+			throw new RuntimeException();
+//		if (u6.getFlt() != Float.MAX_VALUE)
+//			throw new RuntimeException();
+		if (u6.getDbl() != Double.MAX_VALUE)
+			throw new RuntimeException();
+		if (!u6.getBirthTime().equals(ts2))
+			throw new RuntimeException();
 	}
 }
