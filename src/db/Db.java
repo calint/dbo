@@ -123,26 +123,14 @@ public final class Db {
 		// create indexes for relations
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
-				final StringBuilder sb = new StringBuilder(256);
-				dbrel.sql_createIndex(sb, dbm);
-				if (sb.length() == 0)
-					continue;
-				final String sql = sb.toString();
-				Db.log(sql);
-				stmt.execute(sql);
+				dbrel.sql_createIndex(stmt, dbm);
 			}
 		}
 
 		// create indexes
 		for (final DbClass dbcls : dbclasses) {
 			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
-				final StringBuilder sb = new StringBuilder(256);
-				ix.sql_createIndex(sb, dbm);
-				if (sb.length() == 0)
-					continue;
-				final String sql = sb.toString();
-				Db.log(sql);
-				stmt.execute(sql);
+				ix.sql_createIndex(stmt, dbm);
 			}
 		}
 

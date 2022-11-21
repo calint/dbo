@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public final class IndexFt extends Index {
 	public IndexFt(final DbField... fld) {
@@ -9,7 +10,7 @@ public final class IndexFt extends Index {
 	}
 
 	@Override
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
@@ -23,11 +24,16 @@ public final class IndexFt extends Index {
 		if (found == true)
 			return;
 
+		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create fulltext index ").append(name).append(" on ").append(tableName).append('(');
 		for (final DbField f : fields) {
 			sb.append(f.columnName).append(',');
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(')');
+
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
 }

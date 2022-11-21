@@ -161,14 +161,14 @@ public final class DbTransaction {
 						continue;
 					}
 					final DbObject o = ctor.newInstance();
-					readResultSetToDbOject(o, dbcls, rs);
+					readResultSetToDbObject(o, dbcls, rs);
 					cache.put(o);
 					ls.add(o);
 				}
 			} else {
 				while (rs.next()) {
 					final DbObject o = ctor.newInstance();
-					readResultSetToDbOject(o, dbcls, rs);
+					readResultSetToDbObject(o, dbcls, rs);
 					ls.add(o);
 				}
 			}
@@ -178,7 +178,7 @@ public final class DbTransaction {
 		return ls;
 	}
 
-	final void readResultSetToDbOject(final DbObject o, final DbClass cls, final ResultSet rs) throws Throwable {
+	private void readResultSetToDbObject(final DbObject o, final DbClass cls, final ResultSet rs) throws Throwable {
 		int i = 1;
 		for (final DbField f : cls.allFields) {
 			final Object v = rs.getObject(i);
@@ -235,7 +235,7 @@ public final class DbTransaction {
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
-				updateDb(o);
+				updateDbFromDbObject(o);
 			}
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -245,7 +245,7 @@ public final class DbTransaction {
 		Db.log("*** done flushing connection");
 	}
 
-	private void updateDb(final DbObject o) throws Throwable {
+	private void updateDbFromDbObject(final DbObject o) throws Throwable {
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("update ").append(Db.tableNameForJavaClass(o.getClass())).append(" set ");
 		for (final DbField f : o.dirtyFields) {

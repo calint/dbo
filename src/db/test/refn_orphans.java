@@ -14,7 +14,7 @@ public class refn_orphans extends TestCase {
 		u.addRefFile(f1.id());
 
 		tn.delete(f1);
-		
+
 		// leaves orphan in RelRefN table User_refFiles
 	}
 }

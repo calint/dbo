@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 public final class RelAggN extends DbRelation {
@@ -69,7 +70,7 @@ public final class RelAggN extends DbRelation {
 	}
 
 	@Override
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
@@ -83,10 +84,13 @@ public final class RelAggN extends DbRelation {
 		if (found == true)
 			return;
 
-		// create index User_refFiles on User_refFiles(User);
+		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create index ").append(relFld.columnName).append(" on ").append(toTableName).append('(')
 				.append(relFld.columnName).append(')');
 
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
 
 	@Override

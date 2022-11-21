@@ -2,6 +2,8 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashSet;
 import java.util.List;
 
 public final class RelRefN extends DbRelation {
@@ -65,23 +67,44 @@ public final class RelRefN extends DbRelation {
 	}
 
 	@Override
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+
+		final String fromIxName = rrm.tableName + '_' + rrm.fromTableName;
+		final String toIxName = rrm.tableName + '_' + rrm.toTableName;
+
+		final HashSet<String> lookingForIndexNames = new HashSet<String>();
+		lookingForIndexNames.add(fromIxName);
+		lookingForIndexNames.add(toIxName);
+
 		final ResultSet rs = dbm.getIndexInfo(null, null, rrm.tableName, false, false);
-		boolean found = false;
 		while (rs.next()) {
 			final String indexName = rs.getString("INDEX_NAME");
-			if (indexName.equals(rrm.tableName)) {
-				found = true;
-				break;
-			}
+			lookingForIndexNames.remove(indexName);
 		}
 		rs.close();
-		if (found == true)
+
+		if (lookingForIndexNames.isEmpty())
 			return;
 
-		// create index User_refFiles on User_refFiles(User);
-		sb.append("create index ").append(rrm.tableName).append(" on ").append(rrm.tableName).append('(')
-				.append(rrm.fromColName).append(')');
+		if (lookingForIndexNames.contains(fromIxName)) {
+			final StringBuilder sb = new StringBuilder(128);
+			sb.append("create index ").append(rrm.tableName).append('_').append(rrm.fromTableName).append(" on ")
+					.append(rrm.tableName).append('(').append(rrm.fromColName).append(')');
+
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
+
+		if (lookingForIndexNames.contains(toIxName)) {
+			final StringBuilder sb = new StringBuilder(128);
+			sb.append("create index ").append(rrm.tableName).append('_').append(rrm.toTableName).append(" on ")
+					.append(rrm.tableName).append('(').append(rrm.toColName).append(')');
+
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
 	}
 
 	@Override

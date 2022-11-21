@@ -39,7 +39,7 @@ public class Main {
 //		run(print_column_types.class);
 //		run(refn_orphans.class);
 		run(test1.class);
-		
+
 		db.shutdown();
 	}
 }

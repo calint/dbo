@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.DatabaseMetaData;
+import java.sql.Statement;
 
 abstract class DbRelation {
 	Class<? extends DbObject> cls;
@@ -19,7 +20,7 @@ abstract class DbRelation {
 	 * indexes. DatabaseMetaData is used to check if index already exists.
 	 */
 	// ? createIndex(DatabaseMetadata) instead, relations executes sql already
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
 
 	void cascadeDelete(final DbObject ths) {

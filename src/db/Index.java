@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Index {
@@ -16,7 +17,7 @@ public class Index {
 		}
 	}
 
-	void sql_createIndex(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
@@ -30,18 +31,23 @@ public class Index {
 		if (found == true)
 			return;
 
+		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create index ").append(name).append(" on ").append(tableName).append('(');
 		for (final DbField f : fields) {
 			sb.append(f.columnName).append(',');
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(')');
+
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
-	
+
 	@Override
 	public String toString() {
-		final StringBuilder sb=new StringBuilder(128);
-		sb.append(name);//.append(" on ").append(tableName).append('(');
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append(name);// .append(" on ").append(tableName).append('(');
 		return sb.toString();
 	}
 }
