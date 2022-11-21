@@ -30,8 +30,9 @@ public final class RelAgg extends DbRelation {
 		if (id == 0) {
 			if (createIfNone) {
 				try {
-					final DbObject o = toCls.getConstructor().newInstance();
-					o.createInDb();
+//					final DbObject o = toCls.getConstructor().newInstance();
+//					o.createInDb();
+					final DbObject o = Db.currentTransaction().create(toCls);
 					ths.set(relFld, o.id());
 					return o;
 				} catch (Throwable t) {
@@ -47,7 +48,8 @@ public final class RelAgg extends DbRelation {
 		final DbObject o = get(ths, false);
 		if (o == null)
 			return;
-		o.deleteFromDb();
+//		o.deleteFromDb();
+		Db.currentTransaction().delete(o);
 		ths.set(relFld, 0);
 	}
 
@@ -56,6 +58,7 @@ public final class RelAgg extends DbRelation {
 		final DbObject o = get(ths, false);
 		if (o == null)
 			return;
-		o.deleteFromDb();
+//		o.deleteFromDb();
+		Db.currentTransaction().delete(o);
 	}
 }

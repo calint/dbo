@@ -24,8 +24,9 @@ public final class RelAggN extends DbRelation {
 
 	public DbObject create(final DbObject ths) {
 		try {
-			final DbObject o = toCls.getConstructor().newInstance();
-			o.createInDb();
+//			final DbObject o = toCls.getConstructor().newInstance();
+//			o.createInDb();
+			final DbObject o = Db.currentTransaction().create(toCls);
 			o.set(relFld, ths.id());
 			return o;
 		} catch (Throwable t) {
@@ -54,7 +55,8 @@ public final class RelAggN extends DbRelation {
 			throw new RuntimeException(ths.getClass().getName() + "[" + ths.id() + "] does not contain "
 					+ toCls.getName() + "[" + toId + "] in relation '" + this.name + "'");
 
-		o.deleteFromDb();
+//		o.deleteFromDb();
+		Db.currentTransaction().delete(o);
 	}
 
 	public void delete(final DbObject ths, final DbObject o) {
@@ -62,7 +64,8 @@ public final class RelAggN extends DbRelation {
 			throw new RuntimeException(ths.getClass().getName() + "[" + ths.id() + "] does not contain "
 					+ toCls.getName() + "[" + o.id() + "] in relation '" + this.name + "'");
 
-		o.deleteFromDb();
+//		o.deleteFromDb();
+		Db.currentTransaction().delete(o);
 	}
 
 	@Override
@@ -90,7 +93,8 @@ public final class RelAggN extends DbRelation {
 	void cascadeDelete(DbObject ths) {
 		final List<DbObject> ls = get(ths, null, null, null);
 		for (final DbObject o : ls) {
-			o.deleteFromDb();
+//			o.deleteFromDb();
+			Db.currentTransaction().delete(o);
 		}
 	}
 }

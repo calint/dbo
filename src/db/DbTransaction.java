@@ -62,9 +62,30 @@ public final class DbTransaction {
 	public DbObject create(final Class<? extends DbObject> cls) {
 		try {
 			final DbObject o = cls.getConstructor().newInstance();
-			o.createInDb();
+
+			final StringBuilder sb = new StringBuilder(256);
+			sb.append("insert into ").append(Db.tableNameForJavaClass(cls)).append(" values()");
+
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql, Statement.RETURN_GENERATED_KEYS);
+			final ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				final int id = rs.getInt(1);
+				o.fieldValues.put(DbObject.id, id);
+			} else
+				throw new RuntimeException("expected generated id");
+			rs.close();
+
+			// init default values
+			final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
+			for (final DbField f : dbcls.allFields) {
+				f.putDefaultValue(o.fieldValues);
+			}
+
 			if (cache_enabled)
 				cache.put(o);
+
 			return o;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -72,7 +93,31 @@ public final class DbTransaction {
 	}
 
 	public void delete(final DbObject o) {
-		o.deleteFromDb();
+		final DbClass dbcls = Db.instance().dbClassForJavaClass(o.getClass());
+		for (final DbRelation r : dbcls.allRelations) {
+			r.cascadeDelete(o);
+		}
+
+		final int id = o.id();
+
+		// delete orphans
+		for (final RelRefN r : dbcls.referingRefN) {
+			r.deleteReferencesTo(id);
+		}
+
+		// delete this
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("delete from ").append(dbcls.tableName).append(" where id=").append(id);
+		final String sql = sb.toString();
+		Db.log(sql);
+		try {
+			stmt.execute(sql);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+		dirtyObjects.remove(o);
+		if (cache_enabled)
+			cache.remove(o);
 	}
 
 	public List<DbObject> get(final Class<? extends DbObject> cls, final Query qry, final Order ord, final Limit lmt) {
@@ -116,14 +161,14 @@ public final class DbTransaction {
 						continue;
 					}
 					final DbObject o = ctor.newInstance();
-					o.readResultSet(dbcls, rs);
+					readResultSetToDbOject(o, dbcls, rs);
 					cache.put(o);
 					ls.add(o);
 				}
 			} else {
 				while (rs.next()) {
 					final DbObject o = ctor.newInstance();
-					o.readResultSet(dbcls, rs);
+					readResultSetToDbOject(o, dbcls, rs);
 					ls.add(o);
 				}
 			}
@@ -133,12 +178,21 @@ public final class DbTransaction {
 		return ls;
 	}
 
+	final void readResultSetToDbOject(final DbObject o, final DbClass cls, final ResultSet rs) throws Throwable {
+		int i = 1;
+		for (final DbField f : cls.allFields) {
+			final Object v = rs.getObject(i);
+			o.fieldValues.put(f, v);
+			i++;
+		}
+	}
+
 	public int getCount(final Class<? extends DbObject> cls, final Query qry) {
 		flush(); // update database before query
 
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("select count(*) from ");
-		
+
 		final Query.TableAliasMap tam = new Query.TableAliasMap();
 
 		if (qry != null) {
@@ -148,7 +202,7 @@ public final class DbTransaction {
 			sb.append(" where ");
 			sb.append(sbwhere);
 			sb.setLength(sb.length() - 1);
-		}else {
+		} else {
 			final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 			sb.append(dbcls.tableName);
 		}
@@ -181,7 +235,7 @@ public final class DbTransaction {
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
-				o.updateDb();
+				updateDb(o);
 			}
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
@@ -189,6 +243,22 @@ public final class DbTransaction {
 
 		dirtyObjects.clear();
 		Db.log("*** done flushing connection");
+	}
+
+	private void updateDb(final DbObject o) throws Throwable {
+		final StringBuilder sb = new StringBuilder(256);
+		sb.append("update ").append(Db.tableNameForJavaClass(o.getClass())).append(" set ");
+		for (final DbField f : o.dirtyFields) {
+			sb.append(f.columnName).append('=');
+			f.sql_updateValue(sb, o);
+			sb.append(',');
+		}
+		sb.setLength(sb.length() - 1);
+		sb.append(" where id=").append(o.id());
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
+		o.dirtyFields.clear();
 	}
 
 	public void rollback() {

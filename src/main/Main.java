@@ -8,7 +8,7 @@ import db.test.File;
 import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
-import db.test.count;
+import db.test.test1;
 
 public class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -38,7 +38,7 @@ public class Main {
 //		run(delete_books.class);
 //		run(print_column_types.class);
 //		run(refn_orphans.class);
-		run(count.class);
+		run(test1.class);
 		
 		db.shutdown();
 	}
