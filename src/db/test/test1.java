@@ -85,15 +85,15 @@ public class test1 extends TestCase {
 
 		final File f4 = (File) tn.create(File.class);
 		u1.setGroupPic(f4.id());
-		final File ref2 = u1.getGroupPic();
-		if (tn.cache_enabled && f2 != f4)
+		final File f5 = u1.getGroupPic();
+		if (tn.cache_enabled && f5 != f4)
 			throw new RuntimeException("expected same instance. is cache off? ");
-		if (!tn.cache_enabled && f2 == f4)
+		if (!tn.cache_enabled && f5 == f4)
 			throw new RuntimeException("expected different instances. is cache on?");
 
 		u1.setGroupPic(0);
-		final File ref3 = u1.getGroupPic();
-		if (ref3 != null)
+		final File f6 = u1.getGroupPic();
+		if (f6 != null)
 			throw new RuntimeException("expected null");
 
 		u1.setGroupPic(0);
@@ -117,15 +117,15 @@ public class test1 extends TestCase {
 		if (ls2.size() != 0)
 			throw new RuntimeException("expected 0 results got " + ls1.size());
 
-		final File f5 = (File) tn.create(File.class);
-		final DataBinary bin1 = f5.getData(true);
+		final File f7 = (File) tn.create(File.class);
+		final DataBinary bin1 = f7.getData(true);
 		final byte[] ba1 = new byte[] { 1, 2, 3, 4, 5 };
 		bin1.setData(ba1);
 
 		if (tn.cache_enabled)
 			tn.commit(); // flush cache
 
-		final DataBinary bin2 = f5.getData(true);
+		final DataBinary bin2 = f7.getData(true);
 //		bin1.setData(null); // ? if not set JVM sometimes uses same instance and test fails ...
 		if (bin1 == bin2) {
 			// note: it seems that JVM reuses instances and bin1 == bin2 might be true
@@ -177,8 +177,7 @@ public class test1 extends TestCase {
 //		if (!u5.getBirthTime().equals(ts1))
 //			throw new RuntimeException();
 
-		final String s1 = "testing string \0 \' \" \r \n \\";
-//		final String s1 = "testing string \' \" \r \n \\";
+		final String s1 = "testing string \0 \' \" \r \n \\ ᐖᐛツ";
 		u4.setName(s1);
 		u4.setBool(true);
 		u4.setNLogins(Integer.MAX_VALUE);
