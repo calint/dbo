@@ -29,15 +29,9 @@ public final class RelAgg extends DbRelation {
 		final int id = getId(ths);
 		if (id == 0) {
 			if (createIfNone) {
-				try {
-//					final DbObject o = toCls.getConstructor().newInstance();
-//					o.createInDb();
-					final DbObject o = Db.currentTransaction().create(toCls);
-					ths.set(relFld, o.id());
-					return o;
-				} catch (Throwable t) {
-					throw new RuntimeException(t);
-				}
+				final DbObject o = Db.currentTransaction().create(toCls);
+				ths.set(relFld, o.id());
+				return o;
 			}
 			return null;
 		}

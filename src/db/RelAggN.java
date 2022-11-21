@@ -24,15 +24,9 @@ public final class RelAggN extends DbRelation {
 	}
 
 	public DbObject create(final DbObject ths) {
-		try {
-//			final DbObject o = toCls.getConstructor().newInstance();
-//			o.createInDb();
-			final DbObject o = Db.currentTransaction().create(toCls);
-			o.set(relFld, ths.id());
-			return o;
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
+		final DbObject o = Db.currentTransaction().create(toCls);
+		o.set(relFld, ths.id());
+		return o;
 	}
 
 	public List<DbObject> get(final DbObject ths, final Query qry, final Order ord, final Limit lmt) {

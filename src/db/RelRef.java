@@ -20,11 +20,7 @@ public final class RelRef extends DbRelation {
 	}
 
 	public void set(final DbObject ths, final int trgId) {
-		try {
-			ths.set(relFld, trgId);
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
+		ths.set(relFld, trgId);
 	}
 
 //	public void remove(final DbObject ths) {
