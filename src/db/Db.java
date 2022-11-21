@@ -21,6 +21,7 @@ public final class Db {
 		System.out.println(s);
 	}
 
+	/** initiates thread local for Db.currentTransaction() */
 	public static DbTransaction initCurrentTransaction() {
 		final Connection c = inst.conpool.pollFirst();
 		if (c == null)// ? fix
@@ -36,7 +37,18 @@ public final class Db {
 
 	public static void deinitCurrentTransaction() {
 		DbTransaction t = tn.get();
-//		t.stmt.close();
+
+		// make sure statement is closed here. should be.
+		final boolean stmtIsClosed;
+		try {
+			stmtIsClosed = t.stmt.isClosed();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+		if (!stmtIsClosed)
+			throw new RuntimeException(
+					"DbTransaction.finishTransaction() not called? Statement should be closed here.");
+
 		inst.conpool.add(t.con);
 		tn.remove();
 	}

@@ -6,15 +6,15 @@ import db.DbTransaction;
 /** wrapper for transaction */
 public abstract class TestCase implements Runnable {
 	public final void run() {
-		DbTransaction tn;
+		final DbTransaction tn;
 		try {
 			tn = Db.initCurrentTransaction();
-		} catch (Throwable t1) {
-			throw new RuntimeException(t1);
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
 		}
 		try {
 			doRun();
-			tn.commit();
+			tn.finishTransaction();
 		} catch (Throwable t1) {
 			try {
 				tn.rollback();

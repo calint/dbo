@@ -17,7 +17,7 @@ public class jdbc_select_books extends TestCase {
 			System.out.println(sql);
 			final ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				final String desc = rs.getString(2);
+//				final String desc = rs.getString(2);
 //					System.out.println(desc);
 			}
 			rs.close();
