@@ -1,16 +1,7 @@
-[o] test cases
-[o] framework
-[x]   create
-[x]   get
-[x]     no query
-[x]     query
-[x]       fulltext
-[x]   update
-[ ]   delete
-[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
 [o] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
 [ ]     cascade delete with "delete from ... where ..." if aggregated does not have any Agg,AggN,RefN itself
+[ ] removing referenced DbObject Map<Class,List<RelRef>>. check and possibly fail or update to null?
 [o] Index(DbField...)
 [x]    Collation asc
 [ ]    Collation desc
@@ -108,3 +99,13 @@
 [x] DbTransaction.getCount(Query):int does select count(t1.*) from <class> t1 where <query>
 [x]   AggN
 [x]   RefN
+[x] test cases
+[o] framework
+[x]   create
+[x]   get
+[x]     no query
+[x]     query
+[x]       fulltext
+[x]   update
+[x]   delete
+[x]   min,max values

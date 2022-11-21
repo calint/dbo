@@ -154,7 +154,7 @@ public class test1 extends TestCase {
 		u4.setLng(Long.MIN_VALUE);
 		u4.setFlt(Float.MIN_VALUE);
 		u4.setDbl(Double.MIN_VALUE);
-//		final Timestamp ts1 = Timestamp.valueOf("1970-01-01 00:00:01"); // ? mysql cannot be written to Database
+//		final Timestamp ts1 = Timestamp.valueOf("1970-01-01 00:00:01"); // ? mysql cannot be committed
 //		u4.setBirthTime(ts1);
 
 		tn.commit(); // flush cache to retrieve the user from database
@@ -209,5 +209,22 @@ public class test1 extends TestCase {
 			throw new RuntimeException();
 		if (!u6.getBirthTime().equals(ts2))
 			throw new RuntimeException();
+
+		final List<DbObject> ls5 = tn.get(User.class, null, null, null);
+		for (final DbObject o : ls5) {
+			tn.delete(o);
+		}
+		if (!ls5.isEmpty())
+			throw new RuntimeException();
+
+		final List<DbObject> ls6 = tn.get(File.class, null, null, null);
+		for (final DbObject o : ls6) {
+			tn.delete(o);
+		}
+
+		final List<DbObject> ls7 = tn.get(Book.class, null, null, null);
+		for (final DbObject o : ls7) {
+			tn.delete(o);
+		}
 	}
 }
