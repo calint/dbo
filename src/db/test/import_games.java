@@ -14,13 +14,17 @@ public class import_games extends TestCase {
 		return false;
 	}
 
+	protected String getFilePath() {
+		return "../cvs-samples/steam-games.csv";
+	}
+	
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		tn.cache_enabled = false;
 		Db.log_enable = false;
 
-		final FileReader in = new FileReader("../cvs-samples/steam-games.csv");
+		final FileReader in = new FileReader(getFilePath());
 		final CsvReader csv = new CsvReader(in, ';', '"');
 		List<String> ls = csv.nextRecord();// read headers
 		int i = 2;

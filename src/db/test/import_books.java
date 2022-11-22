@@ -19,6 +19,10 @@ public class import_books extends TestCase {
 	protected boolean isRunWithoutCache() {
 		return false;
 	}
+	
+	protected String getFilePath() {
+		return "../cvs-samples/books_data.csv";
+	}
 
 	@Override
 	public void doRun() throws Throwable {
@@ -26,8 +30,9 @@ public class import_books extends TestCase {
 		Db.log_enable = false;
 		System.out.println("cache_enabled=" + tn.cache_enabled);
 
+		final String filePath = getFilePath();
 		// sanity check
-		FileReader in = new FileReader("../cvs-samples/books_data.csv");
+		FileReader in = new FileReader(filePath);
 		CsvReader csv = new CsvReader(in);
 		List<String> ls = csv.nextRecord();// read headers
 		int i = 2; // skip headers
@@ -59,7 +64,7 @@ public class import_books extends TestCase {
 
 		// import
 		System.out.println("import");
-		in = new FileReader("../cvs-samples/books_data.csv");
+		in = new FileReader(filePath);
 		csv = new CsvReader(in);
 		ls = csv.nextRecord();// read headers
 		i = 2; // skip headers

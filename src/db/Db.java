@@ -31,12 +31,21 @@ public final class Db {
 
 	/** initiates thread local for Db.currentTransaction() */
 	public static DbTransaction initCurrentTransaction() {
-		Connection c;
+		Connection c = null;
+		boolean interrupted = false;
 		synchronized (inst.conpool) {
-			if (inst.conpool.isEmpty()) {// ? fix
-				throw new RuntimeException("connection pool is empty");
+			while (inst.conpool.isEmpty()) { // spurious interrupt might happen
+				try {
+					inst.conpool.wait();
+				} catch (InterruptedException e) {
+					interrupted = true;
+					break;
+				}
 			}
-			c = inst.conpool.getFirst();
+			if (interrupted)
+				return null; // ? what to do?
+
+			c = inst.conpool.removeFirst();			
 		}
 		try {
 			final DbTransaction t = new DbTransaction(c);
@@ -63,8 +72,9 @@ public final class Db {
 
 		synchronized (inst.conpool) {
 			inst.conpool.add(t.con);
+			inst.conpool.notify();
 		}
-		
+
 		tn.remove();
 	}
 

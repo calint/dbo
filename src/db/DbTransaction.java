@@ -218,7 +218,8 @@ public final class DbTransaction {
 			throw new RuntimeException(t);
 		}
 	}
-
+	
+	/** writes changed objects to database, clears cache, commits */
 	public void commit() throws Throwable {
 		flush();
 		if (cache_enabled) // will keep memory usage down at batch imports
@@ -231,7 +232,8 @@ public final class DbTransaction {
 		stmt.close();
 	}
 
-	private void flush() {
+	/** writes changed objects to database */
+	private void flush() { // ? public?
 		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
