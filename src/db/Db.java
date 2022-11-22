@@ -55,7 +55,8 @@ public final class Db {
 	public static void deinitCurrentTransaction() {
 		final DbTransaction t = tn.get();
 
-		// make sure statement is closed here. should be. // ? stmt.isClosed() is not in java 1.5
+		// make sure statement is closed here. should be. // ? stmt.isClosed() is not in
+		// java 1.5
 //		final boolean stmtIsClosed;
 //		try {
 //			stmtIsClosed = t.stmt.isClosed();
@@ -295,7 +296,7 @@ public final class Db {
 		return dbclasses;
 	}
 
-	public DbClass getDbClassForJavaClass(final Class cls) {
+	public DbClass getDbClassForJavaClass(final Class<? extends DbObject> cls) {
 		return clsToDbClsMap.get(cls);
 	}
 
