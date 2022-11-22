@@ -29,17 +29,17 @@ public class fulltext_search_books extends TestCase {
 		final Query qry = new Query(DataText.ft, qstr).and(Book.data);
 		final Limit lmt = new Limit(0, 20);
 		final int totalcount = tn.getCount(Book.class, null);
-		System.out.println("books " + totalcount);
+		System.out.println("  searchable books: " + totalcount);
 		while (true) {
-			System.out.println(" searching '" + qstr + "'");
+			System.out.println("   searching '" + qstr + "'");
 			final int count = tn.getCount(Book.class, qry);
-			System.out.println("    found " + count);
+			System.out.println("      found " + count);
 			final List<DbObject> ls = tn.get(Book.class, qry, null, lmt);
 			for (final DbObject o : ls) {
 				final Book bo = (Book) o;
 				System.out.println(bo.id() + "  " + bo.getName());
 			}
-			System.out.println("objects retrieved: " + ls.size());
+			System.out.println("  objects retrieved: " + ls.size());
 			i++;
 			System.out.println("requests: " + i);
 			if (i == nreq)
