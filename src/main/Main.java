@@ -1,10 +1,6 @@
 package main;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-
 import db.Db;
-import db.DbObject;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
@@ -15,7 +11,6 @@ import db.test.User;
 import db.test.fulltext_search_books;
 import db.test.import_books_sample;
 import db.test.test1;
-import jem.JavaCodeEmitter;
 
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -42,23 +37,8 @@ public final class Main {
 		db.register(Book.class);
 		db.register(Game.class);
 		db.register(TestObj.class);
-		
-		// ? ugly
-		boolean exit = false;
-		int i = 0;
-		while (true) {
-			if (i == args.length)
-				break;
-			if (args[i].equals("-j")) {
-				if (!(args.length > i + 1))
-					throw new IllegalArgumentException("expected a java class name after option -j");
-				i++;
-				emitJavaCodeForClassName(db, args[i]);
-				exit = true;
-			}
-			i++;
-		}
-		if (exit)
+
+		if (tryJemCall(db, args))
 			return;
 
 //		final Class<? extends DbObject>[] clsa = getClasses();
@@ -71,7 +51,6 @@ public final class Main {
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 //		db.init("jdbc:mysql://localhost:3306/testdb?verifyServerCertificate=false&useSSL=true", "c", "password", 5);
 
-		
 //		System.out.println(JavaCodeEmitter.getSingulariesForPlurar("categories"));
 //		Db.initCurrentTransaction();
 //		try {
@@ -122,10 +101,22 @@ public final class Main {
 		db.shutdown();
 	}
 
-	private static void emitJavaCodeForClassName(Db db, String clsName) throws Throwable {
-		final Class<? extends DbObject> cls = (Class<? extends DbObject>) Class.forName(clsName);
-		final JavaCodeEmitter jce = new JavaCodeEmitter(db);
-		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-		jce.emit(out, cls);
+	private static boolean tryJemCall(Db db, String[] args) throws Throwable {
+		// ? so ugly
+		boolean exit = false;
+		int i = 0;
+		while (true) {
+			if (i == args.length)
+				break;
+			if (args[i].equals("-j")) {
+				if (!(args.length > i + 1))
+					throw new IllegalArgumentException("expected a java class name after option -j at argument " + i);
+				i++;
+				jem.Main.main(db, args[i]);
+				exit = true;
+			}
+			i++;
+		}
+		return exit;
 	}
 }

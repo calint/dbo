@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import db.DbObject;
 import db.RelAgg;
-import db.RelRef;
 
 public class RelAggElem extends ElemRel {
 	public RelAggElem(final RelAgg rel) {

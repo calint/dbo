@@ -1,26 +1,7 @@
-[ ] boiler plate java code generator Util.createJavaCode(PrintWriter out, Class cls)
-[ ]   fields
-[ ]     FldString
-[ ]     FldInt
-[ ]     FldLong
-[ ]     FldFloat
-[ ]     FldDouble
-[ ]     FldTimestamp
-[ ]     FldBoolean
-[ ]     FldBlob
-[ ]     FldClob
-[ ]   relations
-[ ]     RelAgg
-[ ]     RelAggN
-[ ]     RelRef
-[ ]     RelRefN
 [o] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
 [ ]   close connection after a number of recycles and create a new
-[o] foreign key? implemented in Db.
-[x]   cascade delete? recursively get() and delete
-[ ]     if aggregated does not have any Agg,AggN,RefN then cascade delete with "delete from ... where ..."
 [ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [o] Index(DbField...)
 [x]    Collation asc
@@ -44,10 +25,6 @@
 [ ] inheritance
 [ ]   example: select t1.* from File where t1.clspth like 'aaabbb%'; selects all objects that are File or inherits from File 
 [ ] class OID instead of integer
-[ ] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly vs comfort
-		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
-			return (List<File>) (List) files.get(this, qry, ord, lmt);
-		} 
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
 [ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
@@ -132,3 +109,26 @@
 [x] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
+[x] foreign key? implemented in Db.
+[x]   cascade delete? recursively get() and delete
+[x]     if aggregated does not have any Agg,AggN,RefN then cascade delete with "delete from ... where ..."
+[x] boiler plate java code generator Util.createJavaCode(PrintWriter out, Class cls)
+[x]   fields
+[x]     FldString
+[x]     FldInt
+[x]     FldLong
+[x]     FldFloat
+[x]     FldDouble
+[x]     FldTimestamp
+[x]     FldBoolean
+[x]     FldBlob
+[x]     FldClob
+[x]   relations
+[x]     RelAgg
+[x]     RelAggN
+[x]     RelRef
+[x]     RelRefN
+[x] ?	@SuppressWarnings({ "unchecked", "rawtypes" })// ? ugly vs comfort. ugly for comfort.
+		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
+			return (List<File>) (List) files.get(this, qry, ord, lmt);
+		} 

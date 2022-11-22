@@ -36,6 +36,7 @@ public final class User extends DbObject {
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
 	public final static RelRefN refFiles = new RelRefN(File.class);
+	public final static RelAggN games = new RelAggN(Game.class);
 
 	public final static Index ixName = new Index(name);
 	public final static IndexFt ixFt = new IndexFt(name);
@@ -114,21 +115,21 @@ public final class User extends DbObject {
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public File createFile(){
-		return(File)files.create(this);
+	public File createFile() {
+		return (File) files.create(this);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<File>getFiles(final Query qry,final Order ord,final Limit lmt){
-		return(List<File>)(List)files.get(this,qry,ord,lmt);
+	public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
+		return (List<File>) (List) files.get(this, qry, ord, lmt);
 	}
 
-	public int getFilesCount(final Query qry){
-		return files.getCount(this,qry);
+	public int getFilesCount(final Query qry) {
+		return files.getCount(this, qry);
 	}
 
-	public void deleteFile(final int id){
-		files.delete(this,id);
+	public void deleteFile(final int id) {
+		files.delete(this, id);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
@@ -174,4 +175,23 @@ public final class User extends DbObject {
 	public void removeRefFile(final int id) {
 		refFiles.remove(this, id);
 	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public Game createGame() {
+		return (Game) games.create(this);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Game> getGames(final Query qry, final Order ord, final Limit lmt) {
+		return (List<Game>) (List) games.get(this, qry, ord, lmt);
+	}
+
+	public int getGamesCount(final Query qry) {
+		return games.getCount(this, qry);
+	}
+
+	public void deleteGame(final int id) {
+		games.delete(this, id);
+	}
+
 }

@@ -22,7 +22,6 @@ public class test1 extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		tn.cache_enabled = false;
 
 		final User u1 = (User) tn.create(User.class);
 		u1.setName("user name");
@@ -247,5 +246,26 @@ public class test1 extends TestCase {
 		for (final DbObject o : ls9) {
 			tn.delete(o);
 		}
+
+		final User u8 = (User) tn.create(User.class);
+		final File f8 = u8.createFile(); // AggN
+		f8.getData(true);
+		u8.createGame();
+		u8.createGame();
+		tn.delete(u8); // d1, g1, g2 gets deleted with "delete from" instead of get delete because it
+						// does not aggregate
+
+//		final File f9 = (File) tn.create(File.class);
+//		u8.setGroupPic(f9.id()); // Ref
+//		final File f10 = (File) tn.create(File.class);
+//		u8.addRefFile(f10.id()); // RefN
+//		final File f11 = u8.getProfilePic(true); // Agg
+//
+//		final List<DbObject> ls10 = tn.get(File.class, null, null, null);
+//		if (ls10.size() != 2)
+//			throw new RuntimeException();
+//
+//		tn.commit();
+
 	}
 }

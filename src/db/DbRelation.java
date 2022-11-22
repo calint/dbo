@@ -43,6 +43,10 @@ public abstract class DbRelation {
 	 */
 	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
+	
+	boolean cascadeDeleteNeeded() {
+		return true;
+	}
 
 	void cascadeDelete(final DbObject ths) {
 	}

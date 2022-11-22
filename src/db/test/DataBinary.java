@@ -11,7 +11,7 @@ public final class DataBinary extends DbObject {
 		return getBytesArray(data);
 	}
 
-	public void setData(byte[] v) {
+	public void setData(final byte[] v) {
 		set(data, v);
 	}
 }

@@ -93,9 +93,14 @@ public final class DbTransaction {
 	}
 
 	public void delete(final DbObject o) {
+		flush();
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(o.getClass());
-		for (final DbRelation r : dbcls.allRelations) {
-			r.cascadeDelete(o);
+		if (dbcls.doCascadeDelete) {
+			for (final DbRelation r : dbcls.allRelations) {
+				if (r.cascadeDeleteNeeded()) {
+					r.cascadeDelete(o);
+				}
+			}
 		}
 
 		final int id = o.id();
@@ -108,13 +113,14 @@ public final class DbTransaction {
 		// delete this
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(dbcls.tableName).append(" where id=").append(id);
-		final String sql = sb.toString();
-		Db.log(sql);
-		try {
-			stmt.execute(sql);
-		} catch (Throwable t) {
-			throw new RuntimeException(t);
-		}
+		execSql(sb);
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		try {
+//			stmt.execute(sql);
+//		} catch (Throwable t) {
+//			throw new RuntimeException(t);
+//		}
 		dirtyObjects.remove(o);
 		if (cache_enabled)
 			cache.remove(o);
@@ -218,7 +224,7 @@ public final class DbTransaction {
 			throw new RuntimeException(t);
 		}
 	}
-	
+
 	/** writes changed objects to database, clears cache, commits */
 	public void commit() throws Throwable {
 		flush();
@@ -234,7 +240,9 @@ public final class DbTransaction {
 
 	/** writes changed objects to database */
 	private void flush() { // ? public?
-		Db.log("*** flush connection. " + dirtyObjects.size() + " objects");
+		if (dirtyObjects.isEmpty())
+			return;
+		Db.log("*** flushing " + dirtyObjects.size() + " objects");
 		try {
 			for (final DbObject o : dirtyObjects) {
 				updateDbFromDbObject(o);
@@ -244,7 +252,7 @@ public final class DbTransaction {
 		}
 
 		dirtyObjects.clear();
-		Db.log("*** done flushing connection");
+		Db.log("*** done flushing");
 	}
 
 	private void updateDbFromDbObject(final DbObject o) throws Throwable {

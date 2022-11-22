@@ -42,4 +42,9 @@ public final class RelRef extends DbRelation {
 			return null;
 		return ls.get(0);
 	}
+	
+	boolean cascadeDeleteNeeded() {
+		return false;
+	}
+
 }

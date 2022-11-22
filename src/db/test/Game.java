@@ -12,7 +12,7 @@ public final class Game extends DbObject {
 		return getStr(name);
 	}
 
-	public void setName(String v) {
+	public void setName(final String v) {
 		set(name, v);
 	}
 
@@ -21,7 +21,8 @@ public final class Game extends DbObject {
 		return getStr(description);
 	}
 
-	public void setDescription(String v) {
+	public void setDescription(final String v) {
 		set(description, v);
 	}
+
 }

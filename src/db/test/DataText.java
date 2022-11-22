@@ -11,20 +11,20 @@ public final class DataText extends DbObject {
 	public final static IndexFt ft = new IndexFt(meta, data);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public String getData() {
-		return getStr(data);
-	}
-
-	public void setData(String v) {
-		set(data, v);
-	}
-
-	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getMeta() {
 		return getStr(meta);
 	}
 
-	public void setMeta(String v) {
+	public void setMeta(final String v) {
 		set(meta, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public String getData() {
+		return getStr(data);
+	}
+
+	public void setData(final String v) {
+		set(data, v);
 	}
 }

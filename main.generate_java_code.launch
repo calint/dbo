@@ -19,6 +19,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="main.Main"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="db"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-j main.TestObj"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-j db.test.DataText -j db.test.Book -j db.test.Game"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="dbo"/>
 </launchConfiguration>

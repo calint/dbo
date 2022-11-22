@@ -17,7 +17,7 @@ public final class JavaCodeEmitter {
 		this.db = db;
 	}
 
-	public void add(final JavaCodeElem el) {
+	private void add(final JavaCodeElem el) {
 		elems.add(el);
 	}
 
@@ -47,7 +47,7 @@ public final class JavaCodeEmitter {
 				add(jce);
 			} catch (Throwable t) {
 //				throw new RuntimeException("cannot create JavaCodeElem of class '" + elemClsName + "'", t);
-				System.err.println("cannot create JavaCodeElem of class '" + elemClsName + "'" + t.getMessage());
+				System.err.println("cannot create JavaCodeElem of class '" + elemClsName + "' for java class " + t.getMessage());
 			}
 			continue;
 //			if (dbf instanceof FldString) {

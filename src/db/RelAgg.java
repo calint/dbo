@@ -45,10 +45,21 @@ public final class RelAgg extends DbRelation {
 
 	@Override
 	void cascadeDelete(DbObject ths) {
-		final DbObject o = get(ths, false);
-		if (o == null)
+		final int toId = getId(ths);
+		if (toId == 0)
 			return;
-//		o.deleteFromDb();
-		Db.currentTransaction().delete(o);
+		// need to delete
+		final DbClass dbClsTo = Db.instance().dbClassForJavaClass(toCls);
+		if (dbClsTo.doCascadeDelete) {
+			final DbObject o = get(ths, false);
+			if (o == null)
+				return;
+			Db.currentTransaction().delete(o);
+			return;
+		}
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append("delete from ").append(dbClsTo.tableName).append(" where ").append(DbObject.id.name).append("=")
+				.append(toId);
+		Db.currentTransaction().execSql(sb);
 	}
 }

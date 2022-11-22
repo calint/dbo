@@ -21,6 +21,8 @@ public final class DbClass {
 
 	final ArrayList<RelRefN> referingRefN = new ArrayList<RelRefN>();
 
+	boolean doCascadeDelete = false;
+
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
 		tableName = Db.tableNameForJavaClass(c);
@@ -42,6 +44,8 @@ public final class DbClass {
 				dbr.cls = c;
 				dbr.tableName = tableName;
 				declaredRelations.add(dbr);
+				if (dbr.cascadeDeleteNeeded())
+					doCascadeDelete = true;
 				continue;
 			}
 			if (Index.class.isAssignableFrom(f.getType())) {
