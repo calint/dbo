@@ -218,7 +218,6 @@ public final class Db {
 				ix.sql_createIndex(stmt, dbm);
 			}
 		}
-
 	}
 
 	/**

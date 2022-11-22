@@ -69,8 +69,8 @@ public final class RelRefN extends DbRelation {
 	@Override
 	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 
-		final String fromIxName = rrm.tableName + '_' + rrm.fromTableName;
-		final String toIxName = rrm.tableName + '_' + rrm.toTableName;
+		final String fromIxName = rrm.tableName + '_' + rrm.fromColName; // ? ix name is rrm concern
+		final String toIxName = rrm.tableName + '_' + rrm.toColName;
 
 		final HashSet<String> lookingForIndexNames = new HashSet<String>();
 		lookingForIndexNames.add(fromIxName);
@@ -88,9 +88,7 @@ public final class RelRefN extends DbRelation {
 
 		if (lookingForIndexNames.contains(fromIxName)) {
 			final StringBuilder sb = new StringBuilder(128);
-			sb.append("create index ").append(rrm.tableName).append('_').append(rrm.fromTableName).append(" on ")
-					.append(rrm.tableName).append('(').append(rrm.fromColName).append(')');
-
+			rrm.sql_createIndexOnFromColumn(sb);
 			final String sql = sb.toString();
 			Db.log(sql);
 			stmt.execute(sql);
@@ -98,9 +96,7 @@ public final class RelRefN extends DbRelation {
 
 		if (lookingForIndexNames.contains(toIxName)) {
 			final StringBuilder sb = new StringBuilder(128);
-			sb.append("create index ").append(rrm.tableName).append('_').append(rrm.toTableName).append(" on ")
-					.append(rrm.tableName).append('(').append(rrm.toColName).append(')');
-
+			rrm.sql_createIndexOnToColumn(sb);
 			final String sql = sb.toString();
 			Db.log(sql);
 			stmt.execute(sql);

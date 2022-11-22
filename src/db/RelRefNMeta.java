@@ -33,8 +33,8 @@ final class RelRefNMeta {
 		}
 		rs.close();
 
-		sb.append("create table ").append(tableName).append('(').append(fromColName).append(" int,")
-				.append(toColName).append(" int)");
+		sb.append("create table ").append(tableName).append('(').append(fromColName).append(" int,").append(toColName)
+				.append(" int)");
 	}
 
 	void sql_addToTable(final StringBuilder sb, final int fromId, final int toId) {
@@ -56,10 +56,21 @@ final class RelRefNMeta {
 		sb.append("delete from ").append(tableName).append(" where ").append(toColName).append('=').append(id);
 	}
 
+	void sql_createIndexOnFromColumn(StringBuilder sb) {
+		sb.append("create index ").append(tableName).append('_').append(fromColName).append(" on ").append(tableName)
+				.append('(').append(fromColName).append(')');
+	}
+
+	void sql_createIndexOnToColumn(StringBuilder sb) {
+		sb.append("create index ").append(tableName).append('_').append(toColName).append(" on ").append(tableName)
+				.append('(').append(toColName).append(')');
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(this.tableName);
 		return super.toString();
 	}
+
 }
