@@ -32,20 +32,15 @@ public final class Db {
 	/** initiates thread local for Db.currentTransaction() */
 	public static DbTransaction initCurrentTransaction() {
 		Connection c = null;
-		boolean interrupted = false;
 		synchronized (inst.conpool) {
 			while (inst.conpool.isEmpty()) { // spurious interrupt might happen
 				try {
 					inst.conpool.wait();
 				} catch (InterruptedException e) {
-					interrupted = true;
-					break;
+					e.printStackTrace(); // ? what to do?
 				}
 			}
-			if (interrupted)
-				return null; // ? what to do?
-
-			c = inst.conpool.removeFirst();			
+			c = inst.conpool.removeFirst();
 		}
 		try {
 			final DbTransaction t = new DbTransaction(c);
@@ -59,7 +54,7 @@ public final class Db {
 	public static void deinitCurrentTransaction() {
 		final DbTransaction t = tn.get();
 
-		// make sure statement is closed here. should be.
+		// make sure statement is closed here. should be. // ? stmt.isClosed() is not in java 1.5
 //		final boolean stmtIsClosed;
 //		try {
 //			stmtIsClosed = t.stmt.isClosed();
@@ -69,7 +64,7 @@ public final class Db {
 //		if (!stmtIsClosed)
 //			throw new RuntimeException(
 //					"Statement should be closed here. DbTransaction.finishTransaction() not called?");
-
+//
 		synchronized (inst.conpool) {
 			inst.conpool.add(t.con);
 			inst.conpool.notify();

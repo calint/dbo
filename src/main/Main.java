@@ -9,8 +9,6 @@ import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
 import db.test.import_books;
-import db.test.import_books_sample;
-import db.test.test1;
 
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -55,19 +53,19 @@ public final class Main {
 //		run(delete_books.class);
 //		run(print_column_types.class);
 
-		final Thread t1 = new Thread(new import_books_sample());
-		final Thread t2 = new Thread(new import_books_sample());
-		t1.start();
-		t2.start();
-		t1.join();
-		t2.join();
-
-//		final Thread t1 = new Thread(new import_books());
-//		final Thread t2 = new Thread(new import_books());
+//		final Thread t1 = new Thread(new import_books_sample());
+//		final Thread t2 = new Thread(new import_books_sample());
 //		t1.start();
 //		t2.start();
 //		t1.join();
 //		t2.join();
+
+		final Thread t1 = new Thread(new import_books());
+		final Thread t2 = new Thread(new import_books());
+		t1.start();
+		t2.start();
+		t1.join();
+		t2.join();
 
 //		run(test1.class);
 //		run(import_books.class);
