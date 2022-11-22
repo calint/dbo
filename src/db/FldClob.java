@@ -2,14 +2,14 @@ package db;
 
 public final class FldClob extends DbField {
 	@Override
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append('\'');
 		FldString.sqlEscapeString(sb, o.getStr(this));
 		sb.append('\'');
 	}
 
 	@Override
-	void sql_createColumn(StringBuilder sb) {
+	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(name).append(" longtext");
 	}
 }

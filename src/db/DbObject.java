@@ -57,6 +57,16 @@ public abstract class DbObject {
 		return (byte[]) fieldValues.get(field);
 	}
 
+	final public Object get(DbField field) {
+		return fieldValues.get(field);
+	}
+
+	final public void set(DbField field, Object value) {
+		fieldValues.put(field, value);
+		getCreatedDirtyFields().add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
 	final public void set(DbField field, String value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);

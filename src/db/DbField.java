@@ -7,20 +7,16 @@ public abstract class DbField {
 	String name;
 	String tableName;
 
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 	}
 
-	void sql_columnName(StringBuilder sb) {
-		sb.append(name);
+	protected void sql_columnDefinition(StringBuilder sb) {
 	}
 
-	void sql_createColumn(StringBuilder sb) {
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
 	}
 
-	void putDefaultValue(Map<DbField, Object> kvm) {
-	}
-
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 

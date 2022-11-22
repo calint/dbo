@@ -2,12 +2,12 @@ package db;
 
 public final class FldId extends DbField {
 	@Override
-	void sql_updateValue(final StringBuilder sb, final DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getInt(this));
 	}
 
 	@Override
-	void sql_createColumn(final StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(" integer primary key auto_increment");// ? maybe bigint
 	}
 }

@@ -60,7 +60,7 @@ public class import_books extends TestCase {
 				System.out.println(i);
 		}
 		in.close();
-		System.out.println("bounds check done. importing " + (i - 1) + " books from " + filePath + "'");
+		System.out.println("bounds check done. importing " + (i - 2) + " books from " + filePath + "'");
 		in = new FileReader(filePath);
 		csv = new CsvReader(in);
 		ls = csv.nextRecord();// read headers

@@ -31,7 +31,7 @@ public final class FldString extends DbField {
 	}
 
 	@Override
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		final String s = o.getStr(this);
 		if (s == null) {
 			sb.append("null");
@@ -43,7 +43,7 @@ public final class FldString extends DbField {
 	}
 
 	@Override
-	void sql_createColumn(StringBuilder sb) {
+	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(name).append(" varchar(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '");
@@ -53,7 +53,7 @@ public final class FldString extends DbField {
 	}
 
 	@Override
-	void putDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 
@@ -63,7 +63,7 @@ public final class FldString extends DbField {
 
 	// note: from
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
-	static void sqlEscapeString(final StringBuilder sb, final String x) {
+	public static void sqlEscapeString(final StringBuilder sb, final String x) {
 		final int len = x.length();
 		for (int i = 0; i < len; ++i) {
 			final char ch = x.charAt(i);

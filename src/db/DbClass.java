@@ -82,7 +82,7 @@ public final class DbClass {
 
 		sb.append("create table ").append(tableName).append("(");
 		for (final DbField f : allFields) {
-			f.sql_createColumn(sb);
+			f.sql_columnDefinition(sb);
 			sb.append(',');
 		}
 		sb.setLength(sb.length() - 1);

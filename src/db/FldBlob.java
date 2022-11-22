@@ -3,7 +3,7 @@ package db;
 public final class FldBlob extends DbField {
 
 	@Override
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		final byte[] data = o.getBytesArray(this);
 		final char[] chars = bytesToHex(data);
 //		sb.ensureCapacity(chars.length + 2); //? fix
@@ -11,7 +11,7 @@ public final class FldBlob extends DbField {
 	}
 
 	@Override
-	void sql_createColumn(StringBuilder sb) {
+	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(name).append(" longblob");
 	}
 

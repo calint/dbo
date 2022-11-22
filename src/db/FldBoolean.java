@@ -14,17 +14,17 @@ public final class FldBoolean extends DbField {
 	}
 
 	@Override
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append(o.getBoolean(this));
 	}
 
 	@Override
-	void sql_createColumn(StringBuilder sb) {
+	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(name).append(" boolean default ").append(defval);
 	}
 
 	@Override
-	void putDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

@@ -13,9 +13,9 @@ public final class RelAggN extends DbRelation {
 
 	@Override
 	void init(final DbClass dbcls) {
-		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		relFld = new FldRel();
 		relFld.name = dbcls.tableName + "_" + name;
+		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		toDbCls.declaredFields.add(relFld);
 	}
 

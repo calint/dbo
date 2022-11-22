@@ -15,12 +15,12 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append('\'').append(o.getTimestamp(this)).append('\'');
 	}
 
 	@Override
-	void sql_createColumn(StringBuilder sb) {
+	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(name).append(" timestamp");
 		if (defval != null) {
 			sb.append(" default '").append(defval).append("'");
@@ -28,7 +28,7 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	void putDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
 		if (defval != null)
 			kvm.put(this, defval);
 	}

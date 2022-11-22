@@ -1,6 +1,10 @@
 package main;
 
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+
 import db.Db;
+import db.DbObject;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
@@ -10,6 +14,8 @@ import db.test.TestCase;
 import db.test.User;
 import db.test.fulltext_search_books;
 import db.test.import_books_sample;
+import db.test.test1;
+import jem.JavaCodeEmitter;
 
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -35,12 +41,25 @@ public final class Main {
 		db.register(DataText.class);
 		db.register(Book.class);
 		db.register(Game.class);
-
-//		final JavaCodeEmitter jce = new JavaCodeEmitter(db);
-//		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-//		jce.emit(out, User.class);
-//		if (1 == 1)
-//			return;
+		db.register(TestObj.class);
+		
+		// ? ugly
+		boolean exit = false;
+		int i = 0;
+		while (true) {
+			if (i == args.length)
+				break;
+			if (args[i].equals("-j")) {
+				if (!(args.length > i + 1))
+					throw new IllegalArgumentException("expected a java class name after option -j");
+				i++;
+				emitJavaCodeForClassName(db, args[i]);
+				exit = true;
+			}
+			i++;
+		}
+		if (exit)
+			return;
 
 //		final Class<? extends DbObject>[] clsa = getClasses();
 //		for (int i = 0; i < clsa.length; i++) {
@@ -49,8 +68,25 @@ public final class Main {
 
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 //		db.init("jdbc:mysql://localhost:3306/testdb?autoReconnect=true&useSSL=false", "c", "password", 5);
-		db.init("jdbc:mysql://localhost:3306/testdb?useSSL=false", "c", "password", 10);
+		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 //		db.init("jdbc:mysql://localhost:3306/testdb?verifyServerCertificate=false&useSSL=true", "c", "password", 5);
+
+//		Db.initCurrentTransaction();
+//		try {
+//			/////////////////////////////////////////////
+//			final TestObj to = (TestObj) Db.currentTransaction().create(TestObj.class);
+//			to.setDf(new java.util.Date());
+//			Db.currentTransaction().commit();
+//			final TestObj to2 = (TestObj) Db.currentTransaction().get(TestObj.class, null, null, null).get(0);
+//			System.out.println(to2.getDf());
+//			/////////////////////////////////////////////
+//			Db.currentTransaction().finishTransaction();
+//		} catch (Throwable t) {
+//			Db.currentTransaction().rollback();
+//			t.printStackTrace();
+//		} finally {
+//			Db.deinitCurrentTransaction();
+//		}
 
 //		Db.log_enable = false;
 
@@ -74,7 +110,7 @@ public final class Main {
 //		t1.join();
 //		t2.join();
 
-//		run(test1.class);
+		run(test1.class);
 		run(import_books_sample.class);
 		run(fulltext_search_books.class);
 //		run(import_books.class);
@@ -82,5 +118,12 @@ public final class Main {
 //		run(get_books.class);
 
 		db.shutdown();
+	}
+
+	private static void emitJavaCodeForClassName(Db db, String clsName) throws Throwable {
+		final Class<? extends DbObject> cls = (Class<? extends DbObject>) Class.forName(clsName);
+		final JavaCodeEmitter jce = new JavaCodeEmitter(db);
+		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		jce.emit(out, cls);
 	}
 }
