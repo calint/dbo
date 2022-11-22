@@ -3,7 +3,7 @@ package db;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
-// represents the relation table
+// represents the relation table for RelRefN
 final class RelRefNMeta {
 //	final Class<? extends DbObject> fromCls;
 //	final Class<? extends DbObject> toCls;
@@ -57,13 +57,21 @@ final class RelRefNMeta {
 	}
 
 	void sql_createIndexOnFromColumn(StringBuilder sb) {
-		sb.append("create index ").append(tableName).append('_').append(fromColName).append(" on ").append(tableName)
-				.append('(').append(fromColName).append(')');
+		sb.append("create index ").append(getFromIxName()).append(" on ").append(tableName).append('(')
+				.append(fromColName).append(')');
 	}
 
 	void sql_createIndexOnToColumn(StringBuilder sb) {
-		sb.append("create index ").append(tableName).append('_').append(toColName).append(" on ").append(tableName)
-				.append('(').append(toColName).append(')');
+		sb.append("create index ").append(getToIxName()).append(" on ").append(tableName).append('(').append(toColName)
+				.append(')');
+	}
+
+	String getFromIxName() {
+		return fromColName;
+	}
+
+	String getToIxName() {
+		return toColName;
 	}
 
 	@Override
@@ -72,5 +80,4 @@ final class RelRefNMeta {
 		sb.append(this.tableName);
 		return super.toString();
 	}
-
 }
