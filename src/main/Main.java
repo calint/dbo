@@ -34,15 +34,11 @@ public class Main {
 
 //		Db.log_enable = false;
 		
-
-
-
 //		run(fulltext_search_books.class);
 //		run(import_games.class);
 //		run(test.class);
 //		run(delete_books.class);
 //		run(print_column_types.class);
-
 		run(test1.class);
 //		run(import_books.class);
 //		run(jdbc_select_books.class);

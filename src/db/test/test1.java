@@ -203,18 +203,31 @@ public class test1 extends TestCase {
 			throw new RuntimeException();
 		if (u6.getLng() != Long.MAX_VALUE)
 			throw new RuntimeException();
-//		if (u6.getFlt() != Float.MAX_VALUE)
+//		if (u6.getFlt() != Float.MAX_VALUE) // ? mysql problems with float
 //			throw new RuntimeException();
 		if (u6.getDbl() != Double.MAX_VALUE)
 			throw new RuntimeException();
 		if (!u6.getBirthTime().equals(ts2))
 			throw new RuntimeException();
 
+		u4.setName(null);
+		u4.setFlt(1.2f);
+		u4.setDbl(1.2);
+		tn.commit();
+		final List<DbObject> ls4 = tn.get(User.class, new Query(User.class, u4id), null, null);
+		if (ls4.size() != 1)
+			throw new RuntimeException("expected to find one user with id " + u4id);
+		final User u7 = (User) ls4.get(0);
+		if (u7.getFlt() != 1.2f)
+			throw new RuntimeException();
+		if (u7.getDbl() != 1.2)
+			throw new RuntimeException();
+
 		final List<DbObject> ls5 = tn.get(User.class, null, null, null);
 		for (final DbObject o : ls5) {
 			tn.delete(o);
 		}
-		
+
 		final List<DbObject> ls6 = tn.get(User.class, null, null, null);
 		if (!ls6.isEmpty())
 			throw new RuntimeException();

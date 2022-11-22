@@ -95,7 +95,7 @@ public class test extends TestCase {
 		id = u.getProfilePicId();
 		File ff = u.getProfilePic(false);
 		u.addRefFile(f.id());
-		u.deleteProfilePic(); // ? bug! this deletes the file but there is orphan entry in RefN table
+		u.deleteProfilePic(); // ? bug? this deletes the file but there is a dangling ref in RelAgg
 		f.setName("profile pic");
 		id = u.getProfilePicId();
 		ff = u.getProfilePic(false);
