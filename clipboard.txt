@@ -115,6 +115,7 @@ drop table User;drop table File;drop table DataBinary;drop table User_refFiles;d
 bash -vx source-stats.sh
 
 #!/bin/sh
+set -e
 DIR=$(dirname "$0")
 cd $DIR &&
 cat projects.txt | sed -r '/^\s*$/d' | while read f; do
