@@ -25,7 +25,7 @@ public class fulltext_search_books extends TestCase {
 		final DbTransaction tn = Db.currentTransaction();
 		final int nreq = 1;
 		int i = 0;
-		final String qstr = "+american +idol -shows";
+		final String qstr = "+whispers +spinning";
 		final Query qry = new Query(DataText.ft, qstr).and(Book.data);
 		final Limit lmt = new Limit(0, 20);
 		final int totalcount = tn.getCount(Book.class, null);

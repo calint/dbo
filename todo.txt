@@ -14,6 +14,10 @@
 [ ]     RelAggN
 [ ]     RelRef
 [ ]     RelRefN
+[o] better connection pool
+[x]   thread safe
+[x]   wait if connection pool is empty or create new connections? wait.
+[ ]   close connection after a number of recycles and create a new
 [o] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
 [ ]     if aggregated does not have any Agg,AggN,RefN then cascade delete with "delete from ... where ..."
