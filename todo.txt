@@ -1,7 +1,7 @@
 [o] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
-[ ]   close connection after a number of recycles and create a new
+[ ]   close connection after a number of recycles and create a new one
 [ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [o] Index(DbField...)
 [x]    Collation asc
@@ -112,7 +112,7 @@
 [x] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
 [x]     if aggregated does not have any Agg,AggN,RefN then cascade delete with "delete from ... where ..."
-[x] boiler plate java code generator Util.createJavaCode(PrintWriter out, Class cls)
+[x] boiler plate java code generator Util.createJavaCode(PrintWriter out, Class cls). see package gem
 [x]   fields
 [x]     FldString
 [x]     FldInt
