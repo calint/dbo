@@ -36,6 +36,12 @@ public final class Main {
 		db.register(Book.class);
 		db.register(Game.class);
 
+//		final JavaCodeEmitter jce = new JavaCodeEmitter(db);
+//		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+//		jce.emit(out, User.class);
+//		if (1 == 1)
+//			return;
+
 //		final Class<? extends DbObject>[] clsa = getClasses();
 //		for (int i = 0; i < clsa.length; i++) {
 //			db.register(clsa[i]);

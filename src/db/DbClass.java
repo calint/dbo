@@ -60,8 +60,8 @@ public final class DbClass {
 		init_rec(allFields, allRelations, allIndexes, javaClass);
 	}
 
-	private static void init_rec(final List<DbField> lsfld, final List<DbRelation> lsrel,
-			final List<Index> lsix, final Class<?> cls) {
+	private static void init_rec(final List<DbField> lsfld, final List<DbRelation> lsrel, final List<Index> lsix,
+			final Class<?> cls) {
 		final Class<?> scls = cls.getSuperclass();
 		if (!scls.equals(Object.class)) {
 			init_rec(lsfld, lsrel, lsix, scls);
@@ -96,5 +96,13 @@ public final class DbClass {
 		sb.append(javaClass.getName()).append(" fields:").append(allFields).append(" relations:").append(allRelations)
 				.append(" indexes:").append(allIndexes);
 		return sb.toString();
+	}
+
+	public List<DbField> getDeclaredFields() {
+		return declaredFields;
+	}
+
+	public List<DbRelation> getDeclaredRelations() {
+		return declaredRelations;
 	}
 }

@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
@@ -288,6 +289,14 @@ public final class Db {
 
 	DbClass dbClassForJavaClass(final Class<?> c) {
 		return clsToDbClsMap.get(c);
+	}
+
+	public List<DbClass> getDbClasses() {
+		return dbclasses;
+	}
+
+	public DbClass getDbClassForJavaClass(final Class cls) {
+		return clsToDbClsMap.get(cls);
 	}
 
 //	// convenience

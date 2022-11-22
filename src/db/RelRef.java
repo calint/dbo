@@ -3,13 +3,9 @@ package db;
 import java.util.List;
 
 public final class RelRef extends DbRelation {
-	final Class<? extends DbObject> toCls;
-	final String toTableName;
-//	FldRel relFld;
 
 	public RelRef(Class<? extends DbObject> toCls) {
-		this.toCls = toCls;
-		toTableName = Db.tableNameForJavaClass(toCls);
+		super(toCls);
 	}
 
 	@Override

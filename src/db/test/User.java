@@ -46,7 +46,7 @@ public final class User extends DbObject {
 		return getStr(name);
 	}
 
-	public void setName(String v) {
+	public void setName(final String v) {
 		set(name, v);
 	}
 
@@ -55,25 +55,16 @@ public final class User extends DbObject {
 		return getStr(passhash);
 	}
 
-	public void setPasshash(String v) {
+	public void setPasshash(final String v) {
 		set(passhash, v);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public Timestamp getBirthTime() {
-		return getTimestamp(birthTime);
-	}
-
-	public void setBirthTime(Timestamp v) {
-		set(birthTime, v);
-	}
-
-	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public int getNLogins() {
+	public int getNlogins() {
 		return getInt(nlogins);
 	}
 
-	public void setNLogins(int v) {
+	public void setNlogins(final int v) {
 		set(nlogins, v);
 	}
 
@@ -82,7 +73,7 @@ public final class User extends DbObject {
 		return getLong(lng);
 	}
 
-	public void setLng(long v) {
+	public void setLng(final long v) {
 		set(lng, v);
 	}
 
@@ -91,7 +82,7 @@ public final class User extends DbObject {
 		return getFloat(flt);
 	}
 
-	public void setFlt(float v) {
+	public void setFlt(final float v) {
 		set(flt, v);
 	}
 
@@ -100,39 +91,44 @@ public final class User extends DbObject {
 		return getDouble(dbl);
 	}
 
-	public void setDbl(double v) {
+	public void setDbl(final double v) {
 		set(dbl, v);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public boolean getBool() {
+	public boolean isBool() {
 		return getBoolean(bool);
 	}
 
-	public void setBool(boolean v) {
+	public void setBool(final boolean v) {
 		set(bool, v);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public File createFile() {
-		return (File) files.create(this);
+	public Timestamp getBirthTime() {
+		return getTimestamp(birthTime);
 	}
 
-//	public List<DbObject> getFiles(final Query qry, final Order ord, final Limit lmt) {
-//		return files.get(this, qry, ord, lmt);
-//	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" }) // ? uggly
-	public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
-		return (List<File>) (List) files.get(this, qry, ord, lmt);
+	public void setBirthTime(final Timestamp v) {
+		set(birthTime, v);
 	}
 
-	public int getFilesCount(final Query qry) {
-		return files.getCount(this, qry);
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public File createFile(){
+		return(File)files.create(this);
 	}
 
-	public void deleteFile(int id) {
-		files.delete(this, id);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<File>getFiles(final Query qry,final Order ord,final Limit lmt){
+		return(List<File>)(List)files.get(this,qry,ord,lmt);
+	}
+
+	public int getFilesCount(final Query qry){
+		return files.getCount(this,qry);
+	}
+
+	public void deleteFile(final int id){
+		files.delete(this,id);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
@@ -157,25 +153,25 @@ public final class User extends DbObject {
 		return (File) groupPic.get(this);
 	}
 
-	public void setGroupPic(int id) {
+	public void setGroupPic(final int id) {
 		groupPic.set(this, id);
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-	public void addRefFile(int id) {
+	public void addRefFile(final int id) {
 		refFiles.add(this, id);
 	}
 
-	public List<DbObject> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
-		return refFiles.get(this, qry, ord, lmt);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<File> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
+		return (List<File>) (List) refFiles.get(this, qry, ord, lmt);
 	}
 
 	public int getRefFilesCount(final Query qry) {
 		return refFiles.getCount(this, qry);
 	}
 
-	public void removeRefFile(int id) {
+	public void removeRefFile(final int id) {
 		refFiles.remove(this, id);
 	}
-
 }

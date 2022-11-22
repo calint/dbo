@@ -122,7 +122,7 @@ public class test extends TestCase {
 		d = (DataBinary) tn.create(DataBinary.class);
 		d.setData(new byte[] { 0, 0xa, 0xb, 0xc });
 
-		u.setNLogins(3);
+		u.setNlogins(3);
 
 		final Query qry = new Query(User.class, 1).and(User.refFiles).and(File.name, Query.LIKE, "user refs %");
 //			System.out.println(qry.toString());

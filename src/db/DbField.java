@@ -20,6 +20,10 @@ public abstract class DbField {
 	void putDefaultValue(Map<DbField, Object> kvm) {
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public int hashCode() {
 		return name.hashCode();

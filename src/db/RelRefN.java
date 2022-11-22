@@ -7,13 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 
 public final class RelRefN extends DbRelation {
-	private final Class<? extends DbObject> toCls;
-	final String toTableName;
 	RelRefNMeta rrm;
 
 	public RelRefN(Class<? extends DbObject> toCls) {
-		this.toCls = toCls;
-		toTableName = Db.tableNameForJavaClass(toCls);
+		super(toCls);
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public final class RelRefN extends DbRelation {
 	@Override
 	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final String fromIxName = rrm.getFromIxName();
-		final String toIxName = rrm.getToIxName(); 
+		final String toIxName = rrm.getToIxName();
 
 		final HashSet<String> lookingForIndexNames = new HashSet<String>();
 		lookingForIndexNames.add(fromIxName);

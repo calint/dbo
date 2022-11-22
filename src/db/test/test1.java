@@ -150,7 +150,7 @@ public class test1 extends TestCase {
 		final int u4id = u4.id();
 		u4.setName(null);
 		u4.setBool(false);
-		u4.setNLogins(Integer.MIN_VALUE);
+		u4.setNlogins(Integer.MIN_VALUE);
 		u4.setLng(Long.MIN_VALUE);
 		u4.setFlt(Float.MIN_VALUE);
 		u4.setDbl(Double.MIN_VALUE);
@@ -164,9 +164,9 @@ public class test1 extends TestCase {
 		final User u5 = (User) ls.get(0);
 		if (u5.getName() != null)
 			throw new RuntimeException();
-		if (u5.getBool() != false)
+		if (u5.isBool() != false)
 			throw new RuntimeException();
-		if (u5.getNLogins() != Integer.MIN_VALUE)
+		if (u5.getNlogins() != Integer.MIN_VALUE)
 			throw new RuntimeException();
 		if (u5.getLng() != Long.MIN_VALUE)
 			throw new RuntimeException();
@@ -180,7 +180,7 @@ public class test1 extends TestCase {
 		final String s1 = "testing string \0 \' \" \r \n \\ ᐖᐛツ";
 		u4.setName(s1);
 		u4.setBool(true);
-		u4.setNLogins(Integer.MAX_VALUE);
+		u4.setNlogins(Integer.MAX_VALUE);
 		u4.setLng(Long.MAX_VALUE);
 //		u4.setFlt(Float.MAX_VALUE); // ? mysql problems with float
 //		u4.setFlt(3.402823466E+38f); // ? mysql max is 3.402823466E+38 but it does not work
@@ -197,9 +197,9 @@ public class test1 extends TestCase {
 
 		if (!s1.equals(u6.getName()))
 			throw new RuntimeException();
-		if (u6.getBool() != true)
+		if (u6.isBool() != true)
 			throw new RuntimeException();
-		if (u6.getNLogins() != Integer.MAX_VALUE)
+		if (u6.getNlogins() != Integer.MAX_VALUE)
 			throw new RuntimeException();
 		if (u6.getLng() != Long.MAX_VALUE)
 			throw new RuntimeException();

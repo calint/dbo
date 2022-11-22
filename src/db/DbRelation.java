@@ -3,11 +3,27 @@ package db;
 import java.sql.DatabaseMetaData;
 import java.sql.Statement;
 
-abstract class DbRelation {
+public abstract class DbRelation {
+	/** the class where the relation was declared. initiated by db after all classes have been loaded */
 	Class<? extends DbObject> cls;
 	String tableName;
 	String name;
+	Class<? extends DbObject> toCls;
+	final String toTableName;
 	FldRel relFld;
+
+	public DbRelation(Class<? extends DbObject> toCls) {
+		this.toCls = toCls;
+		toTableName = Db.tableNameForJavaClass(toCls);
+	}
+
+	public final String getName() {
+		return name;
+	}
+
+	public final Class<? extends DbObject> getToClass() {
+		return toCls;
+	}
 
 	/**
 	 * Called after all DbClasses have been created. Necessary relation fields can
