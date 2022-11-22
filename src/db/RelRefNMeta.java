@@ -17,9 +17,11 @@ final class RelRefNMeta {
 //		this.fromCls = fromCls;
 //		this.toCls = toCls;
 		this.fromTableName = Db.tableNameForJavaClass(fromCls);
-		this.fromColName = Db.tableNameForJavaClass(fromCls);
+//		this.fromColName = Db.tableNameForJavaClass(fromCls);
+		this.fromColName = "fromId";
 		this.toTableName = Db.tableNameForJavaClass(toCls);
-		this.toColName = Db.tableNameForJavaClass(toCls);
+//		this.toColName = Db.tableNameForJavaClass(toCls);
+		this.toColName = "toId";
 		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName).toString();
 	}
 
@@ -31,8 +33,8 @@ final class RelRefNMeta {
 		}
 		rs.close();
 
-		sb.append("create table ").append(tableName).append('(').append(fromTableName).append(" int,")
-				.append(toTableName).append(" int)");
+		sb.append("create table ").append(tableName).append('(').append(fromColName).append(" int,")
+				.append(toColName).append(" int)");
 	}
 
 	void sql_addToTable(final StringBuilder sb, final int fromId, final int toId) {
