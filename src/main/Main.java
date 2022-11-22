@@ -8,7 +8,7 @@ import db.test.File;
 import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
-import db.test.import_books;
+import db.test.import_books_sample;
 
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -60,15 +60,15 @@ public final class Main {
 //		t1.join();
 //		t2.join();
 
-		final Thread t1 = new Thread(new import_books());
-		final Thread t2 = new Thread(new import_books());
-		t1.start();
-		t2.start();
-		t1.join();
-		t2.join();
+//		final Thread t1 = new Thread(new import_books());
+//		final Thread t2 = new Thread(new import_books());
+//		t1.start();
+//		t2.start();
+//		t1.join();
+//		t2.join();
 
 //		run(test1.class);
-//		run(import_books.class);
+		run(import_books_sample.class);
 //		run(import_books.class);
 //		run(jdbc_select_books.class);
 //		run(get_books.class);

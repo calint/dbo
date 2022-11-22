@@ -19,7 +19,7 @@ public class import_books extends TestCase {
 	protected boolean isRunWithoutCache() {
 		return false;
 	}
-	
+
 	protected String getFilePath() {
 		return "../cvs-samples/books_data.csv";
 	}
@@ -27,8 +27,8 @@ public class import_books extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		Db.log_enable = false;
-		System.out.println("cache_enabled=" + tn.cache_enabled);
+//		Db.log_enable = false;
+//		System.out.println("cache_enabled=" + tn.cache_enabled);
 
 		final String filePath = getFilePath();
 		// sanity check
@@ -36,7 +36,7 @@ public class import_books extends TestCase {
 		CsvReader csv = new CsvReader(in);
 		List<String> ls = csv.nextRecord();// read headers
 		int i = 2; // skip headers
-		System.out.println("bounds check");
+		System.out.println("bounds check file '" + filePath + "'");
 		while (true) {
 			ls = csv.nextRecord();
 			if (ls == null)
@@ -60,10 +60,7 @@ public class import_books extends TestCase {
 				System.out.println(i);
 		}
 		in.close();
-		System.out.println("bounds check done.");
-
-		// import
-		System.out.println("import");
+		System.out.println("bounds check done. importing " + (i - 1) + " books from " + filePath + "'");
 		in = new FileReader(filePath);
 		csv = new CsvReader(in);
 		ls = csv.nextRecord();// read headers
@@ -90,6 +87,6 @@ public class import_books extends TestCase {
 			}
 		}
 		in.close();
-		System.out.println("import done. finnish transaction.");
+		System.out.println("import done. " + (i - 2) + " books imported.");
 	}
 }
