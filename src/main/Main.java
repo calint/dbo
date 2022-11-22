@@ -8,7 +8,7 @@ import db.test.File;
 import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
-import db.test.import_books;
+import db.test.test1;
 
 public class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -43,8 +43,8 @@ public class Main {
 //		run(delete_books.class);
 //		run(print_column_types.class);
 
-//		run(test1.class);
-		run(import_books.class);
+		run(test1.class);
+//		run(import_books.class);
 //		run(jdbc_select_books.class);
 //		run(get_books.class);
 		
