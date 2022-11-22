@@ -129,7 +129,7 @@ public final class JavaCodeEmitter {
 		out.flush();
 	}
 
-	static String getSingulariesForPlurar(String s) {
+	public static String getSingulariesForPlurar(String s) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(s);
 		if (s.endsWith("ies")) {
