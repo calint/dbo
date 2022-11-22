@@ -11,9 +11,20 @@ import db.DbTransaction;
 //   download csv at https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews
 public class import_books extends TestCase {
 	@Override
+	protected boolean isResetDatabase() {
+		return false;
+	}
+
+	@Override
+	protected boolean isRunWithoutCache() {
+		return false;
+	}
+
+	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		Db.log_enable = false;
+		System.out.println("cache_enabled=" + tn.cache_enabled);
 
 		// sanity check
 		FileReader in = new FileReader("../cvs-samples/books_data.csv");
@@ -52,6 +63,7 @@ public class import_books extends TestCase {
 		csv = new CsvReader(in);
 		ls = csv.nextRecord();// read headers
 		i = 2; // skip headers
+		final StringBuilder sb = new StringBuilder(1000);
 		while (true) {
 			ls = csv.nextRecord();
 			if (ls == null)
@@ -62,6 +74,11 @@ public class import_books extends TestCase {
 			o.setPublisher(ls.get(5));
 			final DataText d = o.getData(true);
 			d.setData(ls.get(1));
+
+			sb.setLength(0);
+			sb.append(o.getName()).append(" ").append(o.getAuthors()).append(" ").append(o.getPublisher());
+			d.setMeta(sb.toString());
+
 			if (++i % 100 == 0) {
 				System.out.println(i);
 				tn.commit();

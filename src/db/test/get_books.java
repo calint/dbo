@@ -10,9 +10,18 @@ import db.Limit;
 //// get-book-10req-1M
 public class get_books extends TestCase {
 	@Override
+	protected boolean isResetDatabase() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isRunWithoutCache() {
+		return false;
+	}
+	
+	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		tn.cache_enabled = false;
 		final int nreq = 10;
 		int i = 0;
 		while (true) {

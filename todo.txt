@@ -1,3 +1,5 @@
+[o] better connection pool
+[x]   thread safe
 [o] foreign key? implemented in Db.
 [x]   cascade delete? recursively get() and delete
 [ ]     cascade delete with "delete from ... where ..." if aggregated does not have any Agg,AggN,RefN itself

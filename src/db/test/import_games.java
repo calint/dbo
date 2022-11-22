@@ -10,6 +10,11 @@ import db.DbTransaction;
 // import games
 public class import_games extends TestCase {
 	@Override
+	protected boolean isRunWithoutCache() {
+		return false;
+	}
+
+	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		tn.cache_enabled = false;

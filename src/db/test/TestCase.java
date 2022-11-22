@@ -5,25 +5,37 @@ import db.DbTransaction;
 
 public abstract class TestCase implements Runnable {
 	public final void run() {
-		Db.instance().reset();
+		final boolean rst = isResetDatabase();
+
+		if (rst)
+			Db.instance().reset();
+
 		if (isRunWithCache())
-			runWithCache(true);
-		Db.instance().reset();
+			doTest(true);
+
+		if (rst)
+			Db.instance().reset();
+
 		if (isRunWithoutCache())
-			runWithCache(false);
+			doTest(false);
 	}
 
-	/** override and return true if test should not run with cache on */
+	/** @return true to reset database before tests */
+	protected boolean isResetDatabase() {
+		return true;
+	}
+
+	/** @return true to run test with cache on */
 	protected boolean isRunWithCache() {
 		return true;
 	}
 
-	/** override and return true if test should not run with cache off */
+	/** @return true to run test with cache off */
 	protected boolean isRunWithoutCache() {
 		return true;
 	}
 
-	private void runWithCache(final boolean cacheon) {
+	private void doTest(final boolean cacheon) {
 		final DbTransaction tn;
 		final String cachests = cacheon ? "on" : "off";
 		try {

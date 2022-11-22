@@ -8,17 +8,20 @@ create user c@localhost identified by 'password';
 select user from mysql.user;
 	drop user c@localhost;
 
+create database testdb;
 CREATE DATABASE testdb CHARACTER SET utf8 COLLATE utf8_bin;
+	drop database testdb;
 	
+show create database testdb;
+
+use testdb;
+
 grant all on testdb.* to c@localhost;
 	revoke all on testdb.* from c@localhost;
 	
 FLUSH PRIVILEGES;
 	SHOW GRANTS FOR c@localhost;
 	
-
-
-
 SELECT LOAD_FILE('/home/c/Downloads/test.sql');
 
 

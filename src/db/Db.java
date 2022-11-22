@@ -31,9 +31,13 @@ public final class Db {
 
 	/** initiates thread local for Db.currentTransaction() */
 	public static DbTransaction initCurrentTransaction() {
-		final Connection c = inst.conpool.pollFirst();
-		if (c == null)// ? fix
-			throw new RuntimeException("connection pool empty");
+		Connection c;
+		synchronized (inst.conpool) {
+			if (inst.conpool.isEmpty()) {// ? fix
+				throw new RuntimeException("connection pool is empty");
+			}
+			c = inst.conpool.getFirst();
+		}
 		try {
 			final DbTransaction t = new DbTransaction(c);
 			tn.set(t);
@@ -44,20 +48,23 @@ public final class Db {
 	}
 
 	public static void deinitCurrentTransaction() {
-		DbTransaction t = tn.get();
+		final DbTransaction t = tn.get();
 
 		// make sure statement is closed here. should be.
-		final boolean stmtIsClosed;
-		try {
-			stmtIsClosed = t.stmt.isClosed();
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-		if (!stmtIsClosed)
-			throw new RuntimeException(
-					"DbTransaction.finishTransaction() not called? Statement should be closed here.");
+//		final boolean stmtIsClosed;
+//		try {
+//			stmtIsClosed = t.stmt.isClosed();
+//		} catch (Throwable e) {
+//			throw new RuntimeException(e);
+//		}
+//		if (!stmtIsClosed)
+//			throw new RuntimeException(
+//					"Statement should be closed here. DbTransaction.finishTransaction() not called?");
 
-		inst.conpool.add(t.con);
+		synchronized (inst.conpool) {
+			inst.conpool.add(t.con);
+		}
+		
 		tn.remove();
 	}
 
@@ -68,6 +75,7 @@ public final class Db {
 	private static Db inst;
 
 	public static void initInstance() throws Throwable {
+		Class.forName("com.mysql.jdbc.Driver"); // ? for running in java 1.5
 		inst = new Db();
 		inst.register(DbObject.class);
 	}
@@ -112,7 +120,7 @@ public final class Db {
 				ix.init(c);
 		}
 
-		// create allFields, allRelations, allIndexes lists
+		// create lists allFields, allRelations, allIndexes
 		for (final DbClass c : dbclasses) {
 			c.init();
 			Db.log(c.toString());
@@ -123,46 +131,6 @@ public final class Db {
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		createTablesAndIndexes(con, dbm);
-//		// create tables
-//		final Statement stmt = con.createStatement();
-//		for (final DbClass dbcls : dbclasses) {
-//			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
-//				continue;
-//			final StringBuilder sb = new StringBuilder(256);
-//			dbcls.sql_createTable(sb, dbm);
-//			if (sb.length() == 0)
-//				continue;
-//			final String sql = sb.toString();
-//			Db.log(sql);
-//			stmt.execute(sql);
-//		}
-//
-//		// create RefN tables
-//		for (final RelRefNMeta rrm : relRefNMeta) {
-//			final StringBuilder sb = new StringBuilder(256);
-//			rrm.sql_createTable(sb, dbm);
-//			if (sb.length() == 0)
-//				continue;
-//			final String sql = sb.toString();
-//			Db.log(sql);
-//			stmt.execute(sql);
-//		}
-//
-//		// all tables have been created
-//
-//		// create indexes for relations
-//		for (final DbClass dbcls : dbclasses) {
-//			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
-//				dbrel.sql_createIndex(stmt, dbm);
-//			}
-//		}
-//
-//		// create indexes
-//		for (final DbClass dbcls : dbclasses) {
-//			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
-//				ix.sql_createIndex(stmt, dbm);
-//			}
-//		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -195,14 +163,15 @@ public final class Db {
 		}
 		rstbls.close();
 
-//		stmt.close();
 		con.close();
 
 		// create connection pool
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
-			conpool.add(c);
+			synchronized (conpool) {
+				conpool.add(c);
+			}
 		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
@@ -295,19 +264,21 @@ public final class Db {
 
 	public void shutdown() {
 		Db.inst = null;
-		for (final Connection c : conpool) {
-			try {
-				c.close();
-			} catch (Throwable e) {
-				e.printStackTrace();
+		synchronized (conpool) {
+			for (final Connection c : conpool) {
+				try {
+					c.close();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
 			}
+			conpool.clear();
 		}
-		conpool.clear();
 	}
 
-	static String tableNameForJavaClass(Class<? extends DbObject> cls) {
-//		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
-		final String tblnm = cls.getName().replace('.', '_');
+	static String tableNameForJavaClass(final Class<? extends DbObject> cls) {
+		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
+//		final String tblnm = cls.getName().replace('.', '_');
 		return tblnm;
 	}
 

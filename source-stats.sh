@@ -9,6 +9,7 @@ cd $DIR/src/db &&
 		sed -e '/^import /d' | 
 		sed -e '/^package /d' |
 		sed -r '/^\s*\/\//d' | 
+		sed -r '/^\s*}/d' | 
 	wc &&
 
 	echo wc gzip &&
@@ -16,5 +17,6 @@ cd $DIR/src/db &&
 		sed -r '/^\s*$/d' | 
 		sed -e '/^import /d' | 
 		sed -e '/^package /d' |
-		sed -r '/^\s*\/\//d' | 
+		sed -r '/^\s*\/\//d' |
+		sed -r '/^\s*}/d' |  
 	gzip | wc

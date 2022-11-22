@@ -8,7 +8,7 @@ import db.test.File;
 import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
-import db.test.test1;
+import db.test.import_books;
 
 public class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -27,21 +27,27 @@ public class Main {
 		db.register(DataText.class);
 		db.register(Book.class);
 		db.register(Game.class);
-		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
+//		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
+//		db.init("jdbc:mysql://localhost:3306/testdb?autoReconnect=true&useSSL=false", "c", "password", 5);
+		db.init("jdbc:mysql://localhost:3306/testdb?useSSL=false", "c", "password", 5);
+//		db.init("jdbc:mysql://localhost:3306/testdb?verifyServerCertificate=false&useSSL=true", "c", "password", 5);
 
 //		Db.log_enable = false;
 		
-//		run(import_books.class);
-//		run(jdbc_select_books.class);
-//		run(get_books.class);
+
+
+
 //		run(fulltext_search_books.class);
 //		run(import_games.class);
 //		run(test.class);
 //		run(delete_books.class);
 //		run(print_column_types.class);
-//		run(refn_orphans.class);
-		run(test1.class);
 
+//		run(test1.class);
+		run(import_books.class);
+//		run(jdbc_select_books.class);
+//		run(get_books.class);
+		
 		db.shutdown();
 	}
 }
