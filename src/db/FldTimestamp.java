@@ -28,8 +28,8 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(Map<String, Object> kvm) {
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
 		if (defval != null)
-			kvm.put(name, defval);
+			kvm.put(this, defval);
 	}
 }

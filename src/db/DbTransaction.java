@@ -74,7 +74,7 @@ public final class DbTransaction {
 			final ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				final int id = rs.getInt(1);
-				o.fieldValues.put(DbObject.id.name, id);
+				o.fieldValues.put(DbObject.id, id);
 			} else
 				throw new RuntimeException("expected generated id");
 			rs.close();
@@ -190,7 +190,7 @@ public final class DbTransaction {
 		int i = 1;
 		for (final DbField f : cls.allFields) {
 			final Object v = rs.getObject(i);
-			o.fieldValues.put(f.name, v);
+			o.fieldValues.put(f, v);
 			i++;
 		}
 	}

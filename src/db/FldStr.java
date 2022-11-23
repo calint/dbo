@@ -53,8 +53,8 @@ public final class FldStr extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(Map<String, Object> kvm) {
-		kvm.put(name, defval);
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
+		kvm.put(this, defval);
 	}
 
 //	static void escapeString(final StringBuilder sb, final String s) {

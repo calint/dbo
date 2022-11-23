@@ -1,30 +1,38 @@
 package main;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+import java.util.List;
 
 import db.DbObject;
 
 public class TestObj extends DbObject {
-	public final static FldDate df = new FldDate();
+	public final static FldSerList list = new FldSerList();
 
-	public Date getDf() {
-		Date d = null;
-		if (hasTemp(df, "d")) { // cached object may be null. is converted and cached?
-			d = (Date) getTemp(df, "d"); // yes, get from cache
-		} else { // not converted. convert and cache
-			final Timestamp ts = (Timestamp) get(df); // get sql representation
-			if (ts == null) {
-				setTemp(df, "d", null); // set null value
-			} else {
-				d = new Date(ts.getTime()); // convert (this case simple but it may be costly)
-				setTemp(df, "d", d); // cache
-			}
+	@SuppressWarnings("unchecked")
+	public List<String> getList() {
+		final Object v = get(list);
+		if (v == null)
+			return null;
+		if (v instanceof List<?>) {
+			// it is transformed
+			return (List<String>) v;
 		}
-		return d;
+		final byte[] ba = getBytesArray(list); // get sql representation
+		if (ba == null)
+			return null;
+
+		try {
+			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
+			final List<String> ls = (List<String>) ois.readObject();
+			set(list, ls, false); // cache
+			return ls;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 
-	public void setDf(Date v) {
-		setTemp(df, "d", v); // set cached
+	public void setList(List<String> v) {
+		set(list, v);
 	}
 }

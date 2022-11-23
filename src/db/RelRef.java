@@ -25,7 +25,7 @@ public final class RelRef extends DbRelation {
 
 	/** @returns 0 if id is null */
 	public int getId(final DbObject ths) {
-		final Object objId = ths.fieldValues.get(relFld.name);
+		final Object objId = ths.fieldValues.get(relFld);
 		if (objId == null)
 			return 0;
 		return ((Integer) objId).intValue();

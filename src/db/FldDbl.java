@@ -24,7 +24,7 @@ public final class FldDbl extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(Map<String, Object> kvm) {
-		kvm.put(this.name, defval);
+	protected void setDefaultValue(Map<DbField, Object> kvm) {
+		kvm.put(this, defval);
 	}
 }
