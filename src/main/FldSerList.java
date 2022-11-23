@@ -21,6 +21,7 @@ public class FldSerList extends DbField {
 			sb.append("null");
 			return;
 		}
+		// if the value has changed it was through setList so it is a List
 		@SuppressWarnings("unchecked")
 		final List<String> ls = (List<String>) v;
 		try {
