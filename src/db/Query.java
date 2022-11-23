@@ -57,7 +57,7 @@ public final class Query {
 				sb.setLength(sb.length() - 1);
 				sb.append(')');
 				sb.append(" against('");
-				FldString.sqlEscapeString(sb, rh);
+				FldString.escapeSqlString(sb, rh);
 				sb.append("' in boolean mode) ");
 				return;
 			}
@@ -136,7 +136,7 @@ public final class Query {
 	private static String sqlStr(final String s) {
 		final StringBuilder sb = new StringBuilder(s.length() + 10); // ? magic number
 		sb.append('\'');
-		FldString.sqlEscapeString(sb, s);
+		FldString.escapeSqlString(sb, s);
 		sb.append('\'');
 		return sb.toString();
 	}

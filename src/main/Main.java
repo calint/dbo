@@ -91,6 +91,7 @@ public final class Main {
 //		t1.join();
 //		t2.join();
 
+//		Db.log_enable = false;
 		run(test1.class);
 		run(import_books_sample.class);
 		run(fulltext_search_books.class);

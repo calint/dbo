@@ -25,7 +25,7 @@ public class fulltext_search_books extends TestCase {
 		final DbTransaction tn = Db.currentTransaction();
 		final int nreq = 1;
 		int i = 0;
-		final String qstr = "+whispers +spinning";
+		final String qstr = "+whispers +spinning +haddon";
 		final Query qry = new Query(DataText.ft, qstr).and(Book.data);
 		final Limit lmt = new Limit(0, 20);
 		final int totalcount = tn.getCount(Book.class, null);
@@ -37,7 +37,7 @@ public class fulltext_search_books extends TestCase {
 			final List<DbObject> ls = tn.get(Book.class, qry, null, lmt);
 			for (final DbObject o : ls) {
 				final Book bo = (Book) o;
-				System.out.println(bo.id() + "  " + bo.getName());
+				System.out.println(bo.id() + ": " + bo.getName());
 			}
 			System.out.println("  objects retrieved: " + ls.size());
 			i++;

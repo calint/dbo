@@ -3,9 +3,9 @@ package db;
 import java.util.Map;
 
 public abstract class DbField {
-//	Class<? extends DbObject> cls;
-	String name;
-	String tableName;
+	protected String name;
+	protected Class<? extends DbObject> cls;
+	protected String tableName;
 
 	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 	}

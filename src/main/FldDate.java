@@ -20,9 +20,9 @@ public class FldDate extends DbField {
 			return;
 		}
 		sb.append('\'');
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // ? optimize with other thread safe formatter
 		final String s = sdf.format(v);
-		FldString.sqlEscapeString(sb, s);
+		FldString.escapeSqlString(sb, s);
 		sb.append('\'');
 	}
 

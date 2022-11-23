@@ -158,6 +158,10 @@ public final class User extends DbObject {
 		groupPic.set(this, id);
 	}
 
+	public void setGroupPic(final File o) {
+		groupPic.set(this, o.id());
+	}
+
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public void addRefFile(final int id) {
 		refFiles.add(this, id);

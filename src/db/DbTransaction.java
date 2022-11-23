@@ -38,6 +38,8 @@ public final class DbTransaction {
 
 		void remove(final DbObject o) {
 			final HashMap<Integer, DbObject> idToObjMap = clsToIdObjMap.get(o.getClass());
+			if (idToObjMap == null)
+				return;
 			idToObjMap.remove(o.id());
 		}
 
@@ -265,9 +267,7 @@ public final class DbTransaction {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(" where id=").append(o.id());
-		final String sql = sb.toString();
-		Db.log(sql);
-		stmt.execute(sql);
+		execSql(sb);
 		o.dirtyFields.clear();
 	}
 

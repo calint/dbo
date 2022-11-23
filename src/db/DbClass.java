@@ -33,7 +33,7 @@ public final class DbClass {
 			if (DbField.class.isAssignableFrom(f.getType())) {
 				final DbField dbf = (DbField) f.get(null);
 				dbf.name = f.getName();
-//				dbf.cls = c;
+				dbf.cls = c;
 				dbf.tableName = tableName;
 				declaredFields.add(dbf);
 				continue;

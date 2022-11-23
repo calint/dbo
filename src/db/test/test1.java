@@ -252,20 +252,38 @@ public class test1 extends TestCase {
 		f8.getData(true);
 		u8.createGame();
 		u8.createGame();
-		tn.delete(u8); // d1, g1, g2 gets deleted with "delete from" instead of get delete because it
-						// does not aggregate
+		tn.delete(u8); // d1, g1, g2 gets deleted with "delete from" instead of get delete because they
+						// don't not aggregate
 
-//		final File f9 = (File) tn.create(File.class);
-//		u8.setGroupPic(f9.id()); // Ref
-//		final File f10 = (File) tn.create(File.class);
-//		u8.addRefFile(f10.id()); // RefN
-//		final File f11 = u8.getProfilePic(true); // Agg
-//
-//		final List<DbObject> ls10 = tn.get(File.class, null, null, null);
-//		if (ls10.size() != 2)
-//			throw new RuntimeException();
-//
-//		tn.commit();
+		final User u9 = (User) tn.create(User.class);
+		final File f9 = (File) tn.create(File.class);
+		f9.setName("dog ok");
+		f9.loadFile("img/far_side_dog_ok.jpg");
+		u9.setGroupPic(f9);
+		tn.commit();
+		final File f10 = u9.getGroupPic();
+		f10.writeFile("img/dog_ok.jpg");
 
+		final int procres = Runtime.getRuntime().exec("diff img/far_side_dog_ok.jpg img/dog_ok.jpg").waitFor();// ! on
+																												// unix
+																												// only
+		if (procres != 0)
+			throw new RuntimeException();
+		if (!new java.io.File("img/dog_ok.jpg").delete())
+			throw new RuntimeException();
+
+		tn.delete(f10);
+		final File f11 = u9.getGroupPic(); // ! has dangling reference
+		if (f11 != null)
+			throw new RuntimeException();
+
+		// bugfix: user created committed (cache cleared) then deleted where delete
+		// tries to remove it from the cache
+		final User u10 = (User) tn.create(User.class);
+		u10.setName("John Doe");
+		tn.commit();
+		tn.delete(u10);
+		
+		
 	}
 }

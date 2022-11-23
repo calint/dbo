@@ -38,7 +38,7 @@ public final class FldString extends DbField {
 			return;
 		}
 		sb.append('\'');
-		sqlEscapeString(sb, s);
+		escapeSqlString(sb, s);
 		sb.append('\'');
 	}
 
@@ -47,7 +47,7 @@ public final class FldString extends DbField {
 		sb.append(name).append(" varchar(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '");
-			sqlEscapeString(sb, defval);
+			escapeSqlString(sb, defval);
 			sb.append("'");
 		}
 	}
@@ -63,7 +63,7 @@ public final class FldString extends DbField {
 
 	// note: from
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
-	public static void sqlEscapeString(final StringBuilder sb, final String x) {
+	public static void escapeSqlString(final StringBuilder sb, final String x) {
 		final int len = x.length();
 		for (int i = 0; i < len; ++i) {
 			final char ch = x.charAt(i);

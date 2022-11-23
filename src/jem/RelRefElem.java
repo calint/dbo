@@ -61,6 +61,17 @@ public class RelRefElem extends ElemRel {
 		out.println(".set(this,id);");
 		out.println("}");
 		out.println();
+
+		out.print("public void set");
+		out.print(acc);
+		out.print("(final ");
+		out.print(toClsNm);
+		out.println(" o){");
+		out.print("\t");
+		out.print(rel.getName());
+		out.println(".set(this,o.id());");
+		out.println("}");
+		out.println();
 	}
 
 }
