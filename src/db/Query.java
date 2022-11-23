@@ -108,7 +108,7 @@ public final class Query {
 		private int seq;
 		final private HashMap<String, String> tblToAlias = new HashMap<String, String>();
 
-		String getAliasForTableName(String tblname) {
+		String getAliasForTableName(final String tblname) {
 			String tblalias = tblToAlias.get(tblname);
 			if (tblalias == null) {
 				seq++;

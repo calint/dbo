@@ -2,7 +2,7 @@ module db {
 	requires java.sql;
 }
 
-create user c@localhost identified by 'password';
+create user 'c'@'localhost' identified by 'password';
 	mysql -u c -p
 	
 select user from mysql.user;
