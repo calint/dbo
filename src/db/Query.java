@@ -118,7 +118,7 @@ public final class Query {
 			return tblalias;
 		}
 
-		void sql_appendSelectFromTables(StringBuilder sb) {
+		void sql_appendSelectFromTables(final StringBuilder sb) {
 			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
 				sb.append(kv.getKey()).append(" ").append(kv.getValue()).append(", ");
 			}
@@ -141,7 +141,7 @@ public final class Query {
 		return sb.toString();
 	}
 
-	void sql_build(final StringBuilder sb, TableAliasMap tam) {
+	void sql_build(final StringBuilder sb, final TableAliasMap tam) {
 		for (final Elem e : elems)
 			e.sql_build(sb, tam);
 	}
@@ -151,57 +151,57 @@ public final class Query {
 
 	////////////////////////////////////////////////////////
 	/** query by id */
-	public Query(Class<? extends DbObject> c, int id) {
+	public Query(final Class<? extends DbObject> c, final int id) {
 		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
 
-	public Query(DbField lh, int op, String rh) {
+	public Query(final DbField lh, final int op, final String rh) {
 		append(NOP, lh.tableName, lh.name, op, null, sqlStr(rh));
 	}
 
-	public Query(DbField lh, int op, int rh) {
+	public Query(final DbField lh, final int op, final int rh) {
 		append(NOP, lh.tableName, lh.name, op, null, Integer.toString(rh));
 	}
 
-	public Query(DbField lh, int op, Timestamp ts) {
+	public Query(final DbField lh, final int op, final Timestamp ts) {
 //		append(NOP, lh.tableName, lh.columnName, op, null, ts.toString());
 		append(NOP, lh.tableName, lh.name, op, null, "'" + ts.toString() + "'");
 	}
 
-	public Query(DbField lh, int op, DbField rh) {
+	public Query(final DbField lh, final int op, final DbField rh) {
 		append(NOP, lh.tableName, lh.name, op, rh.tableName, rh.name);
 	}
 
-	public Query(DbField lh, int op, float rh) {
+	public Query(final DbField lh, final int op, final float rh) {
 		append(NOP, lh.tableName, lh.name, op, null, Float.toString(rh));
 	}
 
-	public Query(DbField lh, int op, double rh) {
+	public Query(final DbField lh, final int op, final double rh) {
 		append(NOP, lh.tableName, lh.name, op, null, Double.toString(rh));
 	}
 
-	public Query(DbField lh, int op, boolean rh) {
+	public Query(final DbField lh, final int op, final boolean rh) {
 		append(NOP, lh.tableName, lh.name, op, null, Boolean.toString(rh));
 	}
 
-	public Query(RelAggN rel) {
+	public Query(final RelAggN rel) {
 		append(NOP, rel.tableName, DbObject.id.name, EQ, rel.toTableName, rel.relFld.name);
 	}
 
-	public Query(RelRefN rel) {
+	public Query(final RelRefN rel) {
 		append(NOP, rel.tableName, DbObject.id.name, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
 				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.name);
 	}
 
-	public Query(RelAgg rel) {
+	public Query(final RelAgg rel) {
 		append(NOP, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query(RelRef rel) {
+	public Query(final RelRef rel) {
 		append(NOP, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query(IndexFt ix, String ftquery) {
+	public Query(final IndexFt ix, final String ftquery) {
 		final Elem e = new Elem();
 		e.elemOp = NOP;
 		e.ftix = ix;
