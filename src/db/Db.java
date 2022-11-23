@@ -190,24 +190,12 @@ public final class Db {
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
-			final StringBuilder sb = new StringBuilder(256);
-			dbcls.sql_createTable(sb, dbm);
-			if (sb.length() == 0)
-				continue;
-			final String sql = sb.toString();
-			Db.log(sql);
-			stmt.execute(sql);
+			dbcls.createTable(stmt, dbm);
 		}
 
 		// create RefN tables
 		for (final RelRefNMeta rrm : relRefNMeta) {
-			final StringBuilder sb = new StringBuilder(256);
-			rrm.sql_createTable(sb, dbm);
-			if (sb.length() == 0)
-				continue;
-			final String sql = sb.toString();
-			Db.log(sql);
-			stmt.execute(sql);
+			rrm.createTable(stmt, dbm);
 		}
 
 		// all tables have been created
@@ -215,14 +203,14 @@ public final class Db {
 		// create indexes for relations
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
-				dbrel.sql_createIndex(stmt, dbm);
+				dbrel.createIndex(stmt, dbm);
 			}
 		}
 
 		// create indexes
 		for (final DbClass dbcls : dbclasses) {
 			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
-				ix.sql_createIndex(stmt, dbm);
+				ix.createIndex(stmt, dbm);
 			}
 		}
 	}

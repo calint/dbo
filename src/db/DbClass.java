@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +77,8 @@ public final class DbClass {
 		lsix.addAll(dbcls.declaredIndexes);
 	}
 
-	final void sql_createTable(StringBuilder sb, DatabaseMetaData dbm) throws Throwable {
+	/** called by Db at init. check if table exists */
+	void createTable(Statement stmt, DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
@@ -84,6 +86,7 @@ public final class DbClass {
 		}
 		rs.close();
 
+		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create table ").append(tableName).append("(");
 		for (final DbField f : allFields) {
 			f.sql_columnDefinition(sb);
@@ -91,6 +94,9 @@ public final class DbClass {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 		return;
 	}
 

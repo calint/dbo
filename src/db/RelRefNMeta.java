@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 // represents the relation table for RelRefN
 final class RelRefNMeta {
@@ -25,7 +26,7 @@ final class RelRefNMeta {
 		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName).toString();
 	}
 
-	void sql_createTable(final StringBuilder sb, final DatabaseMetaData dbm) throws Throwable {
+	void createTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
@@ -33,8 +34,12 @@ final class RelRefNMeta {
 		}
 		rs.close();
 
+		final StringBuilder sb = new StringBuilder(256);
 		sb.append("create table ").append(tableName).append('(').append(fromColName).append(" int,").append(toColName)
 				.append(" int)");
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
 
 	void sql_addToTable(final StringBuilder sb, final int fromId, final int toId) {

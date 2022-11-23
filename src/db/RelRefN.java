@@ -64,7 +64,7 @@ public final class RelRefN extends DbRelation {
 	}
 
 	@Override
-	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	void createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final String fromIxName = rrm.getFromIxName();
 		final String toIxName = rrm.getToIxName();
 

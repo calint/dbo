@@ -58,7 +58,7 @@ public final class RelAggN extends DbRelation {
 	}
 
 	@Override
-	void sql_createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	void createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
