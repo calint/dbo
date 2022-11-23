@@ -14,14 +14,12 @@ public class TestObj extends DbObject {
 		final Object v = get(list);
 		if (v == null)
 			return null;
-		if (v instanceof List<?>) {
-			// it is transformed
-			return (List<String>) v;
-		}
-		final byte[] ba = getBytesArray(list); // get sql representation
-		if (ba == null)
-			return null;
 
+		if (v instanceof List<?>) // is it is transformed?
+			return (List<String>) v;
+
+		// convert from sql representation
+		final byte[] ba = getBytesArray(list);
 		try {
 			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
 			final List<String> ls = (List<String>) ois.readObject();
