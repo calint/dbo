@@ -7,7 +7,7 @@ import java.util.List;
 import db.DbObject;
 
 public class TestObj extends DbObject {
-	public final static FldSerList list = new FldSerList();
+	public final static FldSerializable list = new FldSerializable();
 
 	@SuppressWarnings("unchecked")
 	public List<String> getList() {

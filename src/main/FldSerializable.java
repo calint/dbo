@@ -2,13 +2,13 @@ package main;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import java.io.Serializable;
 
 import db.DbField;
 import db.DbObject;
 import db.FldBlob;
 
-public class FldSerList extends DbField {
+public class FldSerializable extends DbField {
 	@Override
 	protected void sql_columnDefinition(StringBuilder sb) {
 		sb.append(getName()).append(" blob");
@@ -21,13 +21,15 @@ public class FldSerList extends DbField {
 			sb.append("null");
 			return;
 		}
-		// if the value has changed it was through setList so it is a List
-		@SuppressWarnings("unchecked")
-		final List<String> ls = (List<String>) v;
+		if (!(v instanceof Serializable))
+			throw new RuntimeException("expected serializable object. " + o);
+
+		// if the value has changed then it is kept in java type which is serializable
+		final Serializable so = (Serializable) v;
 		try {
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream(256);
 			final ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(ls);
+			oos.writeObject(so);
 			oos.close();
 			final byte[] ba = bos.toByteArray();
 			final char[] chars = FldBlob.bytesToHex(ba);
