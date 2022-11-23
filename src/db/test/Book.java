@@ -3,15 +3,15 @@ package db.test;
 import java.sql.Timestamp;
 
 import db.DbObject;
-import db.FldString;
+import db.FldStr;
 import db.FldTimestamp;
 import db.IndexRel;
 import db.RelAgg;
 
 public final class Book extends DbObject {
-	public final static FldString name = new FldString(800);
-	public final static FldString authors = new FldString(3000);
-	public final static FldString publisher = new FldString(400);
+	public final static FldStr name = new FldStr(800);
+	public final static FldStr authors = new FldStr(3000);
+	public final static FldStr publisher = new FldStr(400);
 	public final static FldTimestamp publishedDate = new FldTimestamp();
 	public final static RelAgg data = new RelAgg(DataText.class);
 

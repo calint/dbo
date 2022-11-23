@@ -9,7 +9,7 @@ import db.FldDbl;
 import db.FldFloat;
 import db.FldInt;
 import db.FldLong;
-import db.FldString;
+import db.FldStr;
 import db.FldTimestamp;
 import db.Index;
 import db.IndexFt;
@@ -23,8 +23,8 @@ import db.RelRef;
 import db.RelRefN;
 
 public final class User extends DbObject {
-	public final static FldString name = new FldString();
-	public final static FldString passhash = new FldString(32);
+	public final static FldStr name = new FldStr();
+	public final static FldStr passhash = new FldStr(32);
 	public final static FldInt nlogins = new FldInt();
 	public final static FldLong lng = new FldLong();
 	public final static FldFloat flt = new FldFloat();

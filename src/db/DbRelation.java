@@ -6,7 +6,7 @@ import java.sql.Statement;
 public abstract class DbRelation {
 	/** the class where the relation was declared. initiated by db after all classes have been loaded */
 	Class<? extends DbObject> cls;
-	/** the table name of cls */
+	/** the table name of cls. initiated by db after all classes have been loaded */
 	String tableName;
 	/** the name of the field that declared it. initiated by db after all classes have been loaded */
 	String name;

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 import db.DbField;
 import db.DbObject;
-import db.FldString;
+import db.FldStr;
 
 public class FldDate extends DbField {
 	@Override
@@ -22,7 +22,7 @@ public class FldDate extends DbField {
 		sb.append('\'');
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // ? optimize with other thread safe formatter
 		final String s = sdf.format(v);
-		FldString.escapeSqlString(sb, s);
+		FldStr.escapeSqlString(sb, s);
 		sb.append('\'');
 	}
 

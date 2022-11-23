@@ -4,8 +4,8 @@ import java.io.PrintWriter;
 
 import db.FldDbl;
 
-public final class FldDoubleElem extends ElemFld {
-	public FldDoubleElem(final FldDbl fld) {
+public final class FldDblElem extends ElemFld {
+	public FldDblElem(final FldDbl fld) {
 		super(fld);
 	}
 
@@ -29,7 +29,7 @@ public final class FldDoubleElem extends ElemFld {
 		out.print(acc);
 		out.println("(){");
 		out.print("\t");
-		out.print("return getDouble(");
+		out.print("return getDbl(");
 		out.print(fldName);
 		out.println(");");
 		out.println("}");

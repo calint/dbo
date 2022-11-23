@@ -6,12 +6,12 @@ import java.sql.Timestamp;
 
 import db.DbObject;
 import db.FldLong;
-import db.FldString;
+import db.FldStr;
 import db.FldTimestamp;
 import db.RelAgg;
 
 public final class File extends DbObject {
-	public final static FldString name = new FldString();
+	public final static FldStr name = new FldStr();
 	public final static FldLong size_B = new FldLong();
 	public final static FldTimestamp created_ts = new FldTimestamp();
 	public final static RelAgg data = new RelAgg(DataBinary.class);

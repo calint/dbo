@@ -2,20 +2,20 @@ package jem;
 
 import java.io.PrintWriter;
 
-import db.FldString;
+import db.FldBool;
 
-public final class FldStringElem extends ElemFld {
-	public FldStringElem(final FldString fld) {
+public final class FldBoolElem extends ElemFld {
+	public FldBoolElem(final FldBool fld) {
 		super(fld);
 	}
 
 //	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
-//	public String getName() {
-//		return getStr(name);
+//	public int getNLogins() {
+//		return getInt(nlogins);
 //	}
 //
-//	public void setName(String v) {
-//		set(name, v);
+//	public void setNLogins(int v) {
+//		set(nlogins, v);
 //	}
 //
 
@@ -23,20 +23,20 @@ public final class FldStringElem extends ElemFld {
 	public void emit(final PrintWriter out) {
 		final String fldName = fld.getName();
 		final String acc = getAccessorName();
-	
+
 		out.println(HR);
-		out.print("public String get");
+		out.print("public boolean is"); // ? isBool()
 		out.print(acc);
 		out.println("(){");
 		out.print("\t");
-		out.print("return getStr(");
+		out.print("return getBool(");
 		out.print(fldName);
 		out.println(");");
 		out.println("}");
 		out.println();
 		out.print("public void set");
 		out.print(acc);
-		out.println("(final String v){");
+		out.println("(final boolean v){");
 		out.print("\t");
 		out.print("set(");
 		out.print(fldName);

@@ -4,7 +4,7 @@ public final class FldClob extends DbField {
 	@Override
 	protected void sql_updateValue(StringBuilder sb, DbObject o) {
 		sb.append('\'');
-		FldString.escapeSqlString(sb, o.getStr(this));
+		FldStr.escapeSqlString(sb, o.getStr(this));
 		sb.append('\'');
 	}
 

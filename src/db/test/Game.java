@@ -1,11 +1,11 @@
 package db.test;
 
 import db.DbObject;
-import db.FldString;
+import db.FldStr;
 
 public final class Game extends DbObject {
-	public final static FldString name = new FldString();
-	public final static FldString description = new FldString(8000);
+	public final static FldStr name = new FldStr();
+	public final static FldStr description = new FldStr(8000);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {
