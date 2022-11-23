@@ -28,7 +28,7 @@ public final class DbTransaction {
 			idToObjMap.put(o.id(), o);
 		}
 
-		DbObject get(Class<? extends DbObject> cls, int id) {
+		DbObject get(final Class<? extends DbObject> cls, final int id) {
 			HashMap<Integer, DbObject> idToObjMap = clsToIdObjMap.get(cls);
 			if (idToObjMap == null)
 				return null;

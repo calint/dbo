@@ -25,50 +25,50 @@ public abstract class DbObject {
 		return id();
 	}
 
-	final public String getStr(DbField field) {
+	final public String getStr(final DbField field) {
 		return (String) fieldValues.get(field);
 	}
 
-	final public int getInt(DbField field) {
+	final public int getInt(final DbField field) {
 		return ((Integer) fieldValues.get(field)).intValue();
 	}
 
-	final public long getLong(DbField field) {
+	final public long getLong(final DbField field) {
 		return ((Long) fieldValues.get(field)).longValue();
 	}
 
-	final public float getFloat(DbField field) {
+	final public float getFloat(final DbField field) {
 		return ((Float) fieldValues.get(field)).floatValue();
 	}
 
-	final public double getDbl(DbField field) {
+	final public double getDbl(final DbField field) {
 		return ((Double) fieldValues.get(field)).doubleValue();
 	}
 
-	final public boolean getBool(DbField field) {
+	final public boolean getBool(final DbField field) {
 		return ((Boolean) fieldValues.get(field)).booleanValue();
 	}
 
-	final public Timestamp getTimestamp(DbField field) {
+	final public Timestamp getTimestamp(final DbField field) {
 		return (Timestamp) fieldValues.get(field);
 	}
 
-	final public byte[] getBytesArray(DbField field) {
+	final public byte[] getBytesArray(final DbField field) {
 		return (byte[]) fieldValues.get(field);
 	}
 
-	final public Object get(DbField field) {
+	final public Object get(final DbField field) {
 		return fieldValues.get(field);
 	}
 
-	final public void set(DbField field, Object value) {
+	final public void set(final DbField field, final Object value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
 	/** used by user defined DbFields to optimize get/set data transformations */
-	final public void set(DbField field, Object value, boolean markDirty) {
+	final public void set(final DbField field, final Object value, final boolean markDirty) {
 		fieldValues.put(field, value);
 		if (markDirty) {
 			getCreatedDirtyFields().add(field);
@@ -76,49 +76,49 @@ public abstract class DbObject {
 		}
 	}
 
-	final public void set(DbField field, String value) {
+	final public void set(final DbField field, final String value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, int value) {
+	final public void set(final DbField field, final int value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, long value) {
+	final public void set(final DbField field, final long value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, Timestamp value) {
+	final public void set(final DbField field, final Timestamp value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, byte[] value) {
+	final public void set(final DbField field, final byte[] value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, float value) {
+	final public void set(final DbField field, final float value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, double value) {
+	final public void set(final DbField field, final double value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(DbField field, boolean value) {
+	final public void set(final DbField field, final boolean value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);

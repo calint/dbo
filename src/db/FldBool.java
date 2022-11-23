@@ -3,7 +3,7 @@ package db;
 import java.util.Map;
 
 public final class FldBool extends DbField {
-	private boolean defval;
+	final private boolean defval;
 
 	public FldBool(final boolean def) {
 		defval = def;
@@ -14,17 +14,17 @@ public final class FldBool extends DbField {
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getBool(this));
 	}
 
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(" boolean default ").append(defval);
 	}
 
 	@Override
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

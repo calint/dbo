@@ -11,13 +11,13 @@ public abstract class DbRelation {
 	/** the name of the field that declared it. initiated by db after all classes have been loaded */
 	String name;
 	/** the class that the relations refers to */
-	Class<? extends DbObject> toCls;
+	final Class<? extends DbObject> toCls;
 	/** the table name of toCls */
 	final String toTableName;
 	/** field used in relations. may be null or 0 */
 	FldRel relFld;
 
-	public DbRelation(Class<? extends DbObject> toCls) {
+	public DbRelation(final Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
 		toTableName = Db.tableNameForJavaClass(toCls);
 	}

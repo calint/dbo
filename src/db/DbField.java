@@ -7,13 +7,13 @@ public abstract class DbField {
 	protected Class<? extends DbObject> cls;
 	protected String tableName;
 
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 	}
 
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 	}
 
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 	}
 
 	public final String getName() {

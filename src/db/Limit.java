@@ -1,10 +1,10 @@
 package db;
 
 public final class Limit {
-	private int offset;
-	private int rowCount;
+	final private int offset;
+	final private int rowCount;
 
-	public Limit(int offset, int rowCount) {
+	public Limit(final int offset, final int rowCount) {
 		this.offset = offset;
 		this.rowCount = rowCount;
 	}

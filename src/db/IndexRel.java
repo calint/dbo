@@ -1,7 +1,7 @@
 package db;
 
 public class IndexRel extends Index {
-	private DbRelation rel;
+	final private DbRelation rel;
 
 	public IndexRel(final DbRelation r) {
 		rel = r;

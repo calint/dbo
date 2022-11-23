@@ -4,8 +4,8 @@ import java.util.Map;
 
 public final class FldStr extends DbField {
 	public final static int max_size = 65535;
-	private int size = 255;
-	private String defval = "";
+	final private int size;
+	final private String defval;
 
 	public FldStr() {
 		this("", 255);
@@ -31,7 +31,7 @@ public final class FldStr extends DbField {
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final String s = o.getStr(this);
 		if (s == null) {
 			sb.append("null");
@@ -43,7 +43,7 @@ public final class FldStr extends DbField {
 	}
 
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(" varchar(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '");
@@ -53,7 +53,7 @@ public final class FldStr extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 

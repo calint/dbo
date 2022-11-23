@@ -14,17 +14,17 @@ public final class FldFloat extends DbField {
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getFloat(this));
 	}
 
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(" float default ").append(defval);
 	}
 
 	@Override
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

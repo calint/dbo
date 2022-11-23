@@ -9,18 +9,18 @@ public final class Order {
 		String dir;
 	}
 
-	private ArrayList<Elem> elems = new ArrayList<Elem>();
+	final private ArrayList<Elem> elems = new ArrayList<Elem>();
 
-	public Order(DbField fld) {
+	public Order(final DbField fld) {
 		append(fld, true);
 	}
 
-	public Order(DbField fld, boolean ascending) {
+	public Order(final DbField fld, boolean ascending) {
 		append(fld, ascending);
 	}
 
 	/** sort on id */
-	public Order(Class<? extends DbObject> cls, boolean ascending) {
+	public Order(final Class<? extends DbObject> cls, final boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = Db.tableNameForJavaClass(cls);
 		e.columnName = DbObject.id.name;
@@ -29,15 +29,15 @@ public final class Order {
 	}
 
 	/** sort on id */
-	public Order(Class<? extends DbObject> cls) {
+	public Order(final Class<? extends DbObject> cls) {
 		this(cls, true);
 	}
 
-	public Order append(DbField fld) {
+	public Order append(final DbField fld) {
 		return append(fld, true);
 	}
 
-	public Order append(DbField fld, boolean ascending) {
+	public Order append(final DbField fld, final boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = fld.tableName;
 		e.columnName = fld.name;
@@ -46,7 +46,7 @@ public final class Order {
 		return this;
 	}
 
-	void sql_appendToQuery(final StringBuilder sb, Query.TableAliasMap tam) {
+	void sql_appendToQuery(final StringBuilder sb, final Query.TableAliasMap tam) {
 		if (elems.isEmpty())
 			return;
 		sb.append("order by ");

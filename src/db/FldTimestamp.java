@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 public final class FldTimestamp extends DbField {
-	private Timestamp defval;// ? min max values not big enough
+	final private Timestamp defval;// ? min max values not big enough
 
-	public FldTimestamp(Timestamp def) {
+	public FldTimestamp(final Timestamp def) {
 		defval = def;
 	}
 
@@ -15,12 +15,12 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append('\'').append(o.getTimestamp(this)).append('\'');
 	}
 
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(" timestamp");
 		if (defval != null) {
 			sb.append(" default '").append(defval).append("'");
@@ -28,7 +28,7 @@ public final class FldTimestamp extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 		if (defval != null)
 			kvm.put(this, defval);
 	}

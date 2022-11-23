@@ -3,7 +3,7 @@ package db;
 import java.util.Map;
 
 public final class FldInt extends DbField {
-	private int defval;
+	final private int defval;
 
 	public FldInt(final int def) {
 		defval = def;
@@ -14,17 +14,17 @@ public final class FldInt extends DbField {
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getInt(this));
 	}
 
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
-		sb.append(name).append(" integer default ").append(defval);
+	protected void sql_columnDefinition(final StringBuilder sb) {
+		sb.append(name).append(" int default ").append(defval);
 	}
 
 	@Override
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

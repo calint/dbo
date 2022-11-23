@@ -15,7 +15,7 @@ public class TestObj extends DbObject {
 		if (v == null)
 			return null;
 
-		if (v instanceof List<?>) // is it is transformed?
+		if (v instanceof List<?>) // is it transformed?
 			return (List<String>) v;
 
 		// convert from sql representation
@@ -23,7 +23,7 @@ public class TestObj extends DbObject {
 		try {
 			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
 			final List<String> ls = (List<String>) ois.readObject();
-			set(list, ls, false); // cache
+			set(list, ls, false); // set without marking field dirty. persistence will do update on object
 			return ls;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
