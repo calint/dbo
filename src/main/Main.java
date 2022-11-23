@@ -15,9 +15,10 @@ import db.test.test1;
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
 		final TestCase r = cls.getConstructor().newInstance();
-		final Thread t = new Thread(r);
-		t.start();
-		t.join();
+//		final Thread t = new Thread(r);
+//		t.start();
+//		t.join();
+		r.run();
 	}
 
 //	@SuppressWarnings("unchecked")

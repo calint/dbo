@@ -22,7 +22,6 @@ public class test1 extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-
 		final User u1 = (User) tn.create(User.class);
 		u1.setName("user name");
 		tn.create(User.class);
