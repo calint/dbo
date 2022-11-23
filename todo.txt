@@ -1,3 +1,5 @@
+[x] see main.TestObj custom DbField. better pattern.
+[ ]   setTemp(DbField f,String s, Object v), getTemp(DbField f,String s), hasTemp(DbField f,String s) naming, pattern error prone
 [ ] check columns to match fields order and type
 [ ]   to add new column: alter table <tableName> add <columnName columnDef>
 [ ]   if columns order do not match fields see: https://stackoverflow.com/questions/2934312/how-to-rearrange-mysql-columns
@@ -8,7 +10,6 @@
 [ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [ ]   FldTimestamp using java.sql type. ok?
 [ ]  Query.TableAliasMap: User -> u. if u present try us etc
-[ ] see main.TestObj custom DbField. better pattern.
 [o] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
