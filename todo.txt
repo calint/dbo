@@ -1,5 +1,3 @@
-[x] see main.TestObj custom DbField. better pattern.
-[ ]   setTemp(DbField f,String s, Object v), getTemp(DbField f,String s), hasTemp(DbField f,String s) naming, pattern error prone
 [ ] check columns to match fields order and type
 [ ]   to add new column: alter table <tableName> add <columnName columnDef>
 [ ]   if columns order do not match fields see: https://stackoverflow.com/questions/2934312/how-to-rearrange-mysql-columns
@@ -134,3 +132,6 @@
 		public List<File> getFiles(final Query qry, final Order ord, final Limit lmt) {
 			return (List<File>) (List) files.get(this, qry, ord, lmt);
 		} 
+[x] see main.TestObj custom DbField. better pattern.
+[x]   setTemp(DbField f,String s, Object v), getTemp(DbField f,String s), hasTemp(DbField f,String s) naming, error prone pattern, ugly.
+[x]   DbObject.set(DbField,Object,boolean) boolean true if field should be considered dirty. set false if data was transformed just in time and cached.
