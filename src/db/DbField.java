@@ -13,7 +13,7 @@ public abstract class DbField {
 	protected void sql_columnDefinition(StringBuilder sb) {
 	}
 
-	protected void setDefaultValue(Map<DbField, Object> kvm) {
+	protected void setDefaultValue(Map<String, Object> kvm) {
 	}
 
 	public final String getName() {

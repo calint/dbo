@@ -53,22 +53,24 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb?verifyServerCertificate=false&useSSL=true", "c", "password", 5);
 
 //		System.out.println(JavaCodeEmitter.getSingulariesForPlurar("categories"));
-//		Db.initCurrentTransaction();
-//		try {
-//			/////////////////////////////////////////////
-//			final TestObj to = (TestObj) Db.currentTransaction().create(TestObj.class);
-//			to.setDf(new java.util.Date());
-//			Db.currentTransaction().commit();
-//			final TestObj to2 = (TestObj) Db.currentTransaction().get(TestObj.class, null, null, null).get(0);
-//			System.out.println(to2.getDf());
-//			/////////////////////////////////////////////
-//			Db.currentTransaction().finishTransaction();
-//		} catch (Throwable t) {
-//			Db.currentTransaction().rollback();
-//			t.printStackTrace();
-//		} finally {
-//			Db.deinitCurrentTransaction();
-//		}
+		Db.initCurrentTransaction();
+		try {
+			/////////////////////////////////////////////
+			final TestObj to = (TestObj) Db.currentTransaction().create(TestObj.class);
+			to.setDf(new java.util.Date());
+			Db.currentTransaction().commit();
+			final TestObj to2 = (TestObj) Db.currentTransaction().get(TestObj.class, null, null, null).get(0);
+			System.out.println(to2.getDf());
+			System.out.println(to2.getDf());
+			to2.setDf(new java.util.Date());
+			/////////////////////////////////////////////
+			Db.currentTransaction().finishTransaction();
+		} catch (Throwable t) {
+			Db.currentTransaction().rollback();
+			t.printStackTrace();
+		} finally {
+			Db.deinitCurrentTransaction();
+		}
 
 //		Db.log_enable = false;
 
@@ -93,9 +95,9 @@ public final class Main {
 //		t2.join();
 
 //		Db.log_enable = false;
-		run(test1.class);
-		run(import_books_sample.class);
-		run(fulltext_search_books.class);
+//		run(test1.class);
+//		run(import_books_sample.class);
+//		run(fulltext_search_books.class);
 //		run(import_books.class);
 //		run(jdbc_select_books.class);
 //		run(get_books.class);

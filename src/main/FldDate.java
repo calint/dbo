@@ -1,6 +1,8 @@
 package main;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import db.DbField;
 import db.DbObject;
@@ -14,14 +16,15 @@ public class FldDate extends DbField {
 
 	@Override
 	protected void sql_updateValue(StringBuilder sb, DbObject o) {
-		final Object v = o.get(this);
-		if (v == null) {
+		final Date d = (Date) o.getTemp(this, "d");
+		if (d == null) {
 			sb.append("null");
 			return;
 		}
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ? optimize with other thread safe formatter
+		final String s = sdf.format(d);
+		final Timestamp ts = Timestamp.valueOf(s);
 		sb.append('\'');
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // ? optimize with other thread safe formatter
-		final String s = sdf.format(v);
 		FldStr.escapeSqlString(sb, s);
 		sb.append('\'');
 	}
