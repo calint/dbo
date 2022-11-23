@@ -61,27 +61,28 @@ public abstract class DbObject {
 		return fieldValues.get(field.name);
 	}
 
-	/** used by custom DbFields for optimizing transformations between sql and java representations */
-	final public Object getTemp(DbField field, String subfieldName) {
+	private String subfieldnm(DbField field, String subfieldName) {
 		final StringBuilder sb = new StringBuilder(64);
 		sb.append('$').append(field.name).append('$').append(subfieldName);
 		final String fn = sb.toString();
+		return fn;
+	}
+
+	/** used by custom DbFields for optimizing transformations between sql and java representations */
+	final public Object getTemp(DbField field, String subfieldName) {
+		final String fn = subfieldnm(field, subfieldName);
 		return fieldValues.get(fn);
 	}
 
 	/** used by custom DbFields for optimizing transformations between sql and java representations */
 	final public boolean hasTemp(DbField field, String subfieldName) {
-		final StringBuilder sb = new StringBuilder(64);
-		sb.append('$').append(field.name).append('$').append(subfieldName);
-		final String fn = sb.toString();
+		final String fn = subfieldnm(field, subfieldName);
 		return fieldValues.containsKey(fn);
 	}
 
 	/** used by custom DbFields for optimizing transformations between sql and java representations */
 	final public void setTemp(DbField field, String subfieldName, Object v) {
-		final StringBuilder sb = new StringBuilder(64);
-		sb.append('$').append(field.name).append('$').append(subfieldName);
-		final String fn = sb.toString();
+		final String fn = subfieldnm(field, subfieldName);
 		fieldValues.put(fn, v);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);

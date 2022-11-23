@@ -10,21 +10,21 @@ public class TestObj extends DbObject {
 
 	public Date getDf() {
 		Date d = null;
-		if (hasTemp(df, "d")) {// has converted and cached?
+		if (hasTemp(df, "d")) { // cached object may be null. is converted and cached?
 			d = (Date) getTemp(df, "d"); // yes, get from cache
 		} else { // not converted. convert and cache
-			final Timestamp ts = (Timestamp) get(df); // get sql represenation
-			if (ts != null) {
-				d = new Date(ts.getTime());// convert (may be costly)
-				setTemp(df, "d", d); // cache
-			} else {
+			final Timestamp ts = (Timestamp) get(df); // get sql representation
+			if (ts == null) {
 				setTemp(df, "d", null); // set null value
+			} else {
+				d = new Date(ts.getTime()); // convert (this case simple but it may be costly)
+				setTemp(df, "d", d); // cache
 			}
 		}
 		return d;
 	}
 
 	public void setDf(Date v) {
-		setTemp(df, "d", v);
+		setTemp(df, "d", v); // set cached
 	}
 }

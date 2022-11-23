@@ -16,12 +16,13 @@ public class FldDate extends DbField {
 
 	@Override
 	protected void sql_updateValue(StringBuilder sb, DbObject o) {
-		final Date d = (Date) o.getTemp(this, "d");
+		final Date d = (Date) o.getTemp(this, "d"); // get from cache
 		if (d == null) {
 			sb.append("null");
 			return;
 		}
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ? optimize with other thread safe formatter
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ? optimize with other thread safe
+																					// formatter
 		final String s = sdf.format(d);
 		final Timestamp ts = Timestamp.valueOf(s);
 		sb.append('\'');
