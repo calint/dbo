@@ -67,7 +67,7 @@ public abstract class DbObject {
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	/** used by user defined DbFields to optimize get/set and sql to java transformations */
+	/** used by user defined DbFields to optimize get/set data transformations */
 	final public void set(DbField field, Object value, boolean markDirty) {
 		fieldValues.put(field, value);
 		if (markDirty) {
