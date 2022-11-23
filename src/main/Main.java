@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.Db;
+import db.DbTransaction;
 import db.Query;
 import db.test.Book;
 import db.test.DataBinary;
@@ -58,14 +59,15 @@ public final class Main {
 		Db.initCurrentTransaction();
 		try {
 			/////////////////////////////////////////////
+			final DbTransaction tn = Db.currentTransaction();
 			final ArrayList<String> ls = new ArrayList<String>();
 			ls.add("hello");
 			ls.add("world");
-			final TestObj to = (TestObj) Db.currentTransaction().create(TestObj.class);
+			final TestObj to = (TestObj) tn.create(TestObj.class);
 			final Query qid = new Query(TestObj.class, to.id());
 			to.setList(ls);
 			Db.currentTransaction().commit();
-			final TestObj to2 = (TestObj) Db.currentTransaction().get(TestObj.class, qid, null, null).get(0);
+			final TestObj to2 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
 			final List<String> ls2 = to2.getList();
 			if (ls.size() != ls2.size())
 				throw new RuntimeException();
@@ -73,13 +75,13 @@ public final class Main {
 				if (!ls.get(i).equals(ls2.get(i)))
 					throw new RuntimeException();
 			}
-			Db.currentTransaction().commit();
-			final TestObj to3 = (TestObj) Db.currentTransaction().get(TestObj.class, qid, null, null).get(0);
+			tn.commit();
+			final TestObj to3 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
 			to3.setList(null);
 			if (to3.getList() != null)
 				throw new RuntimeException();
 			Db.currentTransaction().commit();
-			final TestObj to4 = (TestObj) Db.currentTransaction().get(TestObj.class, qid, null, null).get(0);
+			final TestObj to4 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
 			if (to4.getList() != null)
 				throw new RuntimeException();
 			Db.currentTransaction().delete(to4);
