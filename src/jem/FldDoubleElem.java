@@ -2,10 +2,10 @@ package jem;
 
 import java.io.PrintWriter;
 
-import db.FldDouble;
+import db.FldDbl;
 
 public final class FldDoubleElem extends ElemFld {
-	public FldDoubleElem(final FldDouble fld) {
+	public FldDoubleElem(final FldDbl fld) {
 		super(fld);
 	}
 

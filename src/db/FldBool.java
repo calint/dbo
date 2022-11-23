@@ -2,20 +2,20 @@ package db;
 
 import java.util.Map;
 
-public final class FldBoolean extends DbField {
+public final class FldBool extends DbField {
 	private boolean defval;
 
-	public FldBoolean(final boolean def) {
+	public FldBool(final boolean def) {
 		defval = def;
 	}
 
-	public FldBoolean() {
+	public FldBool() {
 		this(false);
 	}
 
 	@Override
 	protected void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append(o.getBoolean(this));
+		sb.append(o.getBool(this));
 	}
 
 	@Override

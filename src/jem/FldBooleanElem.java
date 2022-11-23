@@ -2,10 +2,10 @@ package jem;
 
 import java.io.PrintWriter;
 
-import db.FldBoolean;
+import db.FldBool;
 
 public final class FldBooleanElem extends ElemFld {
-	public FldBooleanElem(final FldBoolean fld) {
+	public FldBooleanElem(final FldBool fld) {
 		super(fld);
 	}
 

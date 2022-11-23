@@ -41,11 +41,11 @@ public abstract class DbObject {
 		return ((Float) fieldValues.get(field)).floatValue();
 	}
 
-	final public double getDouble(DbField field) {
+	final public double getDbl(DbField field) {
 		return ((Double) fieldValues.get(field)).doubleValue();
 	}
 
-	final public boolean getBoolean(DbField field) {
+	final public boolean getBool(DbField field) {
 		return ((Boolean) fieldValues.get(field)).booleanValue();
 	}
 

@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
-import db.FldBoolean;
-import db.FldDouble;
+import db.FldBool;
+import db.FldDbl;
 import db.FldFloat;
 import db.FldInt;
 import db.FldLong;
@@ -28,8 +28,8 @@ public final class User extends DbObject {
 	public final static FldInt nlogins = new FldInt();
 	public final static FldLong lng = new FldLong();
 	public final static FldFloat flt = new FldFloat();
-	public final static FldDouble dbl = new FldDouble();
-	public final static FldBoolean bool = new FldBoolean();
+	public final static FldDbl dbl = new FldDbl();
+	public final static FldBool bool = new FldBool();
 //	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
 	public final static FldTimestamp birthTime = new FldTimestamp();
 	public final static RelAggN files = new RelAggN(File.class);
@@ -89,7 +89,7 @@ public final class User extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public double getDbl() {
-		return getDouble(dbl);
+		return getDbl(dbl);
 	}
 
 	public void setDbl(final double v) {
@@ -98,7 +98,7 @@ public final class User extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public boolean isBool() {
-		return getBoolean(bool);
+		return getBool(bool);
 	}
 
 	public void setBool(final boolean v) {
