@@ -9,7 +9,7 @@ import java.util.List;
 public final class RelRefN extends DbRelation {
 	RelRefNMeta rrm;
 
-	public RelRefN(Class<? extends DbObject> toCls) {
+	public RelRefN(final Class<? extends DbObject> toCls) {
 		super(toCls);
 	}
 
@@ -100,7 +100,7 @@ public final class RelRefN extends DbRelation {
 	}
 
 	@Override
-	void cascadeDelete(DbObject ths) {
+	void cascadeDelete(final DbObject ths) {
 		removeAll(ths.id());
 	}
 }

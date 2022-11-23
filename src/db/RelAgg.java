@@ -2,7 +2,7 @@ package db;
 
 public final class RelAgg extends DbRelation {
 
-	public RelAgg(Class<? extends DbObject> toCls) {
+	public RelAgg(final Class<? extends DbObject> toCls) {
 		super(toCls);
 	}
 
@@ -44,7 +44,7 @@ public final class RelAgg extends DbRelation {
 	}
 
 	@Override
-	void cascadeDelete(DbObject ths) {
+	void cascadeDelete(final DbObject ths) {
 		final int toId = getId(ths);
 		if (toId == 0)
 			return;

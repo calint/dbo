@@ -7,7 +7,7 @@ import java.util.List;
 
 public final class RelAggN extends DbRelation {
 
-	public RelAggN(Class<? extends DbObject> toCls) {
+	public RelAggN(final Class<? extends DbObject> toCls) {
 		super(toCls);
 	}
 
@@ -82,7 +82,7 @@ public final class RelAggN extends DbRelation {
 	}
 
 	@Override
-	void cascadeDelete(DbObject ths) {
+	void cascadeDelete(final DbObject ths) {
 		final DbClass dbClsTo = Db.instance().dbClassForJavaClass(toCls);
 		if (dbClsTo.doCascadeDelete) {
 			final List<DbObject> ls = get(ths, null, null, null);

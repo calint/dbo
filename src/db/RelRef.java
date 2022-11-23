@@ -4,7 +4,7 @@ import java.util.List;
 
 public final class RelRef extends DbRelation {
 
-	public RelRef(Class<? extends DbObject> toCls) {
+	public RelRef(final Class<? extends DbObject> toCls) {
 		super(toCls);
 	}
 

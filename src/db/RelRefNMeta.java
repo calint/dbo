@@ -47,26 +47,26 @@ final class RelRefNMeta {
 				.append(')');
 	}
 
-	void sql_deleteFromTable(StringBuilder sb, int fromId, int toId) {
+	void sql_deleteFromTable(final StringBuilder sb, final int fromId, final int toId) {
 		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(fromId)
 				.append(" and ").append(toColName).append('=').append(toId);
 
 	}
 
-	void sql_deleteAllFromTable(StringBuilder sb, int fromId) {
+	void sql_deleteAllFromTable(final StringBuilder sb, final int fromId) {
 		sb.append("delete from ").append(tableName).append(" where ").append(fromColName).append('=').append(fromId);
 	}
 
-	void sql_deleteReferencesTo(final StringBuilder sb, int id) {
+	void sql_deleteReferencesTo(final StringBuilder sb, final int id) {
 		sb.append("delete from ").append(tableName).append(" where ").append(toColName).append('=').append(id);
 	}
 
-	void sql_createIndexOnFromColumn(StringBuilder sb) {
+	void sql_createIndexOnFromColumn(final StringBuilder sb) {
 		sb.append("create index ").append(getFromIxName()).append(" on ").append(tableName).append('(')
 				.append(fromColName).append(')');
 	}
 
-	void sql_createIndexOnToColumn(StringBuilder sb) {
+	void sql_createIndexOnToColumn(final StringBuilder sb) {
 		sb.append("create index ").append(getToIxName()).append(" on ").append(tableName).append('(').append(toColName)
 				.append(')');
 	}
