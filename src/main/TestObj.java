@@ -6,7 +6,7 @@ import java.util.List;
 
 import db.DbObject;
 
-public class TestObj extends DbObject {
+public final class TestObj extends DbObject {
 	public final static FldSerializable list = new FldSerializable();
 
 	@SuppressWarnings("unchecked")
@@ -23,14 +23,15 @@ public class TestObj extends DbObject {
 		try {
 			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
 			final List<String> ls = (List<String>) ois.readObject();
-			put(list, ls); // set without marking field dirty. persistence will do update on object
+			ois.close();
+			put(list, ls); // put without marking field dirty
 			return ls;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
 	}
 
-	public void setList(List<String> v) {
+	public void setList(final List<String> v) {
 		set(list, v);
 	}
 }
