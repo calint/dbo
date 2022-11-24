@@ -2,20 +2,20 @@ package db;
 
 import java.util.Map;
 
-public final class FldLong extends DbField {
+public final class FldLng extends DbField {
 	final private long defval;
 
-	public FldLong(final long def) {
+	public FldLng(final long def) {
 		defval = def;
 	}
 
-	public FldLong() {
+	public FldLng() {
 		this(0);
 	}
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		sb.append(o.getLong(this));
+		sb.append(o.getLng(this));
 	}
 
 	@Override

@@ -2,10 +2,10 @@ package jem;
 
 import java.io.PrintWriter;
 
-import db.FldLong;
+import db.FldLng;
 
-public final class FldLongElem extends ElemFld {
-	public FldLongElem(final FldLong fld) {
+public final class FldLngElem extends ElemFld {
+	public FldLngElem(final FldLng fld) {
 		super(fld);
 	}
 
@@ -29,7 +29,7 @@ public final class FldLongElem extends ElemFld {
 		out.print(acc);
 		out.println("(){");
 		out.print("\t");
-		out.print("return getLong(");
+		out.print("return getLng(");
 		out.print(fldName);
 		out.println(");");
 		out.println("}");

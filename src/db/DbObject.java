@@ -33,11 +33,11 @@ public abstract class DbObject {
 		return ((Integer) fieldValues.get(field)).intValue();
 	}
 
-	final public long getLong(final DbField field) {
+	final public long getLng(final DbField field) {
 		return ((Long) fieldValues.get(field)).longValue();
 	}
 
-	final public float getFloat(final DbField field) {
+	final public float getFlt(final DbField field) {
 		return ((Float) fieldValues.get(field)).floatValue();
 	}
 
@@ -49,7 +49,7 @@ public abstract class DbObject {
 		return ((Boolean) fieldValues.get(field)).booleanValue();
 	}
 
-	final public Timestamp getTimestamp(final DbField field) {
+	final public Timestamp getTs(final DbField field) {
 		return (Timestamp) fieldValues.get(field);
 	}
 

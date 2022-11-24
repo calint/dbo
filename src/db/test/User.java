@@ -6,11 +6,11 @@ import java.util.List;
 import db.DbObject;
 import db.FldBool;
 import db.FldDbl;
-import db.FldFloat;
+import db.FldFlt;
 import db.FldInt;
-import db.FldLong;
+import db.FldLng;
 import db.FldStr;
-import db.FldTimestamp;
+import db.FldTs;
 import db.Index;
 import db.IndexFt;
 import db.IndexRel;
@@ -26,12 +26,12 @@ public final class User extends DbObject {
 	public final static FldStr name = new FldStr();
 	public final static FldStr passhash = new FldStr(32);
 	public final static FldInt nlogins = new FldInt();
-	public final static FldLong lng = new FldLong();
-	public final static FldFloat flt = new FldFloat();
+	public final static FldLng lng = new FldLng();
+	public final static FldFlt flt = new FldFlt();
 	public final static FldDbl dbl = new FldDbl();
 	public final static FldBool bool = new FldBool();
 //	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
-	public final static FldTimestamp birthTime = new FldTimestamp();
+	public final static FldTs birthTime = new FldTs();
 	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
@@ -71,7 +71,7 @@ public final class User extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public long getLng() {
-		return getLong(lng);
+		return getLng(lng);
 	}
 
 	public void setLng(final long v) {
@@ -80,7 +80,7 @@ public final class User extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public float getFlt() {
-		return getFloat(flt);
+		return getFlt(flt);
 	}
 
 	public void setFlt(final float v) {
@@ -107,7 +107,7 @@ public final class User extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Timestamp getBirthTime() {
-		return getTimestamp(birthTime);
+		return getTs(birthTime);
 	}
 
 	public void setBirthTime(final Timestamp v) {

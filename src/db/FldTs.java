@@ -3,20 +3,21 @@ package db;
 import java.sql.Timestamp;
 import java.util.Map;
 
-public final class FldTimestamp extends DbField {
+/** timestamp field */
+public final class FldTs extends DbField {
 	final private Timestamp defval;// ? min max values not big enough
 
-	public FldTimestamp(final Timestamp def) {
+	public FldTs(final Timestamp def) {
 		defval = def;
 	}
 
-	public FldTimestamp() {
+	public FldTs() {
 		this(null);
 	}
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		sb.append('\'').append(o.getTimestamp(this)).append('\'');
+		sb.append('\'').append(o.getTs(this)).append('\'');
 	}
 
 	@Override

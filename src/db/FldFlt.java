@@ -2,20 +2,20 @@ package db;
 
 import java.util.Map;
 
-public final class FldFloat extends DbField {
+public final class FldFlt extends DbField {
 	private float defval;
 
-	public FldFloat(final float def) {
+	public FldFlt(final float def) {
 		defval = def;
 	}
 
-	public FldFloat() {
+	public FldFlt() {
 		this(0.0f);
 	}
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		sb.append(o.getFloat(this));
+		sb.append(o.getFlt(this));
 	}
 
 	@Override

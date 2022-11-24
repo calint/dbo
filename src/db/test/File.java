@@ -5,15 +5,15 @@ import java.io.FileOutputStream;
 import java.sql.Timestamp;
 
 import db.DbObject;
-import db.FldLong;
+import db.FldLng;
 import db.FldStr;
-import db.FldTimestamp;
+import db.FldTs;
 import db.RelAgg;
 
 public final class File extends DbObject {
 	public final static FldStr name = new FldStr();
-	public final static FldLong size_B = new FldLong();
-	public final static FldTimestamp created_ts = new FldTimestamp();
+	public final static FldLng size_B = new FldLng();
+	public final static FldTs created_ts = new FldTs();
 	public final static RelAgg data = new RelAgg(DataBinary.class);
 
 	public void loadFile(final String path) throws Throwable {
@@ -54,7 +54,7 @@ public final class File extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public long getSizeB() {
-		return getLong(size_B);
+		return getLng(size_B);
 	}
 
 	public void setSizeB(long v) {
@@ -63,7 +63,7 @@ public final class File extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Timestamp getCreatedTs() {
-		return getTimestamp(created_ts);
+		return getTs(created_ts);
 	}
 
 	public void setCreatedTs(Timestamp v) {

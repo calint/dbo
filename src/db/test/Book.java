@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import db.DbObject;
 import db.FldStr;
-import db.FldTimestamp;
+import db.FldTs;
 import db.IndexRel;
 import db.RelAgg;
 
@@ -12,7 +12,7 @@ public final class Book extends DbObject {
 	public final static FldStr name = new FldStr(800);
 	public final static FldStr authors = new FldStr(3000);
 	public final static FldStr publisher = new FldStr(400);
-	public final static FldTimestamp publishedDate = new FldTimestamp();
+	public final static FldTs publishedDate = new FldTs();
 	public final static RelAgg data = new RelAgg(DataText.class);
 
 	// optimizes Book join with DataText when full text query
@@ -47,7 +47,7 @@ public final class Book extends DbObject {
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Timestamp getPublishedDate() {
-		return getTimestamp(publishedDate);
+		return getTs(publishedDate);
 	}
 
 	public void setPublishedDate(final Timestamp v) {
