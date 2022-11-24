@@ -23,7 +23,7 @@ public class TestObj extends DbObject {
 		try {
 			final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
 			final List<String> ls = (List<String>) ois.readObject();
-			set(list, ls, false); // set without marking field dirty. persistence will do update on object
+			put(list, ls); // set without marking field dirty. persistence will do update on object
 			return ls;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);

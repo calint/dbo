@@ -1,6 +1,11 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import db.Db;
+import db.DbTransaction;
+import db.Query;
 import db.test.Book;
 import db.test.DataBinary;
 import db.test.DataText;
@@ -8,8 +13,6 @@ import db.test.File;
 import db.test.Game;
 import db.test.TestCase;
 import db.test.User;
-import db.test.import_books_sample;
-import db.test.test1;
 
 public final class Main {
 	private static void run(Class<? extends TestCase> cls) throws Throwable {
@@ -53,43 +56,43 @@ public final class Main {
 
 //		System.out.println(JavaCodeEmitter.getSingulariesForPlurar("categories"));
 
-//		Db.initCurrentTransaction();
-//		try {
-//			/////////////////////////////////////////////
-//			final DbTransaction tn = Db.currentTransaction();
-//			final ArrayList<String> ls = new ArrayList<String>();
-//			ls.add("hello");
-//			ls.add("world");
-//			final TestObj to = (TestObj) tn.create(TestObj.class);
-//			final Query qid = new Query(TestObj.class, to.id());
-//			to.setList(ls);
-//			Db.currentTransaction().commit();
-//			final TestObj to2 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
-//			final List<String> ls2 = to2.getList();
-//			if (ls.size() != ls2.size())
-//				throw new RuntimeException();
-//			for (int i = 0; i < ls2.size(); i++) {
-//				if (!ls.get(i).equals(ls2.get(i)))
-//					throw new RuntimeException();
-//			}
-//			tn.commit();
-//			final TestObj to3 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
-//			to3.setList(null);
-//			if (to3.getList() != null)
-//				throw new RuntimeException();
-//			Db.currentTransaction().commit();
-//			final TestObj to4 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
-//			if (to4.getList() != null)
-//				throw new RuntimeException();
-//			Db.currentTransaction().delete(to4);
-//			/////////////////////////////////////////////
-//			Db.currentTransaction().finishTransaction();
-//		} catch (Throwable t) {
-//			Db.currentTransaction().rollback();
-//			t.printStackTrace();
-//		} finally {
-//			Db.deinitCurrentTransaction();
-//		}
+		Db.initCurrentTransaction();
+		try {
+			/////////////////////////////////////////////
+			final DbTransaction tn = Db.currentTransaction();
+			final ArrayList<String> ls = new ArrayList<String>();
+			ls.add("hello");
+			ls.add("world");
+			final TestObj to = (TestObj) tn.create(TestObj.class);
+			final Query qid = new Query(TestObj.class, to.id());
+			to.setList(ls);
+			Db.currentTransaction().commit();
+			final TestObj to2 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			final List<String> ls2 = to2.getList();
+			if (ls.size() != ls2.size())
+				throw new RuntimeException();
+			for (int i = 0; i < ls2.size(); i++) {
+				if (!ls.get(i).equals(ls2.get(i)))
+					throw new RuntimeException();
+			}
+			tn.commit();
+			final TestObj to3 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			to3.setList(null);
+			if (to3.getList() != null)
+				throw new RuntimeException();
+			Db.currentTransaction().commit();
+			final TestObj to4 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			if (to4.getList() != null)
+				throw new RuntimeException();
+			Db.currentTransaction().delete(to4);
+			/////////////////////////////////////////////
+			Db.currentTransaction().finishTransaction();
+		} catch (Throwable t) {
+			Db.currentTransaction().rollback();
+			t.printStackTrace();
+		} finally {
+			Db.deinitCurrentTransaction();
+		}
 
 //		Db.log_enable = false;
 
@@ -114,7 +117,7 @@ public final class Main {
 //		t2.join();
 
 //		Db.log_enable = false;
-		run(test1.class);
+//		run(test1.class);
 //		run(import_books_sample.class);
 //		run(fulltext_search_books.class);
 //		run(import_books.class);

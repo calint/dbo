@@ -67,13 +67,13 @@ public abstract class DbObject {
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	/** used by user defined DbFields to optimize get/set data transformations */
-	final public void set(final DbField field, final Object value, final boolean markDirty) {
+	/**
+	 * puts and object in the field value map without marking field dirty and
+	 * triggering an update. used by user defined DbFields to optimize get/set data
+	 * transformations
+	 */
+	final public void put(final DbField field, final Object value) {
 		fieldValues.put(field, value);
-		if (markDirty) {
-			getCreatedDirtyFields().add(field);
-			Db.currentTransaction().dirtyObjects.add(this);
-		}
 	}
 
 	final public void set(final DbField field, final String value) {
