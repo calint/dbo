@@ -10,12 +10,12 @@ import db.FldBlob;
 
 public class FldSerializable extends DbField {
 	@Override
-	protected void sql_columnDefinition(StringBuilder sb) {
+	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(getName()).append(" blob");
 	}
 
 	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
+	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final Object v = o.get(this);
 		if (v == null) {
 			sb.append("null");
