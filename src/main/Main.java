@@ -31,6 +31,7 @@ public final class Main {
 //	}
 
 	public static final void main(String[] args) throws Throwable {
+		Class.forName("com.mysql.jdbc.Driver"); // ? for running in java 1.5
 		Db.initInstance();
 		Db db = Db.instance();
 		db.register(User.class);

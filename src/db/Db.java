@@ -82,7 +82,6 @@ public final class Db {
 	private static Db inst;
 
 	public static void initInstance() throws Throwable {
-		Class.forName("com.mysql.jdbc.Driver"); // ? for running in java 1.5
 		inst = new Db();
 		inst.register(DbObject.class);
 	}
