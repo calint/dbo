@@ -115,7 +115,7 @@ public final class Main {
 
 //		Db.log_enable = false;
 		run(test1.class);
-		run(import_books_sample.class);
+//		run(import_books_sample.class);
 //		run(fulltext_search_books.class);
 //		run(import_books.class);
 //		run(jdbc_select_books.class);
