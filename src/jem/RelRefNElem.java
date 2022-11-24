@@ -13,7 +13,7 @@ public class RelRefNElem extends ElemRel {
 	@Override
 	public void emit(final PrintWriter out) {
 		final String acc = getAccessorName();
-		final String accSing=JavaCodeEmitter.getSingulariesForPlurar(acc);
+		final String accSing = JavaCodeEmitter.getSingulariesForPlurar(acc);
 		out.println(HR);
 //		// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 //		public void addRefFile(int id) {

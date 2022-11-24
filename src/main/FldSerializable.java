@@ -20,7 +20,7 @@ public class FldSerializable extends DbField {
 		if (v == null) {
 			sb.append("null");
 			return;
-		} 
+		}
 		if (!(v instanceof Serializable))
 			throw new RuntimeException("expected serializable object. " + o);
 

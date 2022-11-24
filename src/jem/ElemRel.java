@@ -8,7 +8,7 @@ public abstract class ElemRel extends JavaCodeElem {
 	public ElemRel(final DbRelation rel) {
 		this.rel = rel;
 	}
-	
+
 	protected String getAccessorName() {
 		final String nm = rel.getName();
 		final StringBuilder sb = new StringBuilder();

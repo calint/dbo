@@ -282,7 +282,6 @@ public class test1 extends TestCase {
 		u10.setName("John Doe");
 		tn.commit();
 		tn.delete(u10);
-		
-		
+
 	}
 }

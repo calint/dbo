@@ -52,7 +52,7 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb?verifyServerCertificate=false&useSSL=true", "c", "password", 5);
 
 //		System.out.println(JavaCodeEmitter.getSingulariesForPlurar("categories"));
-		
+
 //		Db.initCurrentTransaction();
 //		try {
 //			/////////////////////////////////////////////

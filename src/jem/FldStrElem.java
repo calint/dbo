@@ -23,7 +23,7 @@ public final class FldStrElem extends ElemFld {
 	public void emit(final PrintWriter out) {
 		final String fldName = fld.getName();
 		final String acc = getAccessorName();
-	
+
 		out.println(HR);
 		out.print("public String get");
 		out.print(acc);

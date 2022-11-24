@@ -210,15 +210,16 @@ public final class Query {
 	}
 
 	///////////////////////////////////////////////////////////////////////
-	public Query and(Query q) {
+	public Query and(final Query q) {
 		return append(AND, q);
 	}
 
-	public Query or(Query q) {
+	public Query or(final Query q) {
 		return append(OR, q);
 	}
 
-	private Query append(int elemOp, String lhtbl, String lh, int op, String rhtbl, String rh) {
+	private Query append(final int elemOp, final String lhtbl, final String lh, final int op, final String rhtbl,
+			final String rh) {
 		final Elem e = new Elem();
 		e.elemOp = elemOp;
 		e.lhtbl = lhtbl;
@@ -230,7 +231,7 @@ public final class Query {
 		return this;
 	}
 
-	private Query append(int elemOp, Query q) {
+	private Query append(final int elemOp, final Query q) {
 		final Elem e = new Elem();
 		e.elemOp = elemOp;
 		e.query = q;
@@ -240,56 +241,56 @@ public final class Query {
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
-	public Query and(Class<? extends DbObject> c, int id) {
+	public Query and(final Class<? extends DbObject> c, final int id) {
 		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
 
-	public Query and(DbField lh, int op, String rh) {
+	public Query and(final DbField lh, final int op, final String rh) {
 		return append(AND, lh.tableName, lh.name, op, null, sqlStr(rh));
 	}
 
-	public Query and(DbField lh, int op, int rh) {
+	public Query and(final DbField lh, final int op, final int rh) {
 		return append(AND, lh.tableName, lh.name, op, null, Integer.toString(rh));
 	}
 
-	public Query and(DbField lh, int op, Timestamp ts) {
+	public Query and(final DbField lh, final int op, final Timestamp ts) {
 		return append(AND, lh.tableName, lh.name, op, null, "'" + ts.toString() + "'");
 	}
 
-	public Query and(DbField lh, int op, float rh) {
+	public Query and(final DbField lh, final int op, final float rh) {
 		return append(AND, lh.tableName, lh.name, op, null, Float.toString(rh));
 	}
 
-	public Query and(DbField lh, int op, double rh) {
+	public Query and(final DbField lh, final int op, final double rh) {
 		return append(AND, lh.tableName, lh.name, op, null, Double.toString(rh));
 	}
 
-	public Query and(DbField lh, int op, boolean rh) {
+	public Query and(final DbField lh, final int op, final boolean rh) {
 		return append(AND, lh.tableName, lh.name, op, null, Boolean.toString(rh));
 	}
 
-	public Query and(DbField lh, int op, DbField rh) {
+	public Query and(final DbField lh, final int op, final DbField rh) {
 		return append(AND, lh.tableName, lh.name, op, rh.tableName, rh.name);
 	}
 
-	public Query and(RelAggN rel) {
+	public Query and(final RelAggN rel) {
 		return append(AND, rel.tableName, DbObject.id.name, EQ, rel.toTableName, rel.relFld.name);
 	}
 
-	public Query and(RelRefN rel) {
-		return append(AND, rel.tableName, DbObject.id.name, EQ, rel.rrm.tableName, rel.rrm.fromColName)
-				.append(AND, rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.name);
+	public Query and(final RelRefN rel) {
+		return append(AND, rel.tableName, DbObject.id.name, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
+				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.name);
 	}
 
-	public Query and(RelAgg rel) {
+	public Query and(final RelAgg rel) {
 		return append(AND, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query and(RelRef rel) {
+	public Query and(final RelRef rel) {
 		return append(AND, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query and(IndexFt ix, String ftquery) {
+	public Query and(final IndexFt ix, final String ftquery) {
 		final Elem e = new Elem();
 		e.elemOp = AND;
 		e.ftix = ix;
@@ -300,56 +301,56 @@ public final class Query {
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
 	/** query by id */
-	public Query or(Class<? extends DbObject> c, int id) {
+	public Query or(final Class<? extends DbObject> c, final int id) {
 		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
 
-	public Query or(DbField lh, int op, String rh) {
+	public Query or(final DbField lh, final int op, final String rh) {
 		return append(OR, lh.tableName, lh.name, op, null, sqlStr(rh));
 	}
 
-	public Query or(DbField lh, int op, int rh) {
+	public Query or(final DbField lh, final int op, final int rh) {
 		return append(OR, lh.tableName, lh.name, op, null, Integer.toString(rh));
 	}
 
-	public Query or(DbField lh, int op, float rh) {
+	public Query or(final DbField lh, final int op, final float rh) {
 		return append(OR, lh.tableName, lh.name, op, null, Float.toString(rh));
 	}
 
-	public Query or(DbField lh, int op, double rh) {
+	public Query or(final DbField lh, final int op, final double rh) {
 		return append(OR, lh.tableName, lh.name, op, null, Double.toString(rh));
 	}
 
-	public Query or(DbField lh, int op, boolean rh) {
+	public Query or(final DbField lh, final int op, final boolean rh) {
 		return append(OR, lh.tableName, lh.name, op, null, Boolean.toString(rh));
 	}
 
-	public Query or(DbField lh, int op, Timestamp ts) {
+	public Query or(final DbField lh, final int op, final Timestamp ts) {
 		return append(OR, lh.tableName, lh.name, op, null, "'" + ts.toString() + "'");
 	}
 
-	public Query or(DbField lh, int op, DbField rh) {
+	public Query or(final DbField lh, final int op, final DbField rh) {
 		return append(OR, lh.tableName, lh.name, op, rh.tableName, rh.name);
 	}
 
-	public Query or(RelAggN rel) {
+	public Query or(final RelAggN rel) {
 		return append(OR, rel.tableName, DbObject.id.name, EQ, rel.toTableName, rel.relFld.name);
 	}
 
-	public Query or(RelRefN rel) {
+	public Query or(final RelRefN rel) {
 		return append(OR, rel.tableName, DbObject.id.name, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
 				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.name);
 	}
 
-	public Query or(RelAgg rel) {
+	public Query or(final RelAgg rel) {
 		return append(OR, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query or(RelRef rel) {
+	public Query or(final RelRef rel) {
 		return append(OR, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
 
-	public Query or(IndexFt ix, String ftquery) {
+	public Query or(final IndexFt ix, final String ftquery) {
 		final Elem e = new Elem();
 		e.elemOp = OR;
 		e.ftix = ix;

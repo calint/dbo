@@ -4,11 +4,17 @@ import java.sql.DatabaseMetaData;
 import java.sql.Statement;
 
 public abstract class DbRelation {
-	/** the class where the relation was declared. initiated by db after all classes have been loaded */
+	/**
+	 * the class where the relation was declared. initiated by db after all classes
+	 * have been loaded
+	 */
 	Class<? extends DbObject> cls;
 	/** the table name of cls. initiated by db after all classes have been loaded */
 	String tableName;
-	/** the name of the field that declared it. initiated by db after all classes have been loaded */
+	/**
+	 * the name of the field that declared it. initiated by db after all classes
+	 * have been loaded
+	 */
 	String name;
 	/** the class that the relations refers to */
 	final Class<? extends DbObject> toCls;
@@ -43,7 +49,7 @@ public abstract class DbRelation {
 	 */
 	void createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
-	
+
 	boolean cascadeDeleteNeeded() {
 		return true;
 	}

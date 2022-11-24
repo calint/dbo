@@ -17,7 +17,7 @@ public class import_games extends TestCase {
 	protected String getFilePath() {
 		return "../cvs-samples/steam-games.csv";
 	}
-	
+
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();

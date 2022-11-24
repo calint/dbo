@@ -13,12 +13,12 @@ public class get_books extends TestCase {
 	protected boolean isResetDatabase() {
 		return false;
 	}
-	
+
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;
 	}
-	
+
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
