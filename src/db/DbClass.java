@@ -6,6 +6,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class DbClass {
@@ -78,11 +80,12 @@ public final class DbClass {
 	}
 
 	/** called by Db at init. check if table exists */
-	void createTable(Statement stmt, DatabaseMetaData dbm) throws Throwable {
+	void createTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
-			return;// ? check columns
+			assertColumns(stmt, dbm);
+			return;
 		}
 		rs.close();
 
@@ -98,6 +101,73 @@ public final class DbClass {
 		Db.log(sql);
 		stmt.execute(sql);
 		return;
+	}
+
+	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		final ResultSet rs = dbm.getColumns(null, null, tableName, null);
+		final ArrayList<Column> columns = new ArrayList<Column>();
+		while (rs.next()) {
+			final Column col = new Column();
+			col.column_name = rs.getString("COLUMN_NAME");
+			col.ordinal_position = rs.getInt("ORDINAL_POSITION");
+			col.type_name = rs.getString("TYPE_NAME");
+			col.column_size = rs.getInt("COLUMN_SIZE");
+			col.column_def = rs.getString("COLUMN_DEF");
+			columns.add(col);
+		}
+		rs.close();
+
+		// sort columns in the way they appear in the result set
+		Collections.sort(columns, new Comparator<Column>() {
+			public int compare(final Column o1, final Column o2) {
+				return o1.ordinal_position - o2.ordinal_position;
+			};
+		});
+
+		// add missing columns
+		DbField prevField = null;
+		for (final DbField f : allFields) {
+			if (!columnsHasColumn(columns, f.name)) {
+				addColumn(stmt, f, prevField);
+			}
+			prevField = f;
+		}
+		
+		// todo rearrange columns if necessary
+		// todo handle extra columns
+		// todo check column types vs field types and redefine if necessary
+	}
+
+	private final static class Column {
+		String column_name;
+		int ordinal_position;
+		String type_name;
+		int column_size;
+		String column_def;
+	}
+
+	private boolean columnsHasColumn(List<Column> columns, String name) {
+		for (final Column c : columns) {
+			if (c.column_name.equals(name))
+				return true;
+		}
+		return false;
+	}
+
+	private void addColumn(Statement stmt, DbField f, DbField prevField) throws Throwable {
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append("alter table ").append(tableName).append(" add ");
+		f.sql_columnDefinition(sb);
+		sb.append(' ');
+		if (prevField == null) {
+			sb.append("first");
+		} else {
+			sb.append("after ");
+			sb.append(prevField.name);
+		}
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
 
 	@Override

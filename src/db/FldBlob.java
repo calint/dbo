@@ -7,8 +7,10 @@ public final class FldBlob extends DbField {
 		final byte[] data = o.getBytesArray(this);
 //		final char[] chars = bytesToHex(data);
 //		sb.append("0x").append(chars);
+		final StringBuilder hexed = new StringBuilder(data.length * 2);
+		appendHexedBytesToStringBuilder(hexed, data);
 		sb.append("0x");
-		appendHexedBytesToStringBuilder(sb, data);
+		sb.append(hexed);
 	}
 
 	@Override
