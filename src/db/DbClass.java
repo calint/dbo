@@ -108,7 +108,7 @@ public final class DbClass {
 		addMissingColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
 		assertColumnTypes(stmt, dbm);
-		// todo check column types vs field types and redefine if necessary
+//		assertColumnDefaultValues(stmt, dbm);
 		// todo handle extra columns
 	}
 
@@ -189,9 +189,25 @@ public final class DbClass {
 		final ArrayList<Column> columns = getColumnsFromDb(dbm);
 		DbField prevField = null;
 		for (final DbField f : allFields) {
-			if (!columnsHasColumn(columns, f.name)) {
-				addColumn(stmt, f, prevField);
+			if (columnsHasColumn(columns, f.name)) {
+				prevField = f;
+				continue;
 			}
+			
+			final StringBuilder sb = new StringBuilder(128);
+			sb.append("alter table ").append(tableName).append(" add ");
+			f.sql_columnDefinition(sb);
+			sb.append(' ');
+			if (prevField == null) {
+				sb.append("first");
+			} else {
+				sb.append("after ");
+				sb.append(prevField.name);
+			}
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+
 			prevField = f;
 		}
 	}
@@ -241,21 +257,21 @@ public final class DbClass {
 		return false;
 	}
 
-	private void addColumn(final Statement stmt, final DbField f, final DbField prevField) throws Throwable {
-		final StringBuilder sb = new StringBuilder(128);
-		sb.append("alter table ").append(tableName).append(" add ");
-		f.sql_columnDefinition(sb);
-		sb.append(' ');
-		if (prevField == null) {
-			sb.append("first");
-		} else {
-			sb.append("after ");
-			sb.append(prevField.name);
-		}
-		final String sql = sb.toString();
-		Db.log(sql);
-		stmt.execute(sql);
-	}
+//	private void addColumn(final Statement stmt, final DbField f, final DbField prevField) throws Throwable {
+//		final StringBuilder sb = new StringBuilder(128);
+//		sb.append("alter table ").append(tableName).append(" add ");
+//		f.sql_columnDefinition(sb);
+//		sb.append(' ');
+//		if (prevField == null) {
+//			sb.append("first");
+//		} else {
+//			sb.append("after ");
+//			sb.append(prevField.name);
+//		}
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		stmt.execute(sql);
+//	}
 
 	@Override
 	public String toString() {

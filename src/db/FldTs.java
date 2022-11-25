@@ -34,7 +34,7 @@ public final class FldTs extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(final Map<DbField, Object> kvm) {
+	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 		if (defval != null)
 			kvm.put(this, defval);
 	}

@@ -82,7 +82,7 @@ public final class DbTransaction {
 			// init default values
 			final DbClass dbcls = Db.instance().dbClassForJavaClass(cls);
 			for (final DbField f : dbcls.allFields) {
-				f.setDefaultValue(o.fieldValues);
+				f.putDefaultValue(o.fieldValues);
 			}
 
 			if (cache_enabled)

@@ -25,7 +25,7 @@ public final class FldBlob extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(final Map<DbField, Object> kvm) {
+	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 
 	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

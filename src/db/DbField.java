@@ -11,16 +11,20 @@ public abstract class DbField {
 		return name;
 	}
 
+	/** Called by DbClass when asserting that column type matches DbField type. */
 	protected abstract String getSqlType();
 
+	/** Called by DbClass at column creation and move. */
 	protected abstract void sql_columnDefinition(final StringBuilder sb);
 
+	/** Called by DbTransaction at object update to Db. */
 	protected abstract void sql_updateValue(final StringBuilder sb, final DbObject o);
 
-	protected abstract void setDefaultValue(final Map<DbField, Object> kvm);
+	/** Called by DbTransaction at object creation. */
+	protected abstract void putDefaultValue(final Map<DbField, Object> kvm);
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return name.hashCode();
 	}
 

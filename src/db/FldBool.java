@@ -29,7 +29,7 @@ public final class FldBool extends DbField {
 	}
 
 	@Override
-	protected void setDefaultValue(final Map<DbField, Object> kvm) {
+	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 		kvm.put(this, defval);
 	}
 }

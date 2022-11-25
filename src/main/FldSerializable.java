@@ -46,6 +46,6 @@ public class FldSerializable extends DbField {
 	}
 	
 	@Override
-	protected void setDefaultValue(final Map<DbField, Object> kvm) {
+	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 }
