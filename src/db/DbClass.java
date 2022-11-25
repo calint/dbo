@@ -123,11 +123,11 @@ public final class DbClass {
 
 	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		addMissingColumns(stmt, dbm);
+		if (Db.instance().delete_unused_columns)
+			deleteUnusedColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
 		assertColumnTypes(stmt, dbm);
 //		assertColumnDefaultValues(stmt, dbm);
-		if (Db.instance().delete_unused_columns)
-			deleteUnusedColumns(stmt, dbm);
 	}
 
 	private void deleteUnusedColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {

@@ -18,7 +18,7 @@
 [ ]   close connection after a number of recycles and create a new one
 [ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [o] Index(DbField...)
-[x]    Collation asc
+[x]    Collation asc (default)
 [ ]    Collation desc
 [o] Query(IndexFt,String)
 [x]   IN BOOLEAN MODE (default)
