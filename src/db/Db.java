@@ -136,7 +136,7 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		createTablesAndIndexes(con, dbm);
+		ensureTablesAndIndexes(con, dbm);
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -183,33 +183,28 @@ public final class Db {
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 	}
 
-	private void createTablesAndIndexes(final Connection con, final DatabaseMetaData dbm) throws Throwable {
-		// create tables
+	private void ensureTablesAndIndexes(final Connection con, final DatabaseMetaData dbm) throws Throwable {
+		// ensure RefN tables exist and match to definition
 		final Statement stmt = con.createStatement();
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
-			dbcls.createTable(stmt, dbm);
+			dbcls.ensureTable(stmt, dbm);
 		}
 
-		// create RefN tables
+		// ensure RefN tables exist and match to definition
 		for (final RelRefNMeta rrm : relRefNMeta) {
-			rrm.createTable(stmt, dbm);
+			rrm.ensureTable(stmt, dbm);
 		}
 
-		// all tables have been created
-
-		// create indexes for relations
+		// all tables exist
+		// ensure indexes exist and match definition
 		for (final DbClass dbcls : dbclasses) {
-			for (final DbRelation dbrel : dbcls.allRelations) {// ? what about inherited relations
-				dbrel.createIndex(stmt, dbm);
+			for (final DbRelation dbrel : dbcls.allRelations) {
+				dbrel.ensureIndex(stmt, dbm);
 			}
-		}
-
-		// create indexes
-		for (final DbClass dbcls : dbclasses) {
-			for (final Index ix : dbcls.allIndexes) {// ? what about inherited relations
-				ix.createIndex(stmt, dbm);
+			for (final Index ix : dbcls.allIndexes) {
+				ix.ensureIndex(stmt, dbm);
 			}
 		}
 	}
@@ -242,7 +237,7 @@ public final class Db {
 			}
 			stmt.close();
 
-			createTablesAndIndexes(con, con.getMetaData());
+			ensureTablesAndIndexes(con, con.getMetaData());
 		} catch (Throwable t) {
 			t.printStackTrace();
 		} finally {

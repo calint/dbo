@@ -2,6 +2,7 @@ package db;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -17,20 +18,60 @@ public class Index {
 		}
 	}
 
-	void createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	/** Called after DbClasses and DbRelations have been initialized. */
+	void init(final DbClass c) {
+	}
+
+	protected void ensureIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
 			final String indexName = rs.getString("INDEX_NAME");
-			if (indexName.equals(name)) {
-				found = true;
-				break;
+			if (!indexName.equals(name)) {
+				continue;
 			}
+			found = true;
+			ensureColumnsInIndex(stmt, dbm);
+			break;
 		}
 		rs.close();
 		if (found == true)
 			return;
 
+		createIndex(stmt);
+	}
+
+	protected void ensureColumnsInIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		// get columns in index
+		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
+		final ArrayList<String> cols = new ArrayList<String>();
+		while (rs.next()) {
+			final String indexName = rs.getString("INDEX_NAME");
+			if (!indexName.equals(name))
+				continue;
+			final String columnName = rs.getString("COLUMN_NAME");
+			cols.add(columnName);
+		}
+		rs.close();
+		
+		// check if declared columns match existing columns
+		boolean done = true;
+		for (final DbField f : fields) {
+			if (!cols.contains(f.name)) {
+				done = false;
+				break;
+			}
+			cols.remove(f.name);
+		}
+		if (cols.isEmpty() && done)
+			return;
+
+		// declared index does not match index in db. recreate index
+		dropIndex(stmt);
+		createIndex(stmt);
+	}
+
+	protected void createIndex(final Statement stmt) throws SQLException {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create index ").append(name).append(" on ").append(tableName).append('(');
 		for (final DbField f : fields) {
@@ -44,14 +85,20 @@ public class Index {
 		stmt.execute(sql);
 	}
 
+	protected void dropIndex(final Statement stmt) throws SQLException {
+		// columns in index do not match declaration, delete and create
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append("drop index ").append(name).append(" on ").append(tableName);
+
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append(name);// .append(" on ").append(tableName).append('(');
 		return sb.toString();
-	}
-
-	/** called after DbClasses and DbRelations have been initialized */
-	void init(DbClass c) {
 	}
 }

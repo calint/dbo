@@ -24,14 +24,13 @@ import db.RelRefN;
 
 public final class User extends DbObject {
 	public final static FldStr name = new FldStr();
+	public final static FldStr description = new FldStr();
 	public final static FldStr passhash = new FldStr(32);
 	public final static FldInt nlogins = new FldInt();
 	public final static FldLng lng = new FldLng();
-//	public final static FldInt lng = new FldInt();
 	public final static FldFlt flt = new FldFlt();
 	public final static FldDbl dbl = new FldDbl();
 	public final static FldBool bool = new FldBool();
-//	public final static FldInt bool = new FldInt();
 
 	public final static FldTs birthTime = new FldTs();
 

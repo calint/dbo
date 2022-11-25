@@ -81,7 +81,7 @@ public final class DbClass {
 	}
 
 	/** called by Db at init. check if table exists */
-	void createTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	void ensureTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
@@ -98,9 +98,11 @@ public final class DbClass {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
+		
 		final String sql = sb.toString();
 		Db.log(sql);
 		stmt.execute(sql);
+		
 		return;
 	}
 
@@ -145,7 +147,7 @@ public final class DbClass {
 			for (int i = 0; i < n; i++) {
 				final DbField f = allFields.get(i);
 				final Column c = columns.get(i);
-				if (f.name.equals(c.column_name)) {
+				if (f.name.equals(c.name)) {
 					prevField = f;
 					continue;
 				}
@@ -178,7 +180,7 @@ public final class DbClass {
 		for (int i = 0; i < n; i++) {
 			final DbField f = allFields.get(i);
 			final Column c = columns.get(i);
-			if (f.name.equals(c.column_name))
+			if (f.name.equals(c.name))
 				continue;
 			return false;
 		}
@@ -217,11 +219,11 @@ public final class DbClass {
 		final ArrayList<Column> columns = new ArrayList<Column>();
 		while (rs.next()) {
 			final Column col = new Column();
-			col.column_name = rs.getString("COLUMN_NAME");
+			col.name = rs.getString("COLUMN_NAME");
 			col.ordinal_position = rs.getInt("ORDINAL_POSITION");
 			col.type_name = rs.getString("TYPE_NAME");
-			col.column_size = rs.getInt("COLUMN_SIZE");
-			col.column_def = rs.getString("COLUMN_DEF");
+//			col.column_size = rs.getInt("COLUMN_SIZE");
+//			col.column_def = rs.getString("COLUMN_DEF");
 			columns.add(col);
 		}
 		rs.close();
@@ -236,42 +238,26 @@ public final class DbClass {
 		return columns;
 	}
 
-	private final static class Column {
-		String column_name;
-		int ordinal_position;
-		String type_name;
-		int column_size;
-		String column_def;
-
-		@Override
-		public String toString() {
-			return column_name;
-		}
-	}
-
 	private boolean columnsHasColumn(final List<Column> columns, final String name) {
 		for (final Column c : columns) {
-			if (c.column_name.equals(name))
+			if (c.name.equals(name))
 				return true;
 		}
 		return false;
 	}
 
-//	private void addColumn(final Statement stmt, final DbField f, final DbField prevField) throws Throwable {
-//		final StringBuilder sb = new StringBuilder(128);
-//		sb.append("alter table ").append(tableName).append(" add ");
-//		f.sql_columnDefinition(sb);
-//		sb.append(' ');
-//		if (prevField == null) {
-//			sb.append("first");
-//		} else {
-//			sb.append("after ");
-//			sb.append(prevField.name);
-//		}
-//		final String sql = sb.toString();
-//		Db.log(sql);
-//		stmt.execute(sql);
-//	}
+	private final static class Column {
+		String name;
+		int ordinal_position;
+		String type_name;
+//		int column_size;
+//		String column_def;
+
+		@Override
+		public String toString() {
+			return name;
+		}
+	}
 
 	@Override
 	public String toString() {

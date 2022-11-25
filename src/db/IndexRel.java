@@ -3,24 +3,17 @@ package db;
 public class IndexRel extends Index {
 	final private DbRelation rel;
 
-	public IndexRel(final DbRelation r) {
+	public IndexRel(final DbRelation r) { // ? handles only ref and agg
 		rel = r;
-//		// check supported relations
-//		if (r instanceof RelAggN || r instanceof RelRefN) {
-//			throw new RuntimeException("relation " + r + " not supported");
-//		}
 	}
 
 	@Override
 	void init(final DbClass c) {
-		fields.add(rel.relFld);
-	}
+		if (rel.relFld == null)
+			throw new RuntimeException("relation " + rel.name + " in class " + cls.getName()
+					+ " can not be indexed. Is relation type RefN?");
 
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder(128);
-		sb.append(name);// .append(" on ").append(tableName).append('(');
-		return sb.toString();
+		fields.add(rel.relFld);
 	}
 
 }

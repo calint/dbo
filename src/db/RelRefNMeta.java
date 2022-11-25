@@ -26,7 +26,7 @@ final class RelRefNMeta {
 		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName).toString();
 	}
 
-	void createTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	void ensureTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
