@@ -3,8 +3,8 @@
 [x]   if columns order do not match fields see: https://stackoverflow.com/questions/2934312/how-to-rearrange-mysql-columns
 [ ]     better algorithm
 [x]   if column type has changed: ALTER TABLE table_name MODIFY COLUMN column_name datatype
-[ ]     check size. mysql returns size of column in characters
-[ ]   drop undefined columns. boolean setting Db.drop_undefined_columns
+[ ]     check size. mysql returns size of column in bytes
+[x]   drop undefined columns. boolean setting Db.drop_undefined_columns
 [x] check indexes
 [x]   drop and recreate index if mismatch
 [ ]   drop undeclared indexes

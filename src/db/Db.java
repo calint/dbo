@@ -96,6 +96,9 @@ public final class Db {
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
 	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
+	/** if true unused columns are deleted */
+	public boolean delete_unused_columns = true;
+
 	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);

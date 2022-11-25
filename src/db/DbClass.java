@@ -12,19 +12,30 @@ import java.util.Comparator;
 import java.util.List;
 
 public final class DbClass {
+	/** The java class that this DbClass describes. */
 	final Class<? extends DbObject> javaClass;
+	/** The table name of this type. Set by Db at init. */
 	final String tableName;
 	final ArrayList<DbField> declaredFields = new ArrayList<DbField>();
 	final ArrayList<DbRelation> declaredRelations = new ArrayList<DbRelation>();
-	/** all fields, including inherited */
+	final ArrayList<Index> declaredIndexes = new ArrayList<Index>();
+
+	/** All fields, relations, indexes, including inherited */
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 	final ArrayList<DbRelation> allRelations = new ArrayList<DbRelation>();
-
-	final ArrayList<Index> declaredIndexes = new ArrayList<Index>();
 	final ArrayList<Index> allIndexes = new ArrayList<Index>();
 
+	/**
+	 * Contains RefN relations declared in other classes referring to this class.
+	 * Used to delete orphan entries in the RefN table when an object of this type
+	 * is deleted.
+	 */
 	final ArrayList<RelRefN> referingRefN = new ArrayList<RelRefN>();
 
+	/**
+	 * True if this type needs to cascade deletes because it contains relations that
+	 * need to cascade deletes. Set by Db at init.
+	 */
 	boolean doCascadeDelete = false;
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
@@ -80,7 +91,7 @@ public final class DbClass {
 		lsix.addAll(dbcls.declaredIndexes);
 	}
 
-	/** called by Db at init. check if table exists */
+	/** called by Db at init. check and create if necessary */
 	void ensureTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
@@ -90,6 +101,12 @@ public final class DbClass {
 		}
 		rs.close();
 
+		createTable(stmt);
+
+		return;
+	}
+
+	private void createTable(final Statement stmt) throws SQLException {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("create table ").append(tableName).append("(");
 		for (final DbField f : allFields) {
@@ -98,12 +115,10 @@ public final class DbClass {
 		}
 		sb.setLength(sb.length() - 1);
 		sb.append(")");
-		
+
 		final String sql = sb.toString();
 		Db.log(sql);
 		stmt.execute(sql);
-		
-		return;
 	}
 
 	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
@@ -111,7 +126,25 @@ public final class DbClass {
 		arrangeColumns(stmt, dbm);
 		assertColumnTypes(stmt, dbm);
 //		assertColumnDefaultValues(stmt, dbm);
-		// todo handle extra columns
+		if (Db.instance().delete_unused_columns)
+			deleteUnusedColumns(stmt, dbm);
+	}
+
+	private void deleteUnusedColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		final List<Column> columns = getColumnsFromDb(dbm);
+		for (final DbField f : allFields) {
+			columns_removeColumn(columns, f.name);
+		}
+		if (columns.isEmpty())
+			return;
+		
+		for (final Column c : columns) {
+			final StringBuilder sb = new StringBuilder(128);
+			sb.append("alter table ").append(tableName).append(" drop column ").append(c.name);
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
 	}
 
 	private void assertColumnTypes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
@@ -191,27 +224,31 @@ public final class DbClass {
 		final ArrayList<Column> columns = getColumnsFromDb(dbm);
 		DbField prevField = null;
 		for (final DbField f : allFields) {
-			if (columnsHasColumn(columns, f.name)) {
+			if (columns_containsColumn(columns, f.name)) {
 				prevField = f;
 				continue;
 			}
-			
-			final StringBuilder sb = new StringBuilder(128);
-			sb.append("alter table ").append(tableName).append(" add ");
-			f.sql_columnDefinition(sb);
-			sb.append(' ');
-			if (prevField == null) {
-				sb.append("first");
-			} else {
-				sb.append("after ");
-				sb.append(prevField.name);
-			}
-			final String sql = sb.toString();
-			Db.log(sql);
-			stmt.execute(sql);
+
+			addColumn(stmt, f, prevField);
 
 			prevField = f;
 		}
+	}
+
+	private void addColumn(final Statement stmt, final DbField fld, final DbField prevFld) throws Throwable {
+		final StringBuilder sb = new StringBuilder(128);
+		sb.append("alter table ").append(tableName).append(" add ");
+		fld.sql_columnDefinition(sb);
+		sb.append(' ');
+		if (prevFld == null) {
+			sb.append("first");
+		} else {
+			sb.append("after ");
+			sb.append(prevFld.name);
+		}
+		final String sql = sb.toString();
+		Db.log(sql);
+		stmt.execute(sql);
 	}
 
 	private ArrayList<Column> getColumnsFromDb(final DatabaseMetaData dbm) throws SQLException {
@@ -238,12 +275,24 @@ public final class DbClass {
 		return columns;
 	}
 
-	private boolean columnsHasColumn(final List<Column> columns, final String name) {
+	private boolean columns_containsColumn(final List<Column> columns, final String name) {
 		for (final Column c : columns) {
 			if (c.name.equals(name))
 				return true;
 		}
 		return false;
+	}
+
+	private void columns_removeColumn(final List<Column> columns, final String name) {
+		final int n = columns.size();
+		for (int i = 0; i < n; i++) {
+			final Column c = columns.get(i);
+			if (c.name.equals(name)) {
+				columns.remove(i);
+				return;
+			}
+		}
+		throw new RuntimeException("expected to find column " + name + " in " + columns);
 	}
 
 	private final static class Column {
