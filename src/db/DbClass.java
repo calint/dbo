@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,6 +105,74 @@ public final class DbClass {
 	}
 
 	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		addMissingColumns(stmt, dbm);
+		arrangeColumns(stmt, dbm);
+		// todo check column types vs field types and redefine if necessary
+		// todo handle extra columns
+	}
+
+	private boolean columnsAreInOrder(final DatabaseMetaData dbm) throws Throwable {
+		final ArrayList<Column> columns = getColumnsFromDb(dbm);
+		final int n = allFields.size();
+		for (int i = 0; i < n; i++) {
+			final DbField f = allFields.get(i);
+			final Column c = columns.get(i);
+			if (f.name.equals(c.column_name))
+				continue;
+			return false;
+		}
+		return true;
+	}
+
+	private void arrangeColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		// rearrange columns
+		while (!columnsAreInOrder(dbm)) {
+			final List<Column> columns = getColumnsFromDb(dbm);
+			DbField prevField = null;
+			final int n = allFields.size();
+			for (int i = 0; i < n; i++) {
+				final DbField f = allFields.get(i);
+				final Column c = columns.get(i);
+				if (f.name.equals(c.column_name)) {
+					prevField = f;
+					continue;
+				}
+				// example:
+				// flds: id, name, passhash, nlogins, birthTime, lng, flt, dbl, bool, profilePic, groupPic
+				// cols: id, name, passhash, nlogins, lng, flt, dbl, bool, birthTime, profilePic, groupPic
+				
+				// cols: id, name, passhash, nlogins, birthTime, lng, flt, dbl, bool, profilePic, groupPic
+				// flds: id, name, passhash, nlogins, lng, flt, dbl, bool, birthTime, profilePic, groupPic
+				final StringBuilder sb = new StringBuilder(128);
+				sb.append("alter table ").append(tableName).append(" modify ");
+				f.sql_columnDefinition(sb);
+				sb.append(' ');
+				if (prevField == null) {
+					sb.append("first");
+				} else {
+					sb.append("after ");
+					sb.append(prevField.name);
+				}
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
+				break;
+			}
+		}
+	}
+
+	private void addMissingColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		final ArrayList<Column> columns = getColumnsFromDb(dbm);
+		DbField prevField = null;
+		for (final DbField f : allFields) {
+			if (!columnsHasColumn(columns, f.name)) {
+				addColumn(stmt, f, prevField);
+			}
+			prevField = f;
+		}
+	}
+
+	private ArrayList<Column> getColumnsFromDb(final DatabaseMetaData dbm) throws SQLException {
 		final ResultSet rs = dbm.getColumns(null, null, tableName, null);
 		final ArrayList<Column> columns = new ArrayList<Column>();
 		while (rs.next()) {
@@ -124,18 +193,7 @@ public final class DbClass {
 			};
 		});
 
-		// add missing columns
-		DbField prevField = null;
-		for (final DbField f : allFields) {
-			if (!columnsHasColumn(columns, f.name)) {
-				addColumn(stmt, f, prevField);
-			}
-			prevField = f;
-		}
-		
-		// todo rearrange columns if necessary
-		// todo handle extra columns
-		// todo check column types vs field types and redefine if necessary
+		return columns;
 	}
 
 	private final static class Column {
@@ -144,9 +202,14 @@ public final class DbClass {
 		String type_name;
 		int column_size;
 		String column_def;
+
+		@Override
+		public String toString() {
+			return column_name;
+		}
 	}
 
-	private boolean columnsHasColumn(List<Column> columns, String name) {
+	private boolean columnsHasColumn(final List<Column> columns, final String name) {
 		for (final Column c : columns) {
 			if (c.column_name.equals(name))
 				return true;
@@ -154,7 +217,7 @@ public final class DbClass {
 		return false;
 	}
 
-	private void addColumn(Statement stmt, DbField f, DbField prevField) throws Throwable {
+	private void addColumn(final Statement stmt, final DbField f, final DbField prevField) throws Throwable {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("alter table ").append(tableName).append(" add ");
 		f.sql_columnDefinition(sb);

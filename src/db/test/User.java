@@ -26,7 +26,7 @@ public final class User extends DbObject {
 	public final static FldStr name = new FldStr();
 	public final static FldStr passhash = new FldStr(32);
 	public final static FldInt nlogins = new FldInt();
-	
+
 //	public final static FldInt ncount = new FldInt();
 //	public final static FldInt ncount2 = new FldInt();
 	
@@ -34,11 +34,12 @@ public final class User extends DbObject {
 	public final static FldFlt flt = new FldFlt();
 	public final static FldDbl dbl = new FldDbl();
 	public final static FldBool bool = new FldBool();
-//	public final static FldTimestamp birthTime = new FldTimestamp(Timestamp.valueOf("1970-01-01 01:00:01"));
+
 	public final static FldTs birthTime = new FldTs();
-	public final static RelAggN files = new RelAggN(File.class);
+
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);
+	public final static RelAggN files = new RelAggN(File.class);
 	public final static RelRefN refFiles = new RelRefN(File.class);
 	public final static RelAggN games = new RelAggN(Game.class);
 
