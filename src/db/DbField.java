@@ -14,10 +14,10 @@ public abstract class DbField {
 	/** Called by DbClass when asserting that column type matches DbField type. */
 	protected abstract String getSqlType();
 
-	/** Called by DbClass at column creation and move. */
+	/** Called by DbClass at column creation and move column. */
 	protected abstract void sql_columnDefinition(final StringBuilder sb);
 
-	/** Called by DbTransaction at object update to Db. */
+	/** Called by DbTransaction at update Db from object. */
 	protected abstract void sql_updateValue(final StringBuilder sb, final DbObject o);
 
 	/** Called by DbTransaction at object creation. */

@@ -8,6 +8,7 @@ import db.DbObject;
 
 public final class TestObj extends DbObject {
 	public final static FldSerializable list = new FldSerializable();
+	public final static FldChars md5 = new FldChars(32, "");
 
 	@SuppressWarnings("unchecked")
 	public List<String> getList() {
@@ -33,5 +34,13 @@ public final class TestObj extends DbObject {
 
 	public void setList(final List<String> v) {
 		set(list, v);
+	}
+
+	public String getMd5() {
+		return getStr(md5);
+	}
+
+	public void setMd5(final String v) {
+		set(md5, v);
 	}
 }

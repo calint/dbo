@@ -38,7 +38,6 @@ public final class RelAgg extends DbRelation {
 		final DbObject o = get(ths, false);
 		if (o == null)
 			return;
-//		o.deleteFromDb();
 		Db.currentTransaction().delete(o);
 		ths.set(relFld, 0);
 	}
@@ -57,6 +56,7 @@ public final class RelAgg extends DbRelation {
 			Db.currentTransaction().delete(o);
 			return;
 		}
+		// cascade not necessary
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("delete from ").append(dbClsTo.tableName).append(" where ").append(DbObject.id.name).append("=")
 				.append(toId);

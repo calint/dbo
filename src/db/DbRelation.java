@@ -44,7 +44,7 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * Called after all tables have been created. relation can create necessary
+	 * Called after all tables have been created. Relation can create necessary
 	 * indexes. DatabaseMetaData is used to check if index already exists.
 	 */
 	void createIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
