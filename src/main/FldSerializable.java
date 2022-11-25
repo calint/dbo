@@ -3,6 +3,7 @@ package main;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Map;
 
 import db.DbField;
 import db.DbObject;
@@ -10,8 +11,13 @@ import db.FldBlob;
 
 public class FldSerializable extends DbField {
 	@Override
+	protected String getSqlType() {
+		return "longblob";
+	}
+
+	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(getName()).append(" blob");
+		sb.append(getName()).append(' ').append(getSqlType());
 	}
 
 	@Override
@@ -37,5 +43,9 @@ public class FldSerializable extends DbField {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+	
+	@Override
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 	}
 }

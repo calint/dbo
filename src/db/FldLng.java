@@ -14,13 +14,18 @@ public final class FldLng extends DbField {
 	}
 
 	@Override
+	protected String getSqlType() {
+		return "bigint";
+	}
+
+	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getLng(this));
 	}
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" bigint default ").append(defval);
+		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval);
 	}
 
 	@Override

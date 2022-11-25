@@ -107,25 +107,37 @@ public final class DbClass {
 	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		addMissingColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
+		assertColumnTypes(stmt, dbm);
 		// todo check column types vs field types and redefine if necessary
 		// todo handle extra columns
 	}
 
-	private boolean columnsAreInOrder(final DatabaseMetaData dbm) throws Throwable {
-		final ArrayList<Column> columns = getColumnsFromDb(dbm);
+	private void assertColumnTypes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		final List<Column> columns = getColumnsFromDb(dbm);
 		final int n = allFields.size();
 		for (int i = 0; i < n; i++) {
 			final DbField f = allFields.get(i);
 			final Column c = columns.get(i);
-			if (f.name.equals(c.column_name))
+			final String ct = c.type_name.toLowerCase();
+			if (f.getSqlType().toLowerCase().equals(ct)) {
+				// todo check size
+//				if (ct.equals("varchar")) {
+//					if(c.column_size==f.getSize())
+//						continue;
+//				}
 				continue;
-			return false;
+			}
+			final StringBuilder sb = new StringBuilder(128);
+			sb.append("alter table ").append(tableName).append(" modify ");
+			f.sql_columnDefinition(sb);
+			final String sql = sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
 		}
-		return true;
 	}
 
 	private void arrangeColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
-		// rearrange columns
+		// ? better algorithm for fields moved "down" in list?
 		while (!columnsAreInOrder(dbm)) {
 			final List<Column> columns = getColumnsFromDb(dbm);
 			DbField prevField = null;
@@ -138,11 +150,10 @@ public final class DbClass {
 					continue;
 				}
 				// example:
-				// flds: id, name, passhash, nlogins, birthTime, lng, flt, dbl, bool, profilePic, groupPic
-				// cols: id, name, passhash, nlogins, lng, flt, dbl, bool, birthTime, profilePic, groupPic
-				
-				// cols: id, name, passhash, nlogins, birthTime, lng, flt, dbl, bool, profilePic, groupPic
-				// flds: id, name, passhash, nlogins, lng, flt, dbl, bool, birthTime, profilePic, groupPic
+				// flds: id, name, passhash, nlogins, birthTime, lng, flt, dbl, bool,
+				// profilePic, groupPic
+				// cols: id, name, passhash, nlogins, lng, flt, dbl, bool, birthTime,
+				// profilePic, groupPic
 				final StringBuilder sb = new StringBuilder(128);
 				sb.append("alter table ").append(tableName).append(" modify ");
 				f.sql_columnDefinition(sb);
@@ -159,6 +170,19 @@ public final class DbClass {
 				break;
 			}
 		}
+	}
+
+	private boolean columnsAreInOrder(final DatabaseMetaData dbm) throws Throwable {
+		final ArrayList<Column> columns = getColumnsFromDb(dbm);
+		final int n = allFields.size();
+		for (int i = 0; i < n; i++) {
+			final DbField f = allFields.get(i);
+			final Column c = columns.get(i);
+			if (f.name.equals(c.column_name))
+				continue;
+			return false;
+		}
+		return true;
 	}
 
 	private void addMissingColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {

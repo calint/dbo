@@ -7,18 +7,17 @@ public abstract class DbField {
 	protected Class<? extends DbObject> cls;
 	protected String tableName;
 
-	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-	}
-
-	protected void sql_columnDefinition(final StringBuilder sb) {
-	}
-
-	protected void setDefaultValue(final Map<DbField, Object> kvm) {
-	}
-
 	public final String getName() {
 		return name;
 	}
+
+	protected abstract String getSqlType();
+
+	protected abstract void sql_columnDefinition(final StringBuilder sb);
+
+	protected abstract void sql_updateValue(final StringBuilder sb, final DbObject o);
+
+	protected abstract void setDefaultValue(final Map<DbField, Object> kvm);
 
 	@Override
 	public int hashCode() {

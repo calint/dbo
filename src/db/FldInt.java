@@ -14,13 +14,18 @@ public final class FldInt extends DbField {
 	}
 
 	@Override
+	protected String getSqlType() {
+		return "int";
+	}
+
+	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getInt(this));
 	}
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" int default ").append(defval);
+		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval);
 	}
 
 	@Override

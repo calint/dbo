@@ -26,6 +26,11 @@ public final class FldStr extends DbField {
 		this.defval = def;
 	}
 
+	@Override
+	protected String getSqlType() {
+		return "varchar";
+	}
+
 	public int getSize() {
 		return size;
 	}
@@ -44,7 +49,7 @@ public final class FldStr extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" varchar(").append(size).append(")");
+		sb.append(name).append(' ').append(getSqlType()).append("(").append(size).append(")");
 		if (defval != null) {
 			sb.append(" default '");
 			escapeSqlString(sb, defval);

@@ -1,6 +1,12 @@
 package db;
 
+import java.util.Map;
+
 public final class FldBlob extends DbField {
+	@Override
+	protected String getSqlType() {
+		return "longblob";
+	}
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
@@ -15,7 +21,11 @@ public final class FldBlob extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" longblob");
+		sb.append(name).append(' ').append(getSqlType());
+	}
+
+	@Override
+	protected void setDefaultValue(final Map<DbField, Object> kvm) {
 	}
 
 	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();

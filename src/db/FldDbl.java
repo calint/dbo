@@ -15,13 +15,18 @@ public final class FldDbl extends DbField {
 	}
 
 	@Override
+	protected String getSqlType() {
+		return "double";
+	}
+
+	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getDbl(this));
 	}
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" double default ").append(defval);
+		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval);
 	}
 
 	@Override

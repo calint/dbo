@@ -14,13 +14,18 @@ public final class FldFlt extends DbField {
 	}
 
 	@Override
+	protected String getSqlType() {
+		return "float";
+	}
+
+	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append(o.getFlt(this));
 	}
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(" float default ").append(defval);
+		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval);
 	}
 
 	@Override
