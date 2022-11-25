@@ -3,9 +3,9 @@ package db;
 import java.util.Map;
 
 public abstract class DbField {
-	protected String name;
-	protected Class<? extends DbObject> cls;
-	protected String tableName;
+	String name;
+	Class<? extends DbObject> cls;
+	String tableName;
 
 	public final String getName() {
 		return name;
