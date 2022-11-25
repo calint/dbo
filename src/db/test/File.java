@@ -8,6 +8,7 @@ import db.DbObject;
 import db.FldLng;
 import db.FldStr;
 import db.FldTs;
+import db.Index;
 import db.RelAgg;
 
 public final class File extends DbObject {
@@ -15,6 +16,7 @@ public final class File extends DbObject {
 	public final static FldLng size_B = new FldLng();
 	public final static FldTs created_ts = new FldTs();
 	public final static RelAgg data = new RelAgg(DataBinary.class);
+	public final static Index ixName = new Index(name);
 
 	public void loadFile(final String path) throws Throwable {
 		final DataBinary d = getData(true);

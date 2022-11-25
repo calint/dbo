@@ -7,10 +7,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Index {
+	/** The class that declared the index. */
 	Class<? extends DbObject> cls;
+	/** The name of the field that declared the index. */
 	String name;
+	/** The table name for the declaring class. */
 	String tableName;
+	/** The fields in this index. */
 	final ArrayList<DbField> fields = new ArrayList<DbField>();
+	/**
+	 * Is set to true when the index was added by some other class. Example AggN
+	 * adds index on target table. Used at deleteUndeclaredIndexes.
+	 */
+	boolean declaredByOtherClass = false;
 
 	public Index(final DbField... flds) {
 		for (final DbField f : flds) {
@@ -22,7 +31,7 @@ public class Index {
 	void init(final DbClass c) {
 	}
 
-	protected void ensureIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	protected void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		boolean found = false;
 		while (rs.next()) {
@@ -53,7 +62,7 @@ public class Index {
 			cols.add(columnName);
 		}
 		rs.close();
-		
+
 		// check if declared columns match existing columns
 		boolean done = true;
 		for (final DbField f : fields) {

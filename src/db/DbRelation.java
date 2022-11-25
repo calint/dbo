@@ -30,10 +30,18 @@ public abstract class DbRelation {
 
 	/**
 	 * Called after all DbClasses have been created. Necessary relation fields can
-	 * be added to other DbClasses.
+	 * be added to target DbClass.
 	 */
 	void init(final DbClass c) {
 	}
+
+	/**
+	 * Called after all tables have been created. Relation can create necessary
+	 * indexes in other classes or check and create using stmt.
+	 */
+	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	}
+
 
 	public final String getName() {
 		return name;
@@ -41,13 +49,6 @@ public abstract class DbRelation {
 
 	public final Class<? extends DbObject> getToClass() {
 		return toCls;
-	}
-
-	/**
-	 * Called after all tables have been created. Relation can create necessary
-	 * indexes. DatabaseMetaData is used to check if index already exists.
-	 */
-	void ensureIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
 
 	boolean cascadeDeleteNeeded() {

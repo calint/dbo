@@ -11,6 +11,9 @@ public final class RelRef extends DbRelation {
 	@Override
 	void init(final DbClass c) {
 		relFld = new FldRel();
+		relFld.cls = cls;
+		final DbClass dbc = Db.instance().getDbClassForJavaClass(cls);
+		relFld.tableName = dbc.tableName;
 		relFld.name = name;
 		c.declaredFields.add(relFld);
 	}

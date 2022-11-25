@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,19 +124,19 @@ public final class Db {
 				r.init(c);
 		}
 
-		// allow Indexes to initiate using fully constructed DbRelations
+		// allow indexes to initiate using fully constructed DbRelations
 		for (final DbClass c : dbclasses) {
 			for (final Index ix : c.declaredIndexes)
 				ix.init(c);
 		}
 
-		// create lists allFields, allRelations, allIndexes
+		// initiate lists: allFields, allRelations, allIndexes
 		for (final DbClass c : dbclasses) {
 			c.init();
 			Db.log(c.toString());
 		}
 
-		// DbClasses fields are now ready for create tables
+		// DbClasses fields are now ready for create tables and indexes
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -143,6 +144,23 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
+		printDbMetaInfo(dbm);
+
+		con.close();
+
+		// create connection pool
+		for (int i = 0; i < ncons; i++) {
+			final Connection c = DriverManager.getConnection(url, user, password);
+			c.setAutoCommit(false);
+			synchronized (conpool) {
+				conpool.add(c);
+			}
+		}
+
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+	}
+
+	private void printDbMetaInfo(final DatabaseMetaData dbm) throws SQLException {
 		// output tables, columns, indexes
 		final ResultSet rstbls = dbm.getTables(null, null, null, new String[] { "TABLE" });
 		while (rstbls.next()) {
@@ -171,24 +189,12 @@ public final class Db {
 			Db.log("");
 		}
 		rstbls.close();
-
-		con.close();
-
-		// create connection pool
-		for (int i = 0; i < ncons; i++) {
-			final Connection c = DriverManager.getConnection(url, user, password);
-			c.setAutoCommit(false);
-			synchronized (conpool) {
-				conpool.add(c);
-			}
-		}
-
-		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 	}
 
 	private void ensureTablesAndIndexes(final Connection con, final DatabaseMetaData dbm) throws Throwable {
 		// ensure RefN tables exist and match to definition
 		final Statement stmt = con.createStatement();
+		
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
@@ -201,15 +207,22 @@ public final class Db {
 		}
 
 		// all tables exist
-		// ensure indexes exist and match definition
+		
+		// relations might need to create index or add indexes in other classes
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {
-				dbrel.ensureIndex(stmt, dbm);
-			}
-			for (final Index ix : dbcls.allIndexes) {
-				ix.ensureIndex(stmt, dbm);
+				dbrel.ensureIndexes(stmt, dbm);
 			}
 		}
+
+		// ensure indexes exist and match definition
+		for (final DbClass dbcls : dbclasses) {
+			for (final Index ix : dbcls.allIndexes) {
+				ix.ensureIndexes(stmt, dbm);
+			}
+		}
+		
+		stmt.close();
 	}
 
 	/**

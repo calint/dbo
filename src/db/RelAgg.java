@@ -9,6 +9,9 @@ public final class RelAgg extends DbRelation {
 	@Override
 	void init(final DbClass dbcls) {
 		relFld = new FldRel();
+		relFld.cls = cls;
+		final DbClass dbc = Db.instance().getDbClassForJavaClass(cls);
+		relFld.tableName = dbc.tableName;
 		relFld.name = name;
 		dbcls.declaredFields.add(relFld);
 	}

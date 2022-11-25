@@ -15,5 +15,4 @@ public class IndexRel extends Index {
 
 		fields.add(rel.relFld);
 	}
-
 }

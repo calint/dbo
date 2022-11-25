@@ -1,7 +1,6 @@
 package db;
 
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
@@ -14,9 +13,44 @@ public final class RelAggN extends DbRelation {
 	@Override
 	void init(final DbClass dbcls) {
 		relFld = new FldRel();
+		relFld.cls = toCls;
 		relFld.name = dbcls.tableName + "_" + name;
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
+		relFld.tableName = toDbCls.tableName;
 		toDbCls.declaredFields.add(relFld);
+	}
+
+	@Override
+	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		// add an index to target class
+		final Index ix = new Index(relFld);
+		ix.cls = toCls;
+		ix.declaredByOtherClass = true;
+		ix.name = relFld.name;
+		ix.tableName = relFld.tableName;
+		final DbClass dbc = Db.instance().getDbClassForJavaClass(toCls);
+		dbc.allIndexes.add(ix);
+//		
+//		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
+//		boolean found = false;
+//		while (rs.next()) {
+//			final String indexName = rs.getString("INDEX_NAME");
+//			if (indexName.equals(relFld.name)) {
+//				found = true;
+//				break;
+//			}
+//		}
+//		rs.close();
+//		if (found == true)
+//			return;
+//
+//		final StringBuilder sb = new StringBuilder(128);
+//		sb.append("create index ").append(relFld.name).append(" on ").append(toTableName).append('(')
+//				.append(relFld.name).append(')');
+//
+//		final String sql = sb.toString();
+//		Db.log(sql);
+//		stmt.execute(sql);
 	}
 
 	public DbObject create(final DbObject ths) {
@@ -58,30 +92,6 @@ public final class RelAggN extends DbRelation {
 	}
 
 	@Override
-	void ensureIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
-		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
-		boolean found = false;
-		while (rs.next()) {
-			final String indexName = rs.getString("INDEX_NAME");
-			if (indexName.equals(relFld.name)) {
-				found = true;
-				break;
-			}
-		}
-		rs.close();
-		if (found == true)
-			return;
-
-		final StringBuilder sb = new StringBuilder(128);
-		sb.append("create index ").append(relFld.name).append(" on ").append(toTableName).append('(')
-				.append(relFld.name).append(')');
-
-		final String sql = sb.toString();
-		Db.log(sql);
-		stmt.execute(sql);
-	}
-
-	@Override
 	void cascadeDelete(final DbObject ths) {
 		final DbClass dbClsTo = Db.instance().dbClassForJavaClass(toCls);
 		if (dbClsTo.doCascadeDelete) {
@@ -95,6 +105,7 @@ public final class RelAggN extends DbRelation {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("delete from ").append(dbClsTo.tableName).append(" where ").append(relFld.name).append("=")
 				.append(ths.id());
+		
 		Db.currentTransaction().execSql(sb);
 	}
 }
