@@ -97,8 +97,10 @@ public final class Db {
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
 	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
-	/** if true unused columns are deleted */
+	/** if true undeclared columns are deleted */
 	public boolean delete_unused_columns = true;
+	/** if true undeclared indexes are deleted */
+	public boolean drop_undeclared_indexes = true;
 
 	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
@@ -133,7 +135,7 @@ public final class Db {
 		// initiate lists: allFields, allRelations, allIndexes
 		for (final DbClass c : dbclasses) {
 			c.init();
-			Db.log(c.toString());
+//			Db.log(c.toString());
 		}
 
 		// DbClasses fields are now ready for create tables and indexes
@@ -152,9 +154,9 @@ public final class Db {
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
-			synchronized (conpool) {
+//			synchronized (conpool) {
 				conpool.add(c);
-			}
+//			}
 		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
@@ -194,7 +196,7 @@ public final class Db {
 	private void ensureTablesAndIndexes(final Connection con, final DatabaseMetaData dbm) throws Throwable {
 		// ensure RefN tables exist and match to definition
 		final Statement stmt = con.createStatement();
-		
+
 		for (final DbClass dbcls : dbclasses) {
 			if (Modifier.isAbstract(dbcls.javaClass.getModifiers()))
 				continue;
@@ -207,8 +209,9 @@ public final class Db {
 		}
 
 		// all tables exist
-		
-		// relations might need to create index or add indexes in other classes
+
+		// relations might need to create index directly with Statement or add to
+		// indexes to other classes
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {
 				dbrel.ensureIndexes(stmt, dbm);
@@ -221,7 +224,35 @@ public final class Db {
 				ix.ensureIndexes(stmt, dbm);
 			}
 		}
-		
+
+		// drop undeclared indexes
+		for (final DbClass dbcls : dbclasses) {
+			dbcls.dropUndeclaredIndexes(stmt, dbm);
+		}
+
+		if (drop_undeclared_indexes) {
+			// drop unused RefN tables
+			final ArrayList<String> refsTbls = new ArrayList<String>();
+			final String tablePrefix = RelRefNMeta.getTablePrefix();
+			final ResultSet rstbls = dbm.getTables(null, null, tablePrefix + "%", new String[] { "TABLE" });
+			while (rstbls.next()) {
+				final String tbl = rstbls.getString("TABLE_NAME");
+				refsTbls.add(tbl);
+			}
+
+			for (final RelRefNMeta rrm : relRefNMeta) {
+				refsTbls.remove(rrm.tableName);
+			}
+
+			for (final String s : refsTbls) {
+				final StringBuilder sb = new StringBuilder(128);
+				sb.append("drop table ").append(s);
+				final String sql = sb.toString();
+				Db.log(sql);
+				stmt.execute(sql);
+			}
+		}
+
 		stmt.close();
 	}
 

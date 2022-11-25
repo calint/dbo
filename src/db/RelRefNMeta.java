@@ -23,7 +23,8 @@ final class RelRefNMeta {
 		this.toTableName = Db.tableNameForJavaClass(toCls);
 //		this.toColName = Db.tableNameForJavaClass(toCls);
 		this.toColName = "toId";
-		tableName = new StringBuilder(256).append(fromTableName).append('_').append(relName).toString();
+		tableName = new StringBuilder(256).append(getTablePrefix()).append(fromTableName).append('_').append(relName)
+				.toString();
 	}
 
 	void ensureTable(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
@@ -84,5 +85,9 @@ final class RelRefNMeta {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(this.tableName);
 		return super.toString();
+	}
+
+	public static String getTablePrefix() {
+		return "Refs_";
 	}
 }

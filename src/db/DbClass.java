@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 public final class DbClass {
@@ -137,7 +138,7 @@ public final class DbClass {
 		}
 		if (columns.isEmpty())
 			return;
-		
+
 		for (final Column c : columns) {
 			final StringBuilder sb = new StringBuilder(128);
 			sb.append("alter table ").append(tableName).append(" drop column ").append(c.name);
@@ -322,5 +323,34 @@ public final class DbClass {
 
 	public List<DbRelation> getDeclaredRelations() {
 		return declaredRelations;
+	}
+
+	void dropUndeclaredIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+		final HashSet<String> indexes=new HashSet<String>();
+		// collect all indexes in this table
+		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
+		while (rs.next()) {
+			final String indexName = rs.getString("INDEX_NAME");
+			if (indexName.equals("PRIMARY")) { // mysql added index on id
+				continue;
+			}
+			indexes.add(indexName);
+		}
+		rs.close();
+
+		for(final Index ix:allIndexes) {
+			indexes.remove(ix.name);
+		}
+		
+		if(indexes.isEmpty())
+			return;
+		
+		for(final String s:indexes) {
+			final StringBuilder sb=new StringBuilder(128);
+			sb.append("drop index ").append(s).append(" on ").append(tableName);
+			final String sql=sb.toString();
+			Db.log(sql);
+			stmt.execute(sql);
+		}
 	}
 }
