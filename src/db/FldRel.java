@@ -2,7 +2,7 @@ package db;
 
 import java.util.Map;
 
-/** field/column that refers to an id. it may be null or 0 */
+/** Field/column that refers to an id. It may be null or 0. */
 final class FldRel extends DbField {
 	@Override
 	protected String getSqlType() {

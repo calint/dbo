@@ -30,7 +30,7 @@ public final class DbClass {
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
 		tableName = Db.tableNameForJavaClass(c);
-		// collect declared fields and relations
+		// collect declared fields, relations and indexes
 		for (final Field f : javaClass.getDeclaredFields()) {
 			if (!Modifier.isStatic(f.getModifiers()))
 				continue;
