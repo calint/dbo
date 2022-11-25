@@ -29,28 +29,7 @@ public final class RelAggN extends DbRelation {
 		ix.name = relFld.name;
 		ix.tableName = relFld.tableName;
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(toCls);
-		dbc.allIndexes.add(ix);
-//		
-//		final ResultSet rs = dbm.getIndexInfo(null, null, toTableName, false, false);
-//		boolean found = false;
-//		while (rs.next()) {
-//			final String indexName = rs.getString("INDEX_NAME");
-//			if (indexName.equals(relFld.name)) {
-//				found = true;
-//				break;
-//			}
-//		}
-//		rs.close();
-//		if (found == true)
-//			return;
-//
-//		final StringBuilder sb = new StringBuilder(128);
-//		sb.append("create index ").append(relFld.name).append(" on ").append(toTableName).append('(')
-//				.append(relFld.name).append(')');
-//
-//		final String sql = sb.toString();
-//		Db.log(sql);
-//		stmt.execute(sql);
+		dbc.allIndexes.add(ix); // indexes have not been created yet. added to target class indexes
 	}
 
 	public DbObject create(final DbObject ths) {
@@ -105,7 +84,7 @@ public final class RelAggN extends DbRelation {
 		final StringBuilder sb = new StringBuilder(128);
 		sb.append("delete from ").append(dbClsTo.tableName).append(" where ").append(relFld.name).append("=")
 				.append(ths.id());
-		
+
 		Db.currentTransaction().execSql(sb);
 	}
 }
