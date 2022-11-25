@@ -5,9 +5,9 @@
 [x]   if column type has changed: ALTER TABLE table_name MODIFY COLUMN column_name datatype
 [ ]     check size. mysql returns size of column in bytes
 [x]   drop undefined columns. boolean setting Db.drop_undefined_columns
-[x] check indexes
+[o] check indexes
 [x]   drop and recreate index if mismatch
-[ ]   drop undeclared indexes
+[ ]   drop undeclared indexes. boolean setting Db.drop_undeclared_indexes
 [x] datetime field
 [ ]   FldTimestamp range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [ ]   FldTimestamp using java.sql type. ok?

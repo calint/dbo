@@ -11,7 +11,6 @@ import db.FldInt;
 import db.FldLng;
 import db.FldStr;
 import db.FldTs;
-import db.Index;
 import db.IndexFt;
 import db.IndexRel;
 import db.Limit;
@@ -40,7 +39,7 @@ public final class User extends DbObject {
 	public final static RelRefN refFiles = new RelRefN(File.class);
 	public final static RelAggN games = new RelAggN(Game.class);
 
-	public final static Index ixName = new Index(name);
+//	public final static Index ixName = new Index(name);
 	public final static IndexFt ixFt = new IndexFt(name);
 	public final static IndexRel ixGroupPic = new IndexRel(groupPic);
 
