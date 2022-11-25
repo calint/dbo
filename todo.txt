@@ -5,7 +5,7 @@
 [x]   if column type has changed: ALTER TABLE table_name MODIFY COLUMN column_name datatype
 [ ]     check size. mysql returns size of column in characters
 [ ]   drop undefined columns. boolean setting Db.drop_undefined_columns
-[x] check index fields
+[x] check indexes
 [x]   drop and recreate index if mismatch
 [ ]   drop undeclared indexes
 [x] datetime field
