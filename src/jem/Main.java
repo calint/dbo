@@ -6,6 +6,10 @@ import java.io.PrintWriter;
 import db.Db;
 import db.DbObject;
 
+/**
+ * Generates accessors for a java class that can be copied and pasted into the
+ * source.
+ */
 public final class Main {
 	@SuppressWarnings("unchecked")
 	public final static void main(final Db db, final String clsName) throws Throwable {

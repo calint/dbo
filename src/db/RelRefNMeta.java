@@ -6,22 +6,16 @@ import java.sql.Statement;
 
 /** Represents the relation table for RelRefN. */
 final class RelRefNMeta {
-//	final Class<? extends DbObject> fromCls;
-//	final Class<? extends DbObject> toCls;
 	final String tableName; // the table name for this association NN table
 	final String fromTableName; // the table name of the source
-	final String fromColName; // column name where id referencing source of relation id
+	final String fromColName; // column name referencing to source of relation id
 	final String toTableName; // table name of "to" class
-	final String toColName; // column name where id to referencing target
+	final String toColName; // column name referencing to target id
 
 	RelRefNMeta(final Class<? extends DbObject> fromCls, final String relName, final Class<? extends DbObject> toCls) {
-//		this.fromCls = fromCls;
-//		this.toCls = toCls;
 		this.fromTableName = Db.tableNameForJavaClass(fromCls);
-//		this.fromColName = Db.tableNameForJavaClass(fromCls);
 		this.fromColName = "fromId";
 		this.toTableName = Db.tableNameForJavaClass(toCls);
-//		this.toColName = Db.tableNameForJavaClass(toCls);
 		this.toColName = "toId";
 		tableName = new StringBuilder(256).append(getTablePrefix()).append(fromTableName).append('_').append(relName)
 				.toString();
