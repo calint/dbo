@@ -8,9 +8,10 @@ import java.util.List;
 
 /** reads CSV file */
 public final class CsvReader {
-	private char columnSeparator = ',';
-	private char stringDelim = '"';
-	private BufferedReader reader;
+	final private char columnSeparator;
+	final private char stringDelim;
+	final private BufferedReader reader;
+	final private StringBuilder sb = new StringBuilder(1024);
 
 	public CsvReader(final Reader reader) {
 		this(reader, ',', '"');
@@ -24,8 +25,8 @@ public final class CsvReader {
 
 	public List<String> nextRecord() throws IOException {
 		final ArrayList<String> ls = new ArrayList<String>();
-		final StringBuilder sb = new StringBuilder(128);
 		boolean inString = false;
+		sb.setLength(0);
 		while (true) {
 			final int chi = reader.read();
 			if (chi == -1) {
@@ -60,7 +61,7 @@ public final class CsvReader {
 				inString = true;
 				continue;
 			}
-			if (ch == '\r') {// skip ok
+			if (ch == '\r') { // skip ok
 				continue;
 			}
 			if (ch == '\n') {
