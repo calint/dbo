@@ -2,6 +2,7 @@
 [x]   FldTs range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
 [x]   FldTs using java.sql type. ok?
 [x]   main.FldDateTime supports range 0001-01-01 00:00:00 to 9999-12-31 23:59:59
+[ ]     FldDt in package db. get/set java.sql.Timestamp
 [ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] better connection pool
 [x]   thread safe
@@ -17,12 +18,11 @@
 [ ]   IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
 [ ]   WITH QUERY EXPANSION
 [ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
-[ ] id field to bigint?
 [ ] class OID instead of integer
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name
 [ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
-[ ]  Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
+[ ] Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
 [ ] FldFloat max from Float.MAX_VALUE can not be committed
 [ ] FldTimestamp mysql min '1970-01-01 00:00:01' cannot be committed 
 [ ] inheritance
@@ -142,3 +142,4 @@
 [x]     check default values
 [x]     check is nullable
 [x]   drop undefined columns. boolean setting Db.drop_undefined_columns
+[x] id field to bigint? 2 billion records should be enough
