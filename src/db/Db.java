@@ -120,25 +120,35 @@ public final class Db {
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
-		// allow DbClass relations to add necessary fields to other DbClasses
+		// recursively populate lists: allFields, allRelations, allIndexes
 		for (final DbClass c : dbclasses) {
-			for (final DbRelation r : c.declaredRelations)// ? what about inherited relations
+			c.init();
+		}
+
+		// allow DbClass relations to add necessary fields, even to other DbClasses
+		for (final DbClass c : dbclasses) {
+			for (final DbRelation r : c.allRelations)
 				r.init(c);
 		}
 
 		// allow indexes to initiate using fully constructed DbRelations
 		for (final DbClass c : dbclasses) {
-			for (final Index ix : c.declaredIndexes)
+			for (final Index ix : c.allIndexes)
 				ix.init(c);
 		}
 
-		// initiate lists: allFields, allRelations, allIndexes
+		// second init for relations to add indexes
 		for (final DbClass c : dbclasses) {
-			c.init();
-//			Db.log(c.toString());
+			for (final DbRelation r : c.allRelations)
+				r.init2(c);
 		}
 
-		// DbClasses fields are now ready for create tables and indexes
+		// print summary
+		for (final DbClass c : dbclasses) {
+			Db.log(c.toString());
+		}
+
+		// DbClasses, fields and indexes are now ready for create/modify
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
@@ -211,7 +221,7 @@ public final class Db {
 		// all tables exist
 
 		// relations might need to create index directly with Statement or add to
-		// indexes to other classes
+		// allIndexes to other classes
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {
 				dbrel.ensureIndexes(stmt, dbm);
@@ -225,12 +235,12 @@ public final class Db {
 			}
 		}
 
-		// drop undeclared indexes
-		for (final DbClass dbcls : dbclasses) {
-			dbcls.dropUndeclaredIndexes(stmt, dbm);
-		}
-
 		if (drop_undeclared_indexes) {
+			// drop undeclared indexes
+			for (final DbClass dbcls : dbclasses) {
+				dbcls.dropUndeclaredIndexes(stmt, dbm);
+			}
+
 			// drop unused RefN tables
 			final ArrayList<String> refsTbls = new ArrayList<String>();
 			final String tablePrefix = RelRefNMeta.getTablePrefix();

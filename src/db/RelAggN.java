@@ -1,7 +1,5 @@
 package db;
 
-import java.sql.DatabaseMetaData;
-import java.sql.Statement;
 import java.util.List;
 
 public final class RelAggN extends DbRelation {
@@ -17,11 +15,11 @@ public final class RelAggN extends DbRelation {
 		relFld.name = dbcls.tableName + "_" + name;
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		relFld.tableName = toDbCls.tableName;
-		toDbCls.declaredFields.add(relFld);
+		toDbCls.allFields.add(relFld);
 	}
 
 	@Override
-	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	void init2(final DbClass dbcls) {
 		// add an index to target class
 		final Index ix = new Index(relFld);
 		ix.cls = toCls;
@@ -29,7 +27,7 @@ public final class RelAggN extends DbRelation {
 		ix.name = relFld.name;
 		ix.tableName = relFld.tableName;
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(toCls);
-		dbc.allIndexes.add(ix); // indexes have not been created yet. added to target class indexes
+		dbc.allIndexes.add(ix); 
 	}
 
 	public DbObject create(final DbObject ths) {

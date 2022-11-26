@@ -13,7 +13,7 @@ public final class RelAgg extends DbRelation {
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(cls);
 		relFld.tableName = dbc.tableName;
 		relFld.name = name;
-		dbcls.declaredFields.add(relFld);
+		dbcls.allFields.add(relFld);
 	}
 
 	/** @returns 0 if id is null */

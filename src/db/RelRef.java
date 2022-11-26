@@ -15,7 +15,7 @@ public final class RelRef extends DbRelation {
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(cls);
 		relFld.tableName = dbc.tableName;
 		relFld.name = name;
-		c.declaredFields.add(relFld);
+		c.allFields.add(relFld);
 	}
 
 	public void set(final DbObject ths, final int trgId) {

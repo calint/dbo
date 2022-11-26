@@ -9,17 +9,22 @@ public abstract class DbRelation {
 	 * have been loaded
 	 */
 	Class<? extends DbObject> cls;
+
 	/** the table name of cls. initiated by db after all classes have been loaded */
 	String tableName;
+
 	/**
 	 * the name of the field that declared it. initiated by db after all classes
 	 * have been loaded
 	 */
 	String name;
+
 	/** the class that the relations refers to */
 	final Class<? extends DbObject> toCls;
+
 	/** the table name of toCls */
 	final String toTableName;
+
 	/** field used in relations. may be null or 0 */
 	FldRel relFld;
 
@@ -29,19 +34,24 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * Called after all DbClasses have been created. Necessary relation fields can
-	 * be added to target DbClass.
+	 * First init. Called after all DbClasses have been created. Fields necessary
+	 * for the relation can be added to the class or target class.
 	 */
 	void init(final DbClass c) {
 	}
 
 	/**
-	 * Called after all tables have been created. Relation can create necessary
-	 * indexes in other classes or check and create using stmt.
+	 * Second init. Necessary indexes can be added to the class or target class.
+	 */
+	void init2(final DbClass c) {
+	}
+
+	/**
+	 * Called after all tables have been created. Relation checks and creates
+	 * indexes using stmt.
 	 */
 	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
-
 
 	public final String getName() {
 		return name;
