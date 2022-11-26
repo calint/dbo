@@ -159,7 +159,7 @@ public final class DbClass {
 				final int size = f.getSize();
 				if (size == 0)
 					continue;
-				if (c.column_size == f.getSize()) {
+				if (c.size == f.getSize()) {
 					continue;
 				}
 			}
@@ -260,7 +260,7 @@ public final class DbClass {
 			col.name = rs.getString("COLUMN_NAME");
 			col.ordinal_position = rs.getInt("ORDINAL_POSITION");
 			col.type_name = rs.getString("TYPE_NAME");
-			col.column_size = rs.getInt("COLUMN_SIZE");
+			col.size = rs.getInt("COLUMN_SIZE");
 			col.column_def = rs.getString("COLUMN_DEF");
 			columns.add(col);
 		}
@@ -300,7 +300,7 @@ public final class DbClass {
 		String name;
 		int ordinal_position;
 		String type_name;
-		int column_size;
+		int size;
 		String column_def;
 
 		@Override
