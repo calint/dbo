@@ -207,4 +207,7 @@ public final class User extends DbObject {
 		games.delete(this, id);
 	}
 
+	public void deleteGame(final Game o) {
+		games.delete(this, o.id());
+	}
 }

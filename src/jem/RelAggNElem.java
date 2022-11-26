@@ -78,5 +78,16 @@ public class RelAggNElem extends ElemRel {
 		out.println("}");
 		out.println();
 
+		out.print("public void delete");
+		out.print(accSing);
+		out.print("(final ");
+		out.print(toClsNm);
+		out.println(" o){");
+		out.print("\t");
+		out.print(rel.getName());
+		out.println(".delete(this,o.id());");
+		out.println("}");
+		out.println();
+
 	}
 }
