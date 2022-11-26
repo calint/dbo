@@ -9,7 +9,6 @@ import db.test.Game;
 import db.test.TestCase;
 import db.test.TestObj;
 import db.test.User;
-import db.test.import_books;
 import db.test.test1;
 import db.test.test2;
 

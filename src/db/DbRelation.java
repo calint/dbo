@@ -27,7 +27,7 @@ public abstract class DbRelation {
 
 	/** field used in relations. may be null or 0 */
 	FldRel relFld;
-	
+
 	public DbRelation(final Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
 		toTableName = Db.tableNameForJavaClass(toCls);
@@ -41,7 +41,7 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * Called after all tables have been created. Relation ensure necessary indexes
+	 * Called after all tables have been created. Relation ensures necessary indexes
 	 * exist.
 	 */
 	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {

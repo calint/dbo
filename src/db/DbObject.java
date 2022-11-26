@@ -25,43 +25,43 @@ public abstract class DbObject {
 		return id();
 	}
 
-	final public String getStr(final DbField field) {
+	final protected String getStr(final DbField field) {
 		return (String) fieldValues.get(field);
 	}
 
-	final public int getInt(final DbField field) {
+	final protected int getInt(final DbField field) {
 		return ((Integer) fieldValues.get(field)).intValue();
 	}
 
-	final public long getLng(final DbField field) {
+	final protected long getLng(final DbField field) {
 		return ((Long) fieldValues.get(field)).longValue();
 	}
 
-	final public float getFlt(final DbField field) {
+	final protected float getFlt(final DbField field) {
 		return ((Float) fieldValues.get(field)).floatValue();
 	}
 
-	final public double getDbl(final DbField field) {
+	final protected double getDbl(final DbField field) {
 		return ((Double) fieldValues.get(field)).doubleValue();
 	}
 
-	final public boolean getBool(final DbField field) {
+	final protected boolean getBool(final DbField field) {
 		return ((Boolean) fieldValues.get(field)).booleanValue();
 	}
 
-	final public Timestamp getTs(final DbField field) {
+	final protected Timestamp getTs(final DbField field) {
 		return (Timestamp) fieldValues.get(field);
 	}
 
-	final public byte[] getBytesArray(final DbField field) {
+	final protected byte[] getBytesArray(final DbField field) {
 		return (byte[]) fieldValues.get(field);
 	}
 
-	final public Object get(final DbField field) {
+	final protected Object get(final DbField field) {
 		return fieldValues.get(field);
 	}
 
-	final public void set(final DbField field, final Object value) {
+	final protected void set(final DbField field, final Object value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
@@ -72,53 +72,53 @@ public abstract class DbObject {
 	 * triggering an update. used by user defined DbFields to optimize get/set data
 	 * transformations
 	 */
-	final public void put(final DbField field, final Object value) {
+	final protected void put(final DbField field, final Object value) {
 		fieldValues.put(field, value);
 	}
 
-	final public void set(final DbField field, final String value) {
-		fieldValues.put(field, value);
-		getCreatedDirtyFields().add(field);
-		Db.currentTransaction().dirtyObjects.add(this);
-	}
-
-	final public void set(final DbField field, final int value) {
+	final protected void set(final DbField field, final String value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final long value) {
+	final protected void set(final DbField field, final int value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final Timestamp value) {
+	final protected void set(final DbField field, final long value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final byte[] value) {
+	final protected void set(final DbField field, final Timestamp value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final float value) {
+	final protected void set(final DbField field, final byte[] value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final double value) {
+	final protected void set(final DbField field, final float value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
 	}
 
-	final public void set(final DbField field, final boolean value) {
+	final protected void set(final DbField field, final double value) {
+		fieldValues.put(field, value);
+		getCreatedDirtyFields().add(field);
+		Db.currentTransaction().dirtyObjects.add(this);
+	}
+
+	final protected void set(final DbField field, final boolean value) {
 		fieldValues.put(field, value);
 		getCreatedDirtyFields().add(field);
 		Db.currentTransaction().dirtyObjects.add(this);
@@ -127,5 +127,24 @@ public abstract class DbObject {
 	@Override
 	public String toString() {
 		return new StringBuilder(getClass().getName()).append(" ").append(fieldValues.toString()).toString();
+	}
+
+	/**
+	 * Puts value v in DbField f in DbObject o. The field is not marked dirty thus
+	 * update will not be triggered. Used for optimizing handling of transformed
+	 * data.
+	 */
+	public static void putFieldValue(final DbObject o, final DbField f, Object v) {
+		o.put(f, v);
+	}
+
+	/** Sets the value v in DbField f in DbObject o */
+	public static void setFieldValue(final DbObject o, final DbField f, Object v) {
+		o.set(f, v);
+	}
+
+	/** @return the object for field f in DbObject o */
+	public static Object getFieldValue(final DbObject o, final DbField f) {
+		return o.get(f);
 	}
 }

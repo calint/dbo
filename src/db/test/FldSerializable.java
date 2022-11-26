@@ -22,7 +22,7 @@ public final class FldSerializable extends DbField {
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		final Object v = o.get(this);
+		final Object v = DbObject.getFieldValue(o, this);
 		if (v == null) {
 			sb.append("null");
 			return;
