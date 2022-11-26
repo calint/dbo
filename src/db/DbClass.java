@@ -13,15 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 
 public final class DbClass {
-	/** The java class that this DbClass describes. */
 	final Class<? extends DbObject> javaClass;
-	/** The table name of this type. Set by Db at init. */
 	final String tableName;
 	final ArrayList<DbField> declaredFields = new ArrayList<DbField>();
 	final ArrayList<DbRelation> declaredRelations = new ArrayList<DbRelation>();
 	final ArrayList<Index> declaredIndexes = new ArrayList<Index>();
-
-	/** All fields, relations, indexes, including inherited */
 	final ArrayList<DbField> allFields = new ArrayList<DbField>();
 	final ArrayList<DbRelation> allRelations = new ArrayList<DbRelation>();
 	final ArrayList<Index> allIndexes = new ArrayList<Index>();
