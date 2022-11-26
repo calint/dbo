@@ -7,6 +7,7 @@ public final class FldLng extends DbField {
 	final private long defval;
 
 	public FldLng(final long def) {
+		super(0, Long.toString(def), false);
 		defval = def;
 	}
 
@@ -24,10 +25,10 @@ public final class FldLng extends DbField {
 		sb.append(o.getLng(this));
 	}
 
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval).append(" not null");
-	}
+//	@Override
+//	protected void sql_columnDefinition(final StringBuilder sb) {
+//		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval).append(" not null");
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {

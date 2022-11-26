@@ -15,10 +15,11 @@ import java.util.List;
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
-	public static boolean log_enable = true;
 	private String jdbcUrl;
 	private String jdbcUser;
 	private String jdbcPasswd;
+
+	public static boolean log_enable = true;
 
 	static void log(String s) {
 		if (!log_enable)

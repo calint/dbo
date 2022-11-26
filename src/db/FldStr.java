@@ -4,26 +4,26 @@ import java.util.Map;
 
 /** String field */
 public final class FldStr extends DbField {
-	public final static int max_size = 65535;
-	final private String defval;
+	public final static int MAX_SIZE = 65535;
+//	final private String defval;
 
 	public FldStr() {
-		this(null, 255);
+		this(255, null);
 	}
 
 	public FldStr(int size) {
-		this(null, size);
+		this(size, null);
 	}
 
 	public FldStr(final String def) {
-		this(def, 255);
+		this(255, def);
 	}
 
-	public FldStr(final String def, final int size) {
-		super(size);
-		if (size > max_size) // ? mysql specifc
-			throw new RuntimeException("size " + size + " exceeds maximum of " + max_size);
-		this.defval = def;
+	public FldStr(final int size, final String def) {
+		super(size, def, true);
+		if (size > MAX_SIZE) // ? mysql specifc
+			throw new RuntimeException("size " + size + " exceeds maximum of " + MAX_SIZE);
+//		this.defval = def;
 	}
 
 	@Override
@@ -31,6 +31,11 @@ public final class FldStr extends DbField {
 		return "varchar";
 	}
 
+	@Override
+	protected boolean isDefaultValueString() {
+		return true;
+	}
+	
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final String s = o.getStr(this);
@@ -44,23 +49,33 @@ public final class FldStr extends DbField {
 		sb.append('\'');
 	}
 
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append("(").append(getSize()).append(")");
-		if (defval != null) {
-			sb.append(" default '");
-			escapeSqlString(sb, defval);
-			sb.append("'");
-		}
-	}
+//	@Override
+//	protected void sql_columnDefinition(final StringBuilder sb) {
+//		sb.append(name).append(' ').append(getSqlType()).append("(").append(getSize()).append(")");
+//		if (defval != null) {
+//			sb.append(" default '");
+//			escapeSqlString(sb, defval);
+//			sb.append("'");
+//		}
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
-		if (defval == null)
+		if (defVal == null)
 			return;
-		
-		kvm.put(this, defval);
+
+		kvm.put(this, defVal);
 	}
+
+//	public static String sqlDefaultStringValue(final String v) {
+//		if (v == null)
+//			return null;
+//		final StringBuilder sb = new StringBuilder(v.length() + 16); // ? magic number
+//		sb.append('\'');
+//		escapeSqlString(sb, v);
+//		sb.append('\'');
+//		return sb.toString();
+//	}
 
 	// note: from
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection

@@ -18,10 +18,10 @@ public final class FldClob extends DbField {
 		sb.append('\'');
 	}
 
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType());
-	}
+//	@Override
+//	protected void sql_columnDefinition(final StringBuilder sb) {
+//		sb.append(name).append(' ').append(getSqlType());
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {

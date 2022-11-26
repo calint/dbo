@@ -4,6 +4,10 @@ import java.util.Map;
 
 /** Primary key integer field */
 public final class FldId extends DbField {
+	FldId() {
+		super(0, null, false);
+	}
+
 	@Override
 	protected String getSqlType() {
 		return "int";

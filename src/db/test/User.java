@@ -29,7 +29,7 @@ public final class User extends DbObject {
 	public final static FldLng lng = new FldLng();
 	public final static FldFlt flt = new FldFlt();
 	public final static FldDbl dbl = new FldDbl();
-	public final static FldBool bool = new FldBool();
+	public final static FldBool bool = new FldBool(true);
 
 	public final static FldTs birthTime = new FldTs();
 

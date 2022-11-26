@@ -19,10 +19,10 @@ final class FldRel extends DbField {
 		sb.append(id);
 	}
 
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType());
-	}
+//	@Override
+//	protected void sql_columnDefinition(final StringBuilder sb) {
+//		sb.append(name).append(' ').append(getSqlType());
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {

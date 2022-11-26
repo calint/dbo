@@ -5,10 +5,12 @@ import java.io.ObjectInputStream;
 import java.util.List;
 
 import db.DbObject;
+import db.FldStr;
 
 public final class TestObj extends DbObject {
 	public final static FldSerializable list = new FldSerializable();
-	public final static FldChars md5 = new FldChars(32, "");
+	public final static FldChars md5 = new FldChars(32, "abc");
+	public final static FldStr subject = new FldStr(200, "no 'subject'");
 
 	@SuppressWarnings("unchecked")
 	public List<String> getList() {

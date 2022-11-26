@@ -7,6 +7,7 @@ public final class FldInt extends DbField {
 	final private int defval;
 
 	public FldInt(final int def) {
+		super(0, Integer.toString(def), false);
 		defval = def;
 	}
 
@@ -24,10 +25,10 @@ public final class FldInt extends DbField {
 		sb.append(o.getInt(this));
 	}
 
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval).append(" not null");
-	}
+//	@Override
+//	protected void sql_columnDefinition(final StringBuilder sb) {
+//		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval).append(" not null");
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {

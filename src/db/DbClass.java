@@ -155,14 +155,31 @@ public final class DbClass {
 			final DbField f = allFields.get(i);
 			final Column c = columns.get(i);
 			final String ct = c.type_name.toLowerCase();
-			if (f.getSqlType().toLowerCase().equals(ct)) {
-				final int size = f.getSize();
-				if (size == 0)
-					continue;
-				if (c.size == f.getSize()) {
-					continue;
-				}
+			final boolean type_ok = f.getSqlType().toLowerCase().equals(ct);
+			final boolean size_ok;
+			if (f.getSize() == 0) {
+				size_ok = true;
+			} else {
+				size_ok = f.getSize() == c.size;
 			}
+			final boolean defval_ok;
+			if (f.defVal == null && c.column_def == null) {
+				defval_ok = true;
+			} else {
+				final String fv = f.defVal;
+				final String cv = c.column_def;
+				defval_ok = fv != null && fv.equals(cv);
+			}
+			final boolean is_nullable_ok;
+			if (f.allowNull) {
+				is_nullable_ok = "YES".equals(c.is_nullable);
+			} else {
+				is_nullable_ok = "NO".equals(c.is_nullable);
+			}
+
+			if (type_ok && size_ok && defval_ok && is_nullable_ok)
+				continue;
+
 			final StringBuilder sb = new StringBuilder(128);
 			sb.append("alter table ").append(tableName).append(" modify ");
 			f.sql_columnDefinition(sb);
@@ -262,6 +279,7 @@ public final class DbClass {
 			col.type_name = rs.getString("TYPE_NAME");
 			col.size = rs.getInt("COLUMN_SIZE");
 			col.column_def = rs.getString("COLUMN_DEF");
+			col.is_nullable = rs.getString("IS_NULLABLE");
 			columns.add(col);
 		}
 		rs.close();
@@ -302,6 +320,7 @@ public final class DbClass {
 		String type_name;
 		int size;
 		String column_def;
+		String is_nullable; // YES, NO or empty string
 
 		@Override
 		public String toString() {
