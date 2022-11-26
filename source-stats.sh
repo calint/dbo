@@ -9,6 +9,8 @@ ls | while read f; do cat $f 2>/dev/null; done |
 	sed -e '/^package /d' |
 	sed -r '/^\s*\/\//d' | 
 	sed -r '/^\s*}/d' |
+	sed -r '/^\s*\/\*\*\s*/d' |
+	sed -r '/^\s*\*\s*/d' |
 	sed -r '/^\s*@Override\s*/d' |
 	wc
 
@@ -19,5 +21,7 @@ ls | while read f; do cat $f 2>/dev/null; done |
 	sed -e '/^package /d' |
 	sed -r '/^\s*\/\//d' | 
 	sed -r '/^\s*}/d' |
+	sed -r '/^\s*\/\*\*\s*/d' |
+	sed -r '/^\s*\*\s*/d' |
 	sed -r '/^\s*@Override\s*/d' |
 	gzip | wc
