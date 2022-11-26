@@ -2,6 +2,7 @@ package main;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
+import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
@@ -11,6 +12,7 @@ public final class TestObj extends DbObject {
 	public final static FldSerializable list = new FldSerializable();
 	public final static FldChars md5 = new FldChars(32, "abc");
 	public final static FldStr subject = new FldStr(200, "no 'subject'");
+	public final static FldDateTime dateTime = new FldDateTime();
 
 	@SuppressWarnings("unchecked")
 	public List<String> getList() {
@@ -44,5 +46,13 @@ public final class TestObj extends DbObject {
 
 	public void setMd5(final String v) {
 		set(md5, v);
+	}
+
+	public Timestamp getDateTime() {
+		return getTs(dateTime);
+	}
+
+	public void setDateTime(final Timestamp v) {
+		set(dateTime, v);
 	}
 }

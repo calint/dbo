@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,32 @@ public final class Main {
 			final TestObj to4 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
 			if (to4.getList() != null)
 				throw new RuntimeException();
+
+			final Timestamp ts = Timestamp.valueOf("2022-11-26 14:07:00");
+			to4.setDateTime(ts);
+			tn.commit();
+			final TestObj to5 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			if (!to5.getDateTime().equals(ts))
+				throw new RuntimeException();
+
+			// min value from https://dev.mysql.com/doc/refman/8.0/en/datetime.html
+			final Timestamp ts2 = Timestamp.valueOf("1000-01-01 00:00:00.000000");
+			to4.setDateTime(ts2);
+			tn.commit();
+			final TestObj to6 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			if (!to6.getDateTime().equals(ts2))
+				throw new RuntimeException();
+
+			// max value from https://dev.mysql.com/doc/refman/8.0/en/datetime.html
+//			final Timestamp ts3 = Timestamp.valueOf("9999-12-31 23:59:59.999999"); // overflows
+			final Timestamp ts3 = Timestamp.valueOf("9999-12-31 23:59:59");
+			to4.setDateTime(ts3);
+			tn.commit();
+			final TestObj to7 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+			if (!to7.getDateTime().equals(ts3))
+				throw new RuntimeException();
+
+			
 			Db.currentTransaction().delete(to4);
 			/////////////////////////////////////////////
 			Db.currentTransaction().finishTransaction();
