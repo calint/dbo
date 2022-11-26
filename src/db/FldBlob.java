@@ -11,10 +11,12 @@ public final class FldBlob extends DbField {
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final byte[] data = o.getBytesArray(this);
-		final StringBuilder hexed = new StringBuilder(data.length * 2);
+		final int c = data.length * 2;
+		final StringBuilder hexed = new StringBuilder(c);
 		appendHexedBytesToStringBuilder(hexed, data);
 		sb.append("0x");
-		sb.ensureCapacity(sb.length() + hexed.length());
+		final int cap = sb.length() + hexed.length();
+		sb.ensureCapacity(cap);
 		sb.append(hexed);
 	}
 

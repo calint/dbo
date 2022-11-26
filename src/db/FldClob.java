@@ -11,7 +11,10 @@ public final class FldClob extends DbField {
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		sb.append('\'');
-		FldStr.escapeSqlString(sb, o.getStr(this));
+		final String s = o.getStr(this);
+		final int c = sb.length() + s.length() + 128; // ? magic number
+		sb.ensureCapacity(c);
+		FldStr.escapeSqlString(sb, s);
 		sb.append('\'');
 	}
 
