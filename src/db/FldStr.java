@@ -8,11 +8,11 @@ public final class FldStr extends DbField {
 	final private String defval;
 
 	public FldStr() {
-		this("", 255);
+		this(null, 255);
 	}
 
 	public FldStr(int size) {
-		this("", size);
+		this(null, size);
 	}
 
 	public FldStr(final String def) {
@@ -62,16 +62,12 @@ public final class FldStr extends DbField {
 		kvm.put(this, defval);
 	}
 
-//	static void escapeString(final StringBuilder sb, final String s) {
-//		sb.append(s.replace("'", "''").replace("\\", "\\\\").replace("\0", "\\0")); // ? make better escape
-//	}
-
 	// note: from
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
-	public static void escapeSqlString(final StringBuilder sb, final String x) {
-		final int len = x.length();
+	public static void escapeSqlString(final StringBuilder sb, final String s) {
+		final int len = s.length();
 		for (int i = 0; i < len; ++i) {
-			final char ch = x.charAt(i);
+			final char ch = s.charAt(i);
 			switch (ch) {
 			case 0: // Must be escaped for 'mysql'
 				sb.append('\\');
