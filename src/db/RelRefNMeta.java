@@ -7,9 +7,9 @@ import java.sql.Statement;
 /** Represents the relation table for RelRefN. */
 final class RelRefNMeta {
 	final String tableName; // the table name for this association NN table
-	final String fromTableName; // the table name of the source
-	final String fromColName; // column name referencing to source of relation id
-	final String toTableName; // table name of "to" class
+	final String fromTableName; // the table name of the source class
+	final String fromColName; // column name referencing to source id
+	final String toTableName; // table name of target class
 	final String toColName; // column name referencing to target id
 
 	RelRefNMeta(final Class<? extends DbObject> fromCls, final String relName, final Class<? extends DbObject> toCls) {
@@ -17,7 +17,7 @@ final class RelRefNMeta {
 		this.fromColName = "fromId";
 		this.toTableName = Db.tableNameForJavaClass(toCls);
 		this.toColName = "toId";
-		tableName = new StringBuilder(256).append(getTablePrefix()).append(fromTableName).append('_').append(relName)
+		tableName = new StringBuilder(256).append(TABLE_NAME_PREFIX).append(fromTableName).append('_').append(relName)
 				.toString();
 	}
 
@@ -81,7 +81,9 @@ final class RelRefNMeta {
 		return super.toString();
 	}
 
-	public static String getTablePrefix() {
-		return "Refs_";
+	static ResultSet getAllRefsTables(DatabaseMetaData dbm) throws Throwable {
+		return dbm.getTables(null, null, TABLE_NAME_PREFIX + "%", new String[] { "TABLE" });
 	}
+
+	private static String TABLE_NAME_PREFIX = "Refs_";
 }

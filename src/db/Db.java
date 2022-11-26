@@ -238,8 +238,7 @@ public final class Db {
 
 			// drop unused RefN tables
 			final ArrayList<String> refsTbls = new ArrayList<String>();
-			final String tablePrefix = RelRefNMeta.getTablePrefix();
-			final ResultSet rstbls = dbm.getTables(null, null, tablePrefix + "%", new String[] { "TABLE" });
+			final ResultSet rstbls = RelRefNMeta.getAllRefsTables(dbm);
 			while (rstbls.next()) {
 				final String tbl = rstbls.getString("TABLE_NAME");
 				refsTbls.add(tbl);
