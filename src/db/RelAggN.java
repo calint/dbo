@@ -69,7 +69,7 @@ public final class RelAggN extends DbRelation {
 	@Override
 	void cascadeDelete(final DbObject ths) {
 		final DbClass dbClsTo = Db.instance().dbClassForJavaClass(toCls);
-		if (dbClsTo.doCascadeDelete) {
+		if (dbClsTo.cascadeDelete) {
 			final List<DbObject> ls = get(ths, null, null, null);
 			for (final DbObject o : ls) {
 				Db.currentTransaction().delete(o);

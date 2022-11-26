@@ -31,14 +31,15 @@ public final class DbClass {
 
 	/**
 	 * True if this type needs to cascade deletes because it contains relations that
-	 * need to cascade deletes. Set by Db at init.
+	 * need to cascade deletes.
 	 */
-	boolean doCascadeDelete = false;
+	final boolean cascadeDelete;
 
 	DbClass(Class<? extends DbObject> c) throws Throwable {
 		javaClass = c;
 		tableName = Db.tableNameForJavaClass(c);
 		// collect declared fields, relations and indexes
+		boolean cascDeletes = false;
 		for (final Field f : javaClass.getDeclaredFields()) {
 			if (!Modifier.isStatic(f.getModifiers()))
 				continue;
@@ -57,7 +58,7 @@ public final class DbClass {
 				dbr.tableName = tableName;
 				declaredRelations.add(dbr);
 				if (dbr.cascadeDeleteNeeded())
-					doCascadeDelete = true;
+					cascDeletes = true;
 				continue;
 			}
 			if (Index.class.isAssignableFrom(f.getType())) {
@@ -69,6 +70,7 @@ public final class DbClass {
 				continue;
 			}
 		}
+		cascadeDelete = cascDeletes;
 	}
 
 	/** recurse initiates allFields, allRelations, allIndexes lists */

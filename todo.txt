@@ -1,8 +1,3 @@
-[x] timestamp field
-[x]   FldTs range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
-[x]   FldTs using java.sql type. ok?
-[x]   main.FldDateTime supports range 0001-01-01 00:00:00 to 9999-12-31 23:59:59
-[ ]     FldDt in package db. get/set java.sql.Timestamp
 [ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] better connection pool
 [x]   thread safe
@@ -143,3 +138,8 @@
 [x]     check is nullable
 [x]   drop undefined columns. boolean setting Db.drop_undefined_columns
 [x] id field to bigint? 2 billion records should be enough
+[x] timestamp field
+[x]   FldTs range of min=1970-01-01 01:00:01.0 and max=2038-01-19 04:14:07 too limited?
+[x]   FldTs using java.sql type. ok?
+[x]   main.FldDateTime supports range 0001-01-01 00:00:00 to 9999-12-31 23:59:59
+[x]     FldDt in package db. get/set java.sql.Timestamp

@@ -97,7 +97,7 @@ public final class DbTransaction {
 	public void delete(final DbObject o) {
 		flush();
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(o.getClass());
-		if (dbcls.doCascadeDelete) {
+		if (dbcls.cascadeDelete) {
 			for (final DbRelation r : dbcls.allRelations) {
 				if (r.cascadeDeleteNeeded()) {
 					r.cascadeDelete(o);

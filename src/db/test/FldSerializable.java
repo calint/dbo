@@ -1,4 +1,4 @@
-package main;
+package db.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;

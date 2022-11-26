@@ -1,4 +1,4 @@
-package main;
+package db.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import db.DbObject;
+import db.FldDateTime;
 import db.FldStr;
 
 public final class TestObj extends DbObject {
@@ -48,6 +49,16 @@ public final class TestObj extends DbObject {
 		set(md5, v);
 	}
 
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
+	public String getSubject() {
+		return getStr(subject);
+	}
+
+	public void setSubject(final String v) {
+		set(subject, v);
+	}
+
+	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public Timestamp getDateTime() {
 		return getTs(dateTime);
 	}

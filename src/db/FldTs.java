@@ -5,7 +5,7 @@ import java.util.Map;
 
 /** Timestamp field */
 public final class FldTs extends DbField {
-	final private Timestamp defval;// ? min max values not big enough
+	final private Timestamp defval;
 
 	public FldTs(final Timestamp def) {
 		super(0, def == null ? null : def.toString(), true);

@@ -53,7 +53,7 @@ public final class RelAgg extends DbRelation {
 			return;
 		// need to delete
 		final DbClass dbClsTo = Db.instance().dbClassForJavaClass(toCls);
-		if (dbClsTo.doCascadeDelete) {
+		if (dbClsTo.cascadeDelete) {
 			final DbObject o = get(ths, false);
 			if (o == null)
 				return;
