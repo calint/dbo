@@ -6,7 +6,7 @@ import db.DbField;
 import db.DbObject;
 import db.FldStr;
 
-public class FldChars extends DbField {
+public final class FldChars extends DbField {
 	private final String def;
 
 	public FldChars(int size, String def) {

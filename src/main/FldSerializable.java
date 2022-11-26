@@ -9,7 +9,7 @@ import db.DbField;
 import db.DbObject;
 import db.FldBlob;
 
-public class FldSerializable extends DbField {
+public final class FldSerializable extends DbField {
 	@Override
 	protected String getSqlType() {
 		return "longblob";
