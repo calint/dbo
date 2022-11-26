@@ -127,8 +127,8 @@ public final class DbClass {
 		if (Db.instance().delete_unused_columns)
 			deleteUnusedColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
-		ensureColumnTypes(stmt, dbm);
-//		assertColumnDefaultValues(stmt, dbm);
+		ensureColumnTypesAndSize(stmt, dbm);
+//		ensureColumnDefaultValues(stmt, dbm);
 	}
 
 	private void deleteUnusedColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
@@ -148,7 +148,7 @@ public final class DbClass {
 		}
 	}
 
-	private void ensureColumnTypes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	private void ensureColumnTypesAndSize(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final List<Column> columns = getColumnsFromDb(dbm);
 		final int n = allFields.size();
 		for (int i = 0; i < n; i++) {
@@ -156,12 +156,12 @@ public final class DbClass {
 			final Column c = columns.get(i);
 			final String ct = c.type_name.toLowerCase();
 			if (f.getSqlType().toLowerCase().equals(ct)) {
-				// todo check size
-//				if (ct.equals("varchar")) {
-//					if(c.column_size==f.getSize())
-//						continue;
-//				}
-				continue;
+				final int size = f.getSize();
+				if (size == 0)
+					continue;
+				if (c.column_size == f.getSize()) {
+					continue;
+				}
 			}
 			final StringBuilder sb = new StringBuilder(128);
 			sb.append("alter table ").append(tableName).append(" modify ");
@@ -260,8 +260,8 @@ public final class DbClass {
 			col.name = rs.getString("COLUMN_NAME");
 			col.ordinal_position = rs.getInt("ORDINAL_POSITION");
 			col.type_name = rs.getString("TYPE_NAME");
-//			col.column_size = rs.getInt("COLUMN_SIZE");
-//			col.column_def = rs.getString("COLUMN_DEF");
+			col.column_size = rs.getInt("COLUMN_SIZE");
+			col.column_def = rs.getString("COLUMN_DEF");
 			columns.add(col);
 		}
 		rs.close();
@@ -300,8 +300,8 @@ public final class DbClass {
 		String name;
 		int ordinal_position;
 		String type_name;
-//		int column_size;
-//		String column_def;
+		int column_size;
+		String column_def;
 
 		@Override
 		public String toString() {

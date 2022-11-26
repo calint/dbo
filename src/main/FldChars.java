@@ -7,11 +7,10 @@ import db.DbObject;
 import db.FldStr;
 
 public class FldChars extends DbField {
-	private final int size;
 	private final String def;
 
 	public FldChars(int size, String def) {
-		this.size = size;
+		super(size);
 		this.def = def;
 	}
 
@@ -22,7 +21,7 @@ public class FldChars extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(StringBuilder sb) {
-		sb.append(getName()).append(' ').append(getSqlType()).append('(').append(size).append(')');
+		sb.append(getName()).append(' ').append(getSqlType()).append('(').append(getSize()).append(')');
 		if (def == null)
 			return;
 		sb.append(" default ");

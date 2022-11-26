@@ -6,6 +6,21 @@ public abstract class DbField {
 	String name;
 	Class<? extends DbObject> cls;
 	String tableName;
+	final int size;
+
+	/** @param size where applicable (varchar and char) */
+	protected DbField(final int size) {
+		this.size = size;
+	}
+
+	protected DbField() {
+		this(0);
+	}
+
+	/** @return Size of field if applicable (varchar and char) or 0 */
+	public final int getSize() {
+		return size;
+	}
 
 	/**
 	 * @return the field name in the java class where index was created

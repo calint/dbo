@@ -27,7 +27,7 @@ public abstract class DbRelation {
 
 	/** field used in relations. may be null or 0 */
 	FldRel relFld;
-
+	
 	public DbRelation(final Class<? extends DbObject> toCls) {
 		this.toCls = toCls;
 		toTableName = Db.tableNameForJavaClass(toCls);

@@ -180,11 +180,10 @@ public final class Db {
 				String datatype = rscols.getString("TYPE_NAME");
 				String defval = rscols.getString("COLUMN_DEF");
 				final StringBuilder sb = new StringBuilder();
-				sb.append("    ").append(columnName).append(' ').append(datatype).append(' ');
+				sb.append("    ").append(columnName).append(' ').append(datatype);
 				if (defval != null) {
-					sb.append('\'').append(defval).append('\'');
+					sb.append(" '").append(defval).append('\'');
 				}
-
 				Db.log(sb.toString());
 			}
 			rscols.close();

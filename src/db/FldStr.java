@@ -5,7 +5,6 @@ import java.util.Map;
 /** String field */
 public final class FldStr extends DbField {
 	public final static int max_size = 65535;
-	final private int size;
 	final private String defval;
 
 	public FldStr() {
@@ -21,19 +20,15 @@ public final class FldStr extends DbField {
 	}
 
 	public FldStr(final String def, final int size) {
+		super(size);
 		if (size > max_size) // ? mysql specifc
 			throw new RuntimeException("size " + size + " exceeds maximum of " + max_size);
-		this.size = size;
 		this.defval = def;
 	}
 
 	@Override
 	protected String getSqlType() {
 		return "varchar";
-	}
-
-	public int getSize() {
-		return size;
 	}
 
 	@Override
@@ -44,13 +39,14 @@ public final class FldStr extends DbField {
 			return;
 		}
 		sb.append('\'');
+		sb.ensureCapacity(sb.length() + s.length() + 128); // ? magic number
 		escapeSqlString(sb, s);
 		sb.append('\'');
 	}
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append("(").append(size).append(")");
+		sb.append(name).append(' ').append(getSqlType()).append("(").append(getSize()).append(")");
 		if (defval != null) {
 			sb.append(" default '");
 			escapeSqlString(sb, defval);
