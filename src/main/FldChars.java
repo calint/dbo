@@ -39,6 +39,8 @@ public class FldChars extends DbField {
 
 	@Override
 	protected void putDefaultValue(Map<DbField, Object> kvm) {
+		if (def == null)
+			return;
 		kvm.put(this, def);
 	}
 
