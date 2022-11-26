@@ -26,7 +26,7 @@ public final class FldDbl extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval);
+		sb.append(name).append(' ').append(getSqlType()).append(" default ").append(defval).append(" not null");
 	}
 
 	@Override

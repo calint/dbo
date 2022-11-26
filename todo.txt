@@ -25,7 +25,7 @@
 [ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
 [ ] id field to bigint?
 [ ] inheritance
-[ ]   example: select t1.* from File where t1.clspth like 'aaabbb%'; selects all objects that are File or inherits from File 
+[ ]   example: select t1.* from File where t1.clspth like 'aaabbb%'; selects all objects that are File or inherits from File given File clspth=aaabbb
 [ ] class OID instead of integer
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] Db.tableNameForJavaClass does not include package name

@@ -25,7 +25,7 @@ public final class FldBool extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append("(1) default ").append(defval ? "1" : "0");
+		sb.append(name).append(' ').append(getSqlType()).append("(1) default ").append(defval ? "1" : "0").append(" not null");
 	}
 
 	@Override

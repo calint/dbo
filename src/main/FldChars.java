@@ -10,7 +10,7 @@ public class FldChars extends DbField {
 	private final int size;
 	private final String def;
 
-	public FldChars(final int size, final String def) {
+	public FldChars(int size, String def) {
 		this.size = size;
 		this.def = def;
 	}
