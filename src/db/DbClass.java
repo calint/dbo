@@ -97,7 +97,7 @@ public final class DbClass {
 		final ResultSet rs = dbm.getTables(null, null, tableName, new String[] { "TABLE" });
 		if (rs.next()) {
 			rs.close();
-			assertColumns(stmt, dbm);
+			ensureColumns(stmt, dbm);
 			return;
 		}
 		rs.close();
@@ -122,12 +122,12 @@ public final class DbClass {
 		stmt.execute(sql);
 	}
 
-	private void assertColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	private void ensureColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		addMissingColumns(stmt, dbm);
 		if (Db.instance().delete_unused_columns)
 			deleteUnusedColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
-		assertColumnTypes(stmt, dbm);
+		ensureColumnTypes(stmt, dbm);
 //		assertColumnDefaultValues(stmt, dbm);
 	}
 
@@ -148,7 +148,7 @@ public final class DbClass {
 		}
 	}
 
-	private void assertColumnTypes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	private void ensureColumnTypes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final List<Column> columns = getColumnsFromDb(dbm);
 		final int n = allFields.size();
 		for (int i = 0; i < n; i++) {
