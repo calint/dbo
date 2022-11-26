@@ -34,15 +34,15 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * First init. Called after all DbClasses have been created. Fields necessary
-	 * for the relation can be added to the class or target class.
+	 * Called after all DbClasses have been created. Fields and indexes used by the
+	 * relation can be added to the class or target class.
 	 */
 	void init(final DbClass c) {
 	}
 
 	/**
-	 * Called after all tables have been created. Relation checks and creates
-	 * indexes using stmt.
+	 * Called after all tables have been created. Relation ensure necessary indexes
+	 * exist.
 	 */
 	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
