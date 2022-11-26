@@ -158,9 +158,7 @@ public final class Db {
 		for (int i = 0; i < ncons; i++) {
 			final Connection c = DriverManager.getConnection(url, user, password);
 			c.setAutoCommit(false);
-//			synchronized (conpool) {
-				conpool.add(c);
-//			}
+			conpool.add(c);
 		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
