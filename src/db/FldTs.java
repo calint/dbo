@@ -3,7 +3,7 @@ package db;
 import java.sql.Timestamp;
 import java.util.Map;
 
-/** timestamp field */
+/** Timestamp field */
 public final class FldTs extends DbField {
 	final private Timestamp defval;// ? min max values not big enough
 

@@ -2,6 +2,7 @@ package db;
 
 import java.util.Map;
 
+/** String field */
 public final class FldStr extends DbField {
 	public final static int max_size = 65535;
 	final private int size;

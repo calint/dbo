@@ -2,6 +2,7 @@ package db;
 
 import java.util.Map;
 
+/** Primary key integer field */
 public final class FldId extends DbField {
 	@Override
 	protected String getSqlType() {

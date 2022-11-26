@@ -2,6 +2,7 @@ package db;
 
 import java.util.List;
 
+/** Aggregation 0..N */
 public final class RelAggN extends DbRelation {
 
 	public RelAggN(final Class<? extends DbObject> toCls) {

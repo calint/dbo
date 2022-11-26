@@ -2,6 +2,7 @@ package db;
 
 import java.util.Map;
 
+/** Integer field */
 public final class FldInt extends DbField {
 	final private int defval;
 

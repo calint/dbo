@@ -2,6 +2,7 @@ package db;
 
 import java.util.Map;
 
+/** Boolean field */
 public final class FldBool extends DbField {
 	final private boolean defval;
 

@@ -4,7 +4,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-// represents the relation table for RelRefN
+/** Represents the relation table for RelRefN. */
 final class RelRefNMeta {
 //	final Class<? extends DbObject> fromCls;
 //	final Class<? extends DbObject> toCls;

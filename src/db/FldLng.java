@@ -2,6 +2,7 @@ package db;
 
 import java.util.Map;
 
+/** Long field */
 public final class FldLng extends DbField {
 	final private long defval;
 

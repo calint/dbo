@@ -2,6 +2,7 @@ package db;
 
 import java.util.List;
 
+/** Association 0..1 */
 public final class RelRef extends DbRelation {
 
 	public RelRef(final Class<? extends DbObject> toCls) {
