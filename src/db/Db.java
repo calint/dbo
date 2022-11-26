@@ -131,7 +131,7 @@ public final class Db {
 				r.init(c);
 		}
 
-		// allow indexes to initiate using fully constructed DbRelations
+		// allow indexes to initiate using fully initiated relations.
 		for (final DbClass c : dbclasses) {
 			for (final Index ix : c.allIndexes)
 				ix.init(c);
