@@ -101,7 +101,9 @@ public final class Main {
 				throw new RuntimeException();
 
 			// min value from https://dev.mysql.com/doc/refman/8.0/en/datetime.html
-			final Timestamp ts2 = Timestamp.valueOf("1000-01-01 00:00:00.000000");
+//			final Timestamp ts2 = Timestamp.valueOf("1000-01-01 00:00:00.000000");
+			
+			final Timestamp ts2 = Timestamp.valueOf("0001-01-01 00:00:00.000000");
 			to4.setDateTime(ts2);
 			tn.commit();
 			final TestObj to6 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
@@ -110,6 +112,7 @@ public final class Main {
 
 			// max value from https://dev.mysql.com/doc/refman/8.0/en/datetime.html
 //			final Timestamp ts3 = Timestamp.valueOf("9999-12-31 23:59:59.999999"); // overflows
+			
 			final Timestamp ts3 = Timestamp.valueOf("9999-12-31 23:59:59");
 			to4.setDateTime(ts3);
 			tn.commit();
