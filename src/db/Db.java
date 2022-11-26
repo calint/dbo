@@ -115,6 +115,8 @@ public final class Db {
 		jdbcPasswd = password;
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 		Db.log("connection: " + url);
+		Db.log("      user: " + user);
+		Db.log("  password: " + (password == null ? "[none]" : "[not displayed]"));
 		final Connection con = DriverManager.getConnection(url, user, password);
 
 		final DatabaseMetaData dbm = con.getMetaData();

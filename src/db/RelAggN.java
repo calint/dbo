@@ -24,7 +24,7 @@ public final class RelAggN extends DbRelation {
 		ix.tableName = relFld.tableName;
 
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(toCls);
-		dbc.allIndexes.add(ix); 
+		dbc.allIndexes.add(ix);
 	}
 
 	public DbObject create(final DbObject ths) {

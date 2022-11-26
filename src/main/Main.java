@@ -65,7 +65,7 @@ public final class Main {
 			final ArrayList<String> ls = new ArrayList<String>();
 			ls.add("hello");
 			ls.add("world");
-			final String chs="12345678901234567890123456789012";
+			final String chs = "12345678901234567890123456789012";
 			final TestObj to = (TestObj) tn.create(TestObj.class);
 			final Query qid = new Query(TestObj.class, to.id());
 			to.setMd5(chs);
@@ -80,7 +80,7 @@ public final class Main {
 					throw new RuntimeException();
 			}
 			final String s = to.getMd5();
-			if(!chs.equals(s))
+			if (!chs.equals(s))
 				throw new RuntimeException();
 			tn.commit();
 			final TestObj to3 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);

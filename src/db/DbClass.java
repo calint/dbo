@@ -326,7 +326,7 @@ public final class DbClass {
 	}
 
 	void dropUndeclaredIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
-		final HashSet<String> indexes=new HashSet<String>();
+		final HashSet<String> indexes = new HashSet<String>();
 		// collect all indexes in this table
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		while (rs.next()) {
@@ -338,17 +338,17 @@ public final class DbClass {
 		}
 		rs.close();
 
-		for(final Index ix:allIndexes) {
+		for (final Index ix : allIndexes) {
 			indexes.remove(ix.name);
 		}
-		
-		if(indexes.isEmpty())
+
+		if (indexes.isEmpty())
 			return;
-		
-		for(final String s:indexes) {
-			final StringBuilder sb=new StringBuilder(128);
+
+		for (final String s : indexes) {
+			final StringBuilder sb = new StringBuilder(128);
 			sb.append("drop index ").append(s).append(" on ").append(tableName);
-			final String sql=sb.toString();
+			final String sql = sb.toString();
 			Db.log(sql);
 			stmt.execute(sql);
 		}

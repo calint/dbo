@@ -44,7 +44,7 @@ public class FldSerializable extends DbField {
 			throw new RuntimeException(t);
 		}
 	}
-	
+
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}

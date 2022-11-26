@@ -7,6 +7,9 @@ public abstract class DbField {
 	Class<? extends DbObject> cls;
 	String tableName;
 
+	/**
+	 * @return the field name in the java class where index was created
+	 */
 	public final String getName() {
 		return name;
 	}
@@ -17,7 +20,7 @@ public abstract class DbField {
 	/** Called by DbClass at column creation and move column. */
 	protected abstract void sql_columnDefinition(final StringBuilder sb);
 
-	/** Called by DbTransaction at update Db from object. */
+	/** Called by DbTransaction at update database from object. */
 	protected abstract void sql_updateValue(final StringBuilder sb, final DbObject o);
 
 	/** Called by DbTransaction at object creation. */
