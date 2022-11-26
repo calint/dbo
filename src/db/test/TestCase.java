@@ -37,7 +37,7 @@ public abstract class TestCase implements Runnable {
 
 	private void doTest(final boolean cacheon) {
 		final DbTransaction tn;
-		final String cachests = cacheon ? "on" : "off";
+		final String cachests = cacheon ? "on " : "off";
 		try {
 			tn = Db.initCurrentTransaction();
 			tn.cache_enabled = cacheon;
@@ -45,9 +45,13 @@ public abstract class TestCase implements Runnable {
 			throw new RuntimeException(t);
 		}
 		try {
+			final long t0 = System.currentTimeMillis();
 			doRun();
 			tn.finishTransaction();
-			System.out.println(getClass().getName() + " [cache " + cachests + "]: passed");
+			final long t1 = System.currentTimeMillis();
+			final long dt = t1 - t0;
+			final long dt_s = dt / 1000;
+			System.out.println(getClass().getName() + " [cache " + cachests + "]: passed (" + dt_s + "s)");
 		} catch (Throwable t1) {
 			try {
 				tn.rollback();
