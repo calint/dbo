@@ -41,12 +41,6 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * Second init. Necessary indexes can be added to the class or target class.
-	 */
-	void init2(final DbClass c) {
-	}
-
-	/**
 	 * Called after all tables have been created. Relation checks and creates
 	 * indexes using stmt.
 	 */

@@ -137,12 +137,6 @@ public final class Db {
 				ix.init(c);
 		}
 
-		// second init for relations to add indexes
-		for (final DbClass c : dbclasses) {
-			for (final DbRelation r : c.allRelations)
-				r.init2(c);
-		}
-
 		// print summary
 		for (final DbClass c : dbclasses) {
 			Db.log(c.toString());

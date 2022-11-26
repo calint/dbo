@@ -16,10 +16,7 @@ public final class RelAggN extends DbRelation {
 		final DbClass toDbCls = Db.instance().dbClassForJavaClass(toCls);
 		relFld.tableName = toDbCls.tableName;
 		toDbCls.allFields.add(relFld);
-	}
 
-	@Override
-	void init2(final DbClass dbcls) {
 		// add an index to target class
 		final Index ix = new Index(relFld);
 		ix.cls = toCls;
