@@ -28,12 +28,24 @@ public class RelRefNElem extends ElemRel {
 		out.println("}");
 		out.println();
 
+		final Class<? extends DbObject> toCls = ((RelRefN) rel).getToClass(); // ? ugly cast
+		final String toClsNm = toCls.getName().substring(toCls.getName().lastIndexOf('.') + 1);
+
+		out.print("public void add");
+		out.print(accSing);
+		out.print("(final ");
+		out.print(toClsNm);
+		out.println(" o){");
+		out.print("\t");
+		out.print(rel.getName());
+		out.println(".add(this,o.id());");
+		out.println("}");
+		out.println();
+
 //		@SuppressWarnings({ "unchecked", "rawtypes" })
 //		public List<File> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
 //			return (List<File>) (List) refFiles.get(this, qry, ord, lmt);
 //		}
-		final Class<? extends DbObject> toCls = ((RelRefN) rel).getToClass(); // ? ugly cast
-		final String toClsNm = toCls.getName().substring(toCls.getName().lastIndexOf('.') + 1);
 		out.println("@SuppressWarnings({ \"unchecked\", \"rawtypes\" })");
 		out.print("public ");
 		out.print("List<");
@@ -74,5 +86,15 @@ public class RelRefNElem extends ElemRel {
 		out.println("}");
 		out.println();
 
+		out.print("public void remove");
+		out.print(accSing);
+		out.print("(final ");
+		out.print(toClsNm);
+		out.println(" o){");
+		out.print("\t");
+		out.print(rel.getName());
+		out.println(".remove(this,o.id());");
+		out.println("}");
+		out.println();
 	}
 }

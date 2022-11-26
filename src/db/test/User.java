@@ -168,6 +168,10 @@ public final class User extends DbObject {
 		refFiles.add(this, id);
 	}
 
+	public void addRefFile(final File o) {
+		refFiles.add(this, o.id());
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<File> getRefFiles(final Query qry, final Order ord, final Limit lmt) {
 		return (List<File>) (List) refFiles.get(this, qry, ord, lmt);
@@ -179,6 +183,10 @@ public final class User extends DbObject {
 
 	public void removeRefFile(final int id) {
 		refFiles.remove(this, id);
+	}
+
+	public void removeRefFile(final File o) {
+		refFiles.remove(this, o.id());
 	}
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
