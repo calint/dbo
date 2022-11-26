@@ -91,7 +91,7 @@ public final class Db {
 		return inst;
 	}
 
-	////////////////////////////////////////////////////////////
+	// --- -- - -- -- - - --- - -- -- - -- --- - - - -- - - -- - -- -- -- - -- - - -
 	private final LinkedList<Connection> conpool = new LinkedList<Connection>();
 	private final ArrayList<DbClass> dbclasses = new ArrayList<DbClass>();
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
@@ -99,6 +99,7 @@ public final class Db {
 
 	/** if true undeclared columns are deleted */
 	public boolean delete_unused_columns = true;
+
 	/** if true undeclared indexes are deleted */
 	public boolean drop_undeclared_indexes = true;
 
@@ -112,12 +113,13 @@ public final class Db {
 		jdbcUrl = url;
 		jdbcUser = user;
 		jdbcPasswd = password;
-		Db.log("jdbc connection: " + url);
+		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+		Db.log("connection: " + url);
 		final Connection con = DriverManager.getConnection(url, user, password);
 
 		final DatabaseMetaData dbm = con.getMetaData();
-		Db.log(dbm.getDatabaseProductName() + " " + dbm.getDatabaseProductVersion());
-
+		Db.log("    driver: " + dbm.getDriverName() + " " + dbm.getDriverVersion());
+		Db.log("    server: " + dbm.getDatabaseProductName() + " " + dbm.getDatabaseProductVersion());
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
 
 		// recursively populate lists: allFields, allRelations, allIndexes

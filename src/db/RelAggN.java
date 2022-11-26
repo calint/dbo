@@ -20,9 +20,9 @@ public final class RelAggN extends DbRelation {
 		// add an index to target class
 		final Index ix = new Index(relFld);
 		ix.cls = toCls;
-		ix.declaredByOtherClass = true;
 		ix.name = relFld.name;
 		ix.tableName = relFld.tableName;
+
 		final DbClass dbc = Db.instance().getDbClassForJavaClass(toCls);
 		dbc.allIndexes.add(ix); 
 	}

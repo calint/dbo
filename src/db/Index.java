@@ -15,11 +15,6 @@ public class Index {
 	String tableName;
 	/** The fields in this index. */
 	final ArrayList<DbField> fields = new ArrayList<DbField>();
-	/**
-	 * Is set to true when the index was added by some other class. Example AggN
-	 * adds index on target table. Used at deleteUndeclaredIndexes.
-	 */
-	boolean declaredByOtherClass = false;
 
 	public Index(final DbField... flds) {
 		for (final DbField f : flds) {
