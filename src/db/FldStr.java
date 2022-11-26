@@ -58,7 +58,7 @@ public final class FldStr extends DbField {
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 		if (defval == null)
 			return;
-
+		
 		kvm.put(this, defval);
 	}
 
