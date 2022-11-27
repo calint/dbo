@@ -8,9 +8,9 @@ import java.util.List;
 
 /** reads CSV file */
 public final class CsvReader {
+	final private BufferedReader reader;
 	final private char columnSeparator;
 	final private char stringDelim;
-	final private BufferedReader reader;
 	final private StringBuilder sb = new StringBuilder(1024);
 
 	public CsvReader(final Reader reader) {
@@ -36,7 +36,7 @@ public final class CsvReader {
 			}
 			final char ch = (char) chi;
 			if (inString) {
-				if (ch == stringDelim) {// example ... "the quote ""hello"" ", ...
+				if (ch == stringDelim) { // example ... "the quote ""hello"" ", ...
 					reader.mark(1);
 					final int nxtChr = reader.read(); // check if ""
 					if (nxtChr == -1)

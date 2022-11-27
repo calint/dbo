@@ -9,8 +9,7 @@ import db.test.Game;
 import db.test.TestCase;
 import db.test.TestObj;
 import db.test.User;
-import db.test.test1;
-import db.test.test2;
+import db.test.import_books;
 
 public final class Main {
 	public static final void main(String[] args) throws Throwable {
@@ -31,11 +30,11 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
-//		Db.log_enable = false;
-		run(test1.class);
-		run(test2.class);
+		Db.log_enable = false;
+//		run(test1.class);
+//		run(test2.class);
 //		run(import_books_sample.class);
-//		run(import_books.class);
+		run(import_books.class);
 //		run(fulltext_search_books.class);
 //		run(get_books.class);
 //		run(jdbc_select_books.class);
