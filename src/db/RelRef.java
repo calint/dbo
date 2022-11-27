@@ -42,7 +42,7 @@ public final class RelRef extends DbRelation {
 		final List<? extends DbObject> ls = Db.currentTransaction().get(toCls, new Query(toCls, id), null, null);
 //		if (ls.isEmpty())
 //			throw new RuntimeException("didnt't expect empty result for id=" + id);
-		if (ls.isEmpty())
+		if (ls.isEmpty()) // ? the target object has been deleted but the relation has not been updated to null
 			return null;
 		return ls.get(0);
 	}
