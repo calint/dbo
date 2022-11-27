@@ -23,14 +23,19 @@ public final class DbClass {
 	final ArrayList<Index> allIndexes = new ArrayList<Index>();
 
 	/**
-	 * Contains RefN relations declared in other classes referring to this class.
-	 * Used to delete orphan entries in the RefN table when an object of this type
-	 * is deleted.
+	 * Contains {@link RelRefN} relations declared in other classes referring to
+	 * this class. Used to delete orphan entries in the RefN table when an object of
+	 * this type is deleted.
 	 */
 	final ArrayList<RelRefN> referingRefN = new ArrayList<RelRefN>();
 
+	/**
+	 * Contains {@link RelRef} relations declared in other classes referring to this
+	 * class. Used to update the referring fields to null when an object of this
+	 * type is deleted.
+	 */
 	final ArrayList<RelRef> referingRef = new ArrayList<RelRef>();
-	
+
 	/**
 	 * True if this type needs to cascade deletes because it contains relations that
 	 * need to cascade deletes.

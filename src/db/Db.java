@@ -136,7 +136,7 @@ public final class Db {
 			c.init();
 		}
 
-		// allow DbClass relations to add necessary fields, even to other DbClasses
+		// allow DbClass relations to add necessary fields and indexes, even to other DbClasses
 		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.allRelations)
 				r.init(c);
@@ -332,9 +332,9 @@ public final class Db {
 		return clsToDbClsMap.get(c);
 	}
 
-	public List<DbClass> getDbClasses() {
-		return dbclasses;
-	}
+//	public List<DbClass> getDbClasses() {
+//		return dbclasses;
+//	}
 
 	public DbClass getDbClassForJavaClass(final Class<? extends DbObject> cls) {
 		return clsToDbClsMap.get(cls);
