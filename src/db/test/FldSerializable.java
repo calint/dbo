@@ -8,6 +8,7 @@ import java.util.Map;
 import db.DbField;
 import db.DbObject;
 import db.FldBlob;
+import db.FldStr;
 
 public final class FldSerializable extends DbField {
 	@Override
@@ -38,8 +39,9 @@ public final class FldSerializable extends DbField {
 			oos.writeObject(so);
 			oos.close();
 			final byte[] ba = bos.toByteArray();
-			final char[] chars = FldBlob.bytesToHex(ba);
-			sb.append("0x").append(chars);
+			sb.append("0x");
+			sb.ensureCapacity(sb.length() + ba.length * 2);
+			FldBlob.appendHexedBytesToStringBuilder(sb, ba);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}

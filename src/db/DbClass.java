@@ -188,7 +188,6 @@ public final class DbClass {
 	}
 
 	private void arrangeColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
-		// ? better algorithm for fields moved "down" in list?
 		while (!columnsAreInOrder(dbm)) {
 			final List<Column> columns = getColumnsFromDb(dbm);
 			DbField prevField = null;

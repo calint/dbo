@@ -61,6 +61,7 @@ public final class DbTransaction {
 		return con;
 	}
 
+	/** creates a DbObject */
 	public DbObject create(final Class<? extends DbObject> cls) {
 		try {
 			final DbObject o = cls.getConstructor().newInstance();
@@ -116,13 +117,6 @@ public final class DbTransaction {
 		final StringBuilder sb = new StringBuilder(256);
 		sb.append("delete from ").append(dbcls.tableName).append(" where id=").append(id);
 		execSql(sb);
-//		final String sql = sb.toString();
-//		Db.log(sql);
-//		try {
-//			stmt.execute(sql);
-//		} catch (Throwable t) {
-//			throw new RuntimeException(t);
-//		}
 		dirtyObjects.remove(o);
 		if (cache_enabled)
 			cache.remove(o);
@@ -235,6 +229,7 @@ public final class DbTransaction {
 		con.commit();
 	}
 
+	/** called when done with the transaction */
 	public void finishTransaction() throws Throwable {
 		commit();
 		stmt.close();

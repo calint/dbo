@@ -22,7 +22,7 @@ public abstract class TestCase implements Runnable {
 
 	/** @return true to reset database before tests */
 	protected boolean isResetDatabase() {
-		return true;
+		return false;
 	}
 
 	/** @return true to run test with cache on */

@@ -10,20 +10,12 @@ public final class FldBlob extends DbField {
 
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		final byte[] data = o.getBytesArray(this);
-		final int c = data.length * 2;
-		final StringBuilder hexed = new StringBuilder(c);
-		appendHexedBytesToStringBuilder(hexed, data);
 		sb.append("0x");
-		final int cap = sb.length() + hexed.length();
+		final byte[] data = o.getBytesArray(this);
+		final int cap = sb.length() + data.length * 2;
 		sb.ensureCapacity(cap);
-		sb.append(hexed);
+		appendHexedBytesToStringBuilder(sb, data);
 	}
-
-//	@Override
-//	protected void sql_columnDefinition(final StringBuilder sb) {
-//		sb.append(name).append(' ').append(getSqlType());
-//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
@@ -41,13 +33,13 @@ public final class FldBlob extends DbField {
 		}
 	}
 
-	public static char[] bytesToHex(final byte[] bytes) {
-		final char[] hexChars = new char[bytes.length * 2];
-		for (int i = 0; i < bytes.length; i++) {
-			final int v = bytes[i] & 0xFF;
-			hexChars[i * 2] = HEX_ARRAY[v >>> 4];
-			hexChars[i * 2 + 1] = HEX_ARRAY[v & 0x0F];
-		}
-		return hexChars;
-	}
+//	public static char[] bytesToHex(final byte[] bytes) {
+//		final char[] hexChars = new char[bytes.length * 2];
+//		for (int i = 0; i < bytes.length; i++) {
+//			final int v = bytes[i] & 0xFF;
+//			hexChars[i * 2] = HEX_ARRAY[v >>> 4];
+//			hexChars[i * 2 + 1] = HEX_ARRAY[v & 0x0F];
+//		}
+//		return hexChars;
+//	}
 }

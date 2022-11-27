@@ -25,7 +25,11 @@ public abstract class DbRelation {
 	/** the table name of toCls */
 	final String toTableName;
 
-	/** field used in relations. may be null or 0 */
+	/**
+	 * Field used by relations {@link RelAgg} and {@link RelRef}. May be null in
+	 * case relation does not use column. Example {@link RelRefN}. The field may
+	 * return null or 0.
+	 */
 	FldRel relFld;
 
 	public DbRelation(final Class<? extends DbObject> toCls) {
@@ -34,15 +38,15 @@ public abstract class DbRelation {
 	}
 
 	/**
-	 * Called after all DbClasses have been created. Fields and indexes used by the
-	 * relation can be added to the class or target class.
+	 * Called after all DbClasses have been created. Relation can here add fields
+	 * and indexes.
 	 */
 	void init(final DbClass c) {
 	}
 
 	/**
 	 * Called after all tables have been created. Relation ensures necessary indexes
-	 * exist.
+	 * exist and match the expected specification.
 	 */
 	void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 	}
@@ -55,6 +59,7 @@ public abstract class DbRelation {
 		return toCls;
 	}
 
+	/** @return true if cascadeDelete is to be called when an object is deleted. */
 	boolean cascadeDeleteNeeded() {
 		return true;
 	}

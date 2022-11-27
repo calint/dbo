@@ -83,7 +83,7 @@ public final class FldStr extends DbField {
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
 	public static void escapeSqlString(final StringBuilder sb, final String s) {
 		final int len = s.length();
-		sb.ensureCapacity(sb.length() + len + 128); // ? magic number
+//		sb.ensureCapacity(sb.length() + len + 128); // ? magic number
 		for (int i = 0; i < len; ++i) {
 			final char ch = s.charAt(i);
 			switch (ch) {

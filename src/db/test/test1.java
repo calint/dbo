@@ -10,6 +10,11 @@ import db.Query;
 
 public class test1 extends TestCase {
 	@Override
+	protected boolean isResetDatabase() {
+		return true;
+	}
+
+	@Override
 	protected boolean isRunWithCache() {
 		return true;
 	}

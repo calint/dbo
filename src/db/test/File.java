@@ -25,7 +25,7 @@ public final class File extends DbObject {
 			throw new RuntimeException("file '" + path + "' not found");
 		final long len = f.length();
 		setSizeB(len);
-		// ? does not handle files bigger than 4G
+		// note does not handle files bigger than 4G
 		final byte[] ba = new byte[(int) len];
 		final FileInputStream fis = new FileInputStream(f);
 		fis.read(ba);
@@ -38,7 +38,7 @@ public final class File extends DbObject {
 		if (d == null)
 			return;
 		final java.io.File f = new java.io.File(path);
-		// ? does not handle files bigger than 4G
+		// note does not handle files bigger than 4G
 		final byte[] ba = d.getData();
 		final FileOutputStream fos = new FileOutputStream(f);
 		fos.write(ba);
