@@ -15,10 +15,6 @@ import java.util.List;
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
-	private String jdbcUrl;
-	private String jdbcUser;
-	private String jdbcPasswd;
-
 	public static boolean log_enable = true;
 
 	static void log(String s) {
@@ -109,6 +105,10 @@ public final class Db {
 	 * referring fields to null
 	 */
 	public boolean update_referring = true;
+
+	private String jdbcUrl;
+	private String jdbcUser;
+	private String jdbcPasswd;
 
 	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
