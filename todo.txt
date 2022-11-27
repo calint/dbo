@@ -1,3 +1,4 @@
+[ ] review code
 [ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] better connection pool
 [x]   thread safe
