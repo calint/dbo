@@ -3,7 +3,7 @@ package db;
 import java.util.ArrayList;
 
 public final class Order {
-	static class Elem {
+	final private static class Elem {
 		String tableName;
 		String columnName;
 		String dir;

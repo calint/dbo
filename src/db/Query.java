@@ -15,7 +15,7 @@ public final class Query {
 	public final static int LIKE = 7;
 	public final static int FTQ = 8;// full text query
 
-	final static class Elem {
+	final private static class Elem {
 		int elemOp;
 		String lhtbl;// left hand table name
 		String lh; // left hand field name
