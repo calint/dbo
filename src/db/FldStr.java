@@ -5,25 +5,27 @@ import java.util.Map;
 /** String field */
 public final class FldStr extends DbField {
 	public final static int MAX_SIZE = 65535;
-//	final private String defval;
 
 	public FldStr() {
-		this(255, null);
+		this(255, null, true);
 	}
 
 	public FldStr(int size) {
-		this(size, null);
+		this(size, null, true);
 	}
 
 	public FldStr(final String def) {
-		this(255, def);
+		this(255, def, true);
 	}
 
 	public FldStr(final int size, final String def) {
-		super(size, def, true);
+		this(size, def, true);
+	}
+
+	public FldStr(final int size, final String def, final boolean allowNull) {
+		super(size, def, allowNull);
 		if (size > MAX_SIZE) // ? mysql specifc
 			throw new RuntimeException("size " + size + " exceeds maximum of " + MAX_SIZE);
-//		this.defval = def;
 	}
 
 	@Override
@@ -35,7 +37,7 @@ public final class FldStr extends DbField {
 	protected boolean isDefaultValueString() {
 		return true;
 	}
-	
+
 	@Override
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final String s = o.getStr(this);
@@ -81,6 +83,7 @@ public final class FldStr extends DbField {
 	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
 	public static void escapeSqlString(final StringBuilder sb, final String s) {
 		final int len = s.length();
+		sb.ensureCapacity(sb.length() + len + 128); // ? magic number
 		for (int i = 0; i < len; ++i) {
 			final char ch = s.charAt(i);
 			switch (ch) {

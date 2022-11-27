@@ -23,7 +23,7 @@ public class print_column_types extends TestCase {
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		final Statement stmt = tn.getJdbcStatement();
-		final String sql = "select t1.* from User as t1 limit 0,1";
+		final String sql = "select t1.* from TestObj as t1 limit 0,1";
 		System.out.println(sql);
 		final ResultSet rs = stmt.executeQuery(sql);
 		final ResultSetMetaData rsm = rs.getMetaData();
