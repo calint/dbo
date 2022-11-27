@@ -14,10 +14,10 @@ import java.util.LinkedList;
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
-	public static boolean log_enable = true;
+	public static boolean enable_log = true;
 
 	static void log(String s) {
-		if (!log_enable)
+		if (!enable_log)
 			return;
 		System.out.println(s);
 	}
@@ -94,16 +94,22 @@ public final class Db {
 	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
 	/** if true undeclared columns are deleted */
-	public boolean delete_unused_columns = true;
+	public boolean enable_delete_unused_columns = true;
 
 	/** if true undeclared indexes are deleted */
-	public boolean drop_undeclared_indexes = true;
+	public boolean enable_drop_undeclared_indexes = true;
 
 	/**
-	 * objects deleted that are being referred to by other classes trigger update of
+	 * Objects deleted that are being referred to by other classes trigger update of
 	 * referring classes setting referring field to null
 	 */
-	public boolean update_referring = true;
+	public boolean enable_update_referring_tables = true;
+
+	/**
+	 * Objects retrieved from database return the same instance that was previously
+	 * retrieved in the transaction.
+	 */
+	public boolean enable_cache = true;
 
 	private String jdbcUrl;
 	private String jdbcUser;
@@ -135,7 +141,8 @@ public final class Db {
 			c.init();
 		}
 
-		// allow DbClass relations to add necessary fields and indexes, even to other DbClasses
+		// allow DbClass relations to add necessary fields and indexes, even to other
+		// DbClasses
 		for (final DbClass c : dbclasses) {
 			for (final DbRelation r : c.allRelations)
 				r.init(c);
@@ -236,7 +243,7 @@ public final class Db {
 			}
 		}
 
-		if (drop_undeclared_indexes) {
+		if (enable_drop_undeclared_indexes) {
 			// drop undeclared indexes
 			for (final DbClass dbcls : dbclasses) {
 				dbcls.dropUndeclaredIndexes(stmt, dbm);

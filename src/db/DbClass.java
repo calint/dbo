@@ -129,7 +129,7 @@ public final class DbClass {
 
 	private void ensureColumns(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		addMissingColumns(stmt, dbm);
-		if (Db.instance().delete_unused_columns)
+		if (Db.instance().enable_delete_unused_columns)
 			deleteUnusedColumns(stmt, dbm);
 		arrangeColumns(stmt, dbm);
 		ensureColumnTypesAndSize(stmt, dbm);

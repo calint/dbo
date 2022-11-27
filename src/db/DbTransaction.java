@@ -49,8 +49,9 @@ public final class DbTransaction {
 	}
 
 	DbTransaction(final Connection c) throws Throwable {
-		this.con = c;
-		this.stmt = c.createStatement();
+		con = c;
+		stmt = c.createStatement();
+		cache_enabled = Db.instance().enable_cache;
 	}
 
 	public Statement getJdbcStatement() {
@@ -115,7 +116,7 @@ public final class DbTransaction {
 		}
 
 		// update referring fields to null
-		if (Db.instance().update_referring) {
+		if (Db.instance().enable_update_referring_tables) {
 			for (final RelRef r : dbcls.referingRef) {
 				final StringBuilder sb = new StringBuilder(256);
 				sb.append("update ").append(r.tableName).append(" set ").append(r.name).append("=null")

@@ -18,7 +18,7 @@ public final class RelRef extends DbRelation {
 		relFld.name = name;
 		c.allFields.add(relFld);
 
-		if (Db.instance().update_referring) {
+		if (Db.instance().enable_update_referring_tables) {
 			// add an index on the referring field
 			final Index ix = new Index(relFld);
 			ix.cls = cls;

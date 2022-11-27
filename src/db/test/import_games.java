@@ -18,7 +18,7 @@ public class import_games extends TestCase {
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		tn.cache_enabled = false;
-		Db.log_enable = false;
+		Db.enable_log = false;
 
 		final FileReader in = new FileReader(getFilePath());
 		final CsvReader csv = new CsvReader(in, ';', '"');

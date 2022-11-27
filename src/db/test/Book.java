@@ -15,7 +15,7 @@ public final class Book extends DbObject {
 	public final static FldTs publishedDate = new FldTs();
 	public final static RelAgg data = new RelAgg(DataText.class);
 
-	// optimizes Book join with DataText when full text query
+	// optimizes Book join with DataText when doing full text query
 	public final static IndexRel ixRelData = new IndexRel(data);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
