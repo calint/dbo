@@ -6,5 +6,4 @@ source wc
    1569    6791   61910
 source gzip wc
      34     222   11108
-
 ```
