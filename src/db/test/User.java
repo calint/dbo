@@ -12,7 +12,6 @@ import db.FldLng;
 import db.FldStr;
 import db.FldTs;
 import db.IndexFt;
-import db.IndexRel;
 import db.Limit;
 import db.Order;
 import db.Query;
@@ -41,7 +40,6 @@ public final class User extends DbObject {
 
 //	public final static Index ixName = new Index(name);
 	public final static IndexFt ixFt = new IndexFt(name);
-//	public final static IndexRel ixGroupPic = new IndexRel(groupPic);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {
