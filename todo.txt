@@ -1,4 +1,4 @@
-[ ] review code. search for "// todo" and "// ?"
+[ ] review code. search for "// todo" "// !" "// ?"
 [o] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>. setting on db update_referring
 [x]   updates referring tables column to null
 [ ]   objects in cache not updated. evict all objects of the referring type or iterate through cache and set null where field refers to deleted object

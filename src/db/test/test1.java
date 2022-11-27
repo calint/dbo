@@ -267,9 +267,8 @@ public class test1 extends TestCase {
 		final File f10 = u9.getGroupPic();
 		f10.writeFile("img/dog_ok.jpg");
 
-		final int procres = Runtime.getRuntime().exec("diff img/far_side_dog_ok.jpg img/dog_ok.jpg").waitFor();// ! on
-																												// unix
-																												// only
+		// ! on unix only
+		final int procres = Runtime.getRuntime().exec("diff img/far_side_dog_ok.jpg img/dog_ok.jpg").waitFor();
 		if (procres != 0)
 			throw new RuntimeException();
 		if (!new java.io.File("img/dog_ok.jpg").delete())

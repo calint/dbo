@@ -34,6 +34,7 @@ public final class Main {
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
 //		Db.enable_log = false;
+		
 		run(test1.class);
 		run(test2.class);
 //		run(import_books_sample.class);
@@ -42,6 +43,7 @@ public final class Main {
 //		run(get_books.class);
 //		run(jdbc_select_books.class);
 //		run(print_column_types.class);
+//		run(import_games.class);
 
 		db.shutdown();
 	}
