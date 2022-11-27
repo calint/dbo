@@ -102,7 +102,7 @@ public final class Db {
 
 	/**
 	 * objects deleted that are being referred to by other classes trigger update of
-	 * referring fields to null
+	 * referring classes setting referring field to null
 	 */
 	public boolean update_referring = true;
 
