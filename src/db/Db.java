@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
