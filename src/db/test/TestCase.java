@@ -34,6 +34,10 @@ public abstract class TestCase implements Runnable {
 	protected boolean isRunWithoutCache() {
 		return true;
 	}
+	
+	protected String getTestName() {
+		return getClass().getName();
+	}
 
 	private void doTest(final boolean cacheon) {
 		final DbTransaction tn;
@@ -51,7 +55,7 @@ public abstract class TestCase implements Runnable {
 			final long t1 = System.currentTimeMillis();
 			final long dt = t1 - t0;
 			final long dt_s = dt / 1000;
-			System.out.println(getClass().getName() + " [cache " + cachests + "]: passed (" + dt_s + "s)");
+			System.out.println(getTestName() + " [cache " + cachests + "]: passed (" + dt_s + "s)");
 		} catch (Throwable t1) {
 			try {
 				tn.rollback();

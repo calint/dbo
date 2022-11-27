@@ -10,20 +10,30 @@ import db.DbTransaction;
 // import-200k-book
 //   download csv at https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews
 public class import_books extends TestCase {
+	final private String filePath;
+
+	public import_books() {
+		this("csv/books_data_sample.csv");
+	}
+
+	public import_books(final String path) {
+		filePath = path;
+	}
+
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;
 	}
 
-	protected String getFilePath() {
-		return "../csv-samples/books_data.csv";
+	@Override
+	protected String getTestName() {
+		return getClass().getName() + " " + filePath;
 	}
 
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 
-		final String filePath = getFilePath();
 		// sanity check
 		FileReader in = new FileReader(filePath);
 		CsvReader csv = new CsvReader(in);

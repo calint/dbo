@@ -6,11 +6,11 @@ import db.test.DataBinary;
 import db.test.DataText;
 import db.test.File;
 import db.test.Game;
-import db.test.TestCase;
 import db.test.TestObj;
 import db.test.User;
-import db.test.import_books_sample;
-import db.test.import_games_sample;
+import db.test.fulltext_search_books;
+import db.test.import_books;
+import db.test.import_games;
 import db.test.test1;
 import db.test.test2;
 
@@ -37,27 +37,33 @@ public final class Main {
 
 		Db.enable_log = false;
 		
-		run(test1.class);
-		run(test2.class);
-		run(import_books_sample.class);
+		new test1().run();
+		new test2().run();
+		new import_books().run();
+//		new import_books("../csv-samples/books_data.csv").run();
+		new fulltext_search_books().run();
+		new import_games().run();
+//		new import_games("../csv-samples/steam-games.csv").run();
+		
+//		run(import_books_sample.class);
 //		run(import_books.class);
 //		run(fulltext_search_books.class);
 //		run(get_books.class);
 //		run(jdbc_select_books.class);
 //		run(print_column_types.class);
-		run(import_games_sample.class);
+//		run(import_games_sample.class);
 //		run(import_games.class);
 		
 		db.shutdown();
 	}
 
-	private static void run(Class<? extends TestCase> cls) throws Throwable {
-		final TestCase r = cls.getConstructor().newInstance();
-//		final Thread t = new Thread(r);
-//		t.start();
-//		t.join();
-		r.run();
-	}
+//	private static void run(Class<? extends TestCase> cls) throws Throwable {
+//		final TestCase r = cls.getConstructor().newInstance();
+////		final Thread t = new Thread(r);
+////		t.start();
+////		t.join();
+//		r.run();
+//	}
 
 	private static boolean tryJemCall(Db db, String[] args) throws Throwable {
 		// ? so ugly

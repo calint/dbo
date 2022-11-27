@@ -9,20 +9,31 @@ import db.DbTransaction;
 
 // import games
 public class import_games extends TestCase {
+	final private String filePath;
+
+	public import_games() {
+		this("csv/steam-games_sample.csv");
+	}
+
+	@Override
+	protected String getTestName() {
+		return getClass().getName() + " " + filePath;
+	}
+
+	public import_games(final String path) {
+		filePath = path;
+	}
+
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;
 	}
 
-	protected String getFilePath() {
-		return "../csv-samples/steam-games.csv";
-	}
-
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		Db.log("importing " + getFilePath());
-		final FileReader in = new FileReader(getFilePath());
+		Db.log("importing " + filePath);
+		final FileReader in = new FileReader(filePath);
 		final CsvReader csv = new CsvReader(in, ';', '"');
 		List<String> ls = csv.nextRecord(); // read headers
 		int i = 2;
@@ -39,6 +50,6 @@ public class import_games extends TestCase {
 			}
 		}
 		in.close();
-		Db.log("done importing " + (i - 2) + " records from " + getFilePath());
+		Db.log("done importing " + (i - 2) + " records from " + filePath);
 	}
 }
