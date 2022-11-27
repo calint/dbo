@@ -34,14 +34,14 @@ public abstract class TestCase implements Runnable {
 	protected boolean isRunWithoutCache() {
 		return true;
 	}
-	
+
 	protected String getTestName() {
 		return getClass().getName();
 	}
 
 	private void doTest(final boolean cacheon) {
 		final DbTransaction tn;
-		final String cachests = cacheon ? "on " : "off";
+		final String cachests = cacheon ? " on" : "off";
 		try {
 			tn = Db.initCurrentTransaction();
 			tn.cache_enabled = cacheon;

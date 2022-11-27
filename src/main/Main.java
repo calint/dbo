@@ -36,7 +36,7 @@ public final class Main {
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
 		Db.enable_log = false;
-		
+
 		new test1().run();
 		new test2().run();
 		new import_books().run();
@@ -44,7 +44,7 @@ public final class Main {
 		new fulltext_search_books().run();
 		new import_games().run();
 //		new import_games("../csv-samples/steam-games.csv").run();
-		
+
 //		run(import_books_sample.class);
 //		run(import_books.class);
 //		run(fulltext_search_books.class);
@@ -53,7 +53,7 @@ public final class Main {
 //		run(print_column_types.class);
 //		run(import_games_sample.class);
 //		run(import_games.class);
-		
+
 		db.shutdown();
 	}
 
@@ -73,9 +73,10 @@ public final class Main {
 			if (i == args.length)
 				break;
 			if (args[i].equals("-j")) {
-				if (!(args.length > i + 1))
-					throw new IllegalArgumentException("expected a java class name after option -j at argument " + i);
 				i++;
+				if (!(args.length > i))
+					throw new IllegalArgumentException(
+							"expected a java class name after option -j at argument " + (i + 1));
 				jem.Main.main(db, args[i]);
 				exit = true;
 			}
