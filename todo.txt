@@ -1,10 +1,14 @@
+[ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
+[ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
+[ ] Db.tableNameForJavaClass does not include package name
+[ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
+[ ] Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
 [ ] review code. search for "// todo" and "// ?"
 [ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
 [ ]   close connection after a number of recycles and create a new one
-[ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [o] Index(DbField...)
 [x]    Collation asc (default)
 [ ]    Collation desc
@@ -13,12 +17,8 @@
 [ ]   IN NATURAL LANGUAGE MODE
 [ ]   IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
 [ ]   WITH QUERY EXPANSION
-[ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
 [ ] class OID instead of integer
 [ ] FldString check string length vs field length at set? DbField.getSize()?
-[ ] Db.tableNameForJavaClass does not include package name
-[ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
-[ ] Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
 [ ] FldFloat max from Float.MAX_VALUE can not be committed
 [ ] FldTimestamp mysql min '1970-01-01 00:00:01' cannot be committed 
 [ ] inheritance
