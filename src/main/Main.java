@@ -40,7 +40,7 @@ public final class Main {
 //		run(get_books.class);
 //		run(jdbc_select_books.class);
 //		run(print_column_types.class);
-		
+
 		db.shutdown();
 	}
 

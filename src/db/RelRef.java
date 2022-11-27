@@ -19,6 +19,7 @@ public final class RelRef extends DbRelation {
 		c.allFields.add(relFld);
 	}
 
+	/** set 0 to remove reference */
 	public void set(final DbObject ths, final int trgId) {
 		ths.set(relFld, trgId);
 	}
@@ -40,9 +41,8 @@ public final class RelRef extends DbRelation {
 		if (id == 0)
 			return null;
 		final List<? extends DbObject> ls = Db.currentTransaction().get(toCls, new Query(toCls, id), null, null);
-//		if (ls.isEmpty())
-//			throw new RuntimeException("didnt't expect empty result for id=" + id);
-		if (ls.isEmpty()) // ? the target object has been deleted but the relation has not been updated to null
+		if (ls.isEmpty()) // ? the target object has been deleted but the relation has not been updated to
+							// null
 			return null;
 		return ls.get(0);
 	}
