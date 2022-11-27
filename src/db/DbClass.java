@@ -29,6 +29,8 @@ public final class DbClass {
 	 */
 	final ArrayList<RelRefN> referingRefN = new ArrayList<RelRefN>();
 
+	final ArrayList<RelRef> referingRef = new ArrayList<RelRef>();
+	
 	/**
 	 * True if this type needs to cascade deletes because it contains relations that
 	 * need to cascade deletes.

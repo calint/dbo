@@ -17,6 +17,9 @@ public final class RelRef extends DbRelation {
 		relFld.tableName = dbc.tableName;
 		relFld.name = name;
 		c.allFields.add(relFld);
+		
+		final DbClass todbcls = Db.instance().dbClassForJavaClass(toCls);
+		todbcls.referingRef.add(this);
 	}
 
 	/** set 0 to remove reference */

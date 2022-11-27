@@ -104,6 +104,12 @@ public final class Db {
 	/** if true undeclared indexes are deleted */
 	public boolean drop_undeclared_indexes = true;
 
+	/**
+	 * objects deleted that are being referred to by other classes trigger update of
+	 * referring fields to null
+	 */
+	public boolean update_referring = true;
+
 	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);

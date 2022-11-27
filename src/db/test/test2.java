@@ -69,6 +69,13 @@ public class test2 extends TestCase {
 		if (!to7.getDateTime().equals(ts3))
 			throw new RuntimeException();
 
+//		final Timestamp ts4 = Timestamp.valueOf("-0001-12-31 23:59:59");
+//		to4.setDateTime(ts4);
+//		tn.commit();
+//		final TestObj to8 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
+//		if (!to8.getDateTime().equals(ts4))
+//			throw new RuntimeException();
+
 		tn.delete(to7);
 	}
 }

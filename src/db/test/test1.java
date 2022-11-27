@@ -89,7 +89,14 @@ public class test1 extends TestCase {
 		if (f6 != null)
 			throw new RuntimeException("expected null");
 
-		u1.setGroupPic(0);
+		u1.setGroupPic(f4);
+		tn.delete(f4);
+		tn.commit();
+		final User u2 = (User) tn.get(User.class, new Query(User.class, u1.id()), null, null).get(0);
+		if (u2.getGroupPicId() != 0)
+			throw new RuntimeException("expected null");
+
+//		u1.setGroupPic(0);
 
 		final Book b1 = (Book) tn.create(Book.class);
 		final DataText d = b1.getData(false);

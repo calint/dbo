@@ -119,7 +119,7 @@ public final class Query {
 		}
 
 		void sql_appendSelectFromTables(final StringBuilder sb) {
-			for (Map.Entry<String, String> kv : tblToAlias.entrySet()) {
+			for (final Map.Entry<String, String> kv : tblToAlias.entrySet()) {
 				sb.append(kv.getKey()).append(" ").append(kv.getValue()).append(", ");
 			}
 			if (!tblToAlias.isEmpty())

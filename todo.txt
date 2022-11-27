@@ -1,4 +1,3 @@
-[ ] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>
 [ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
 [ ] Db.tableNameForJavaClass does not include package name
 [ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
@@ -144,3 +143,7 @@
 [x]   FldTs using java.sql type. ok?
 [x]   main.FldDateTime supports range 0001-01-01 00:00:00 to 9999-12-31 23:59:59
 [x]     FldDt in package db. get/set java.sql.Timestamp
+[x] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>. setting on db update_referring
+[x]   updates referring tables column to null
+[x]   objects in cache not updated. not resolvable
+[x]   racing conditions. example object referring to deleted object is committed after the deletes. not resolvable

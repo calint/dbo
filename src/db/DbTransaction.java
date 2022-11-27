@@ -97,6 +97,7 @@ public final class DbTransaction {
 
 	public void delete(final DbObject o) {
 		flush();
+		
 		final DbClass dbcls = Db.instance().dbClassForJavaClass(o.getClass());
 		if (dbcls.cascadeDelete) {
 			for (final DbRelation r : dbcls.allRelations) {
@@ -111,6 +112,16 @@ public final class DbTransaction {
 		// delete orphans
 		for (final RelRefN r : dbcls.referingRefN) {
 			r.deleteReferencesTo(id);
+		}
+
+		// update referring fields to null
+		if (Db.instance().update_referring) {
+			for (final RelRef r : dbcls.referingRef) {
+				final StringBuilder sb = new StringBuilder(256);
+				sb.append("update ").append(r.tableName).append(" set ").append(r.name).append("=null")
+						.append(" where ").append(r.name).append('=').append(id);
+				execSql(sb);
+			}
 		}
 
 		// delete this
