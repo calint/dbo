@@ -3,7 +3,7 @@
 [x]   updates referring tables column to null
 [ ]   objects in cache not updated. evict all objects of the referring type or iterate through cache and set null where field refers to deleted object
 [x]   racing conditions. example object referring to deleted object is committed after the deletes. not resolvable
-[ ]   index on the referring field for delete ... where
+[x]   index on the referring field for delete ... where
 [ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
 [ ] Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
 [ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true

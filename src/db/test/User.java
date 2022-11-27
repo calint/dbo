@@ -41,7 +41,7 @@ public final class User extends DbObject {
 
 //	public final static Index ixName = new Index(name);
 	public final static IndexFt ixFt = new IndexFt(name);
-	public final static IndexRel ixGroupPic = new IndexRel(groupPic);
+//	public final static IndexRel ixGroupPic = new IndexRel(groupPic);
 
 	// ---- - - - - - ---- -- --- - -- - -- - -- -- - -- - - - -- - - --- - -
 	public String getName() {

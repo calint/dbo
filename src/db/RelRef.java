@@ -18,6 +18,13 @@ public final class RelRef extends DbRelation {
 		relFld.name = name;
 		c.allFields.add(relFld);
 		
+		// add an index on the referring field
+		final Index ix = new Index(relFld);
+		ix.cls = cls;
+		ix.name = relFld.name;
+		ix.tableName = relFld.tableName;
+		dbc.allIndexes.add(ix);
+		
 		final DbClass todbcls = Db.instance().dbClassForJavaClass(toCls);
 		todbcls.referingRef.add(this);
 	}
