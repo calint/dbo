@@ -38,7 +38,7 @@ public class RelAggNElem extends ElemRel {
 //		}
 		final Class<? extends DbObject> toCls = ((RelAggN) rel).getToClass(); // ? ugly cast
 		final String toClsNm = toCls.getName().substring(toCls.getName().lastIndexOf('.') + 1);
-		out.println("@SuppressWarnings({ \"unchecked\", \"rawtypes\" })");
+		out.println("@SuppressWarnings({\"unchecked\",\"rawtypes\"})");
 		out.print("public ");
 		out.print("List<");
 		out.print(toClsNm);

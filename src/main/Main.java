@@ -29,7 +29,7 @@ public final class Main {
 		db.register(Game.class);
 		db.register(TestObj.class);
 
-		if (tryJemCall(db, args))
+		if (tryJemCall(args))
 			return;
 
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
@@ -65,7 +65,7 @@ public final class Main {
 //		r.run();
 //	}
 
-	private static boolean tryJemCall(Db db, String[] args) throws Throwable {
+	private static boolean tryJemCall(String[] args) throws Throwable {
 		// ? so ugly
 		boolean exit = false;
 		int i = 0;
@@ -77,7 +77,7 @@ public final class Main {
 				if (!(args.length > i))
 					throw new IllegalArgumentException(
 							"expected a java class name after option -j at argument " + (i + 1));
-				jem.Main.main(db, args[i]);
+				jem.Main.main(args[i]);
 				exit = true;
 			}
 			i++;

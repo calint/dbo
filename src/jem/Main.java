@@ -12,9 +12,9 @@ import db.DbObject;
  */
 public final class Main {
 	@SuppressWarnings("unchecked")
-	public final static void main(final Db db, final String clsName) throws Throwable {
+	public final static void main(final String clsName) throws Throwable {
 		final Class<? extends DbObject> cls = (Class<? extends DbObject>) Class.forName(clsName);
-		final JavaCodeEmitter jce = new JavaCodeEmitter(db);
+		final JavaCodeEmitter jce = new JavaCodeEmitter(Db.instance());
 		final PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));// ? param to call
 		jce.emit(out, cls);
 	}
