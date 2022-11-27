@@ -40,7 +40,7 @@ public final class JavaCodeEmitter {
 			sb.append(getPackageNameForClass(getClass())).append('.');
 			sb.append(getClassNameAfterPackageForClass(dbf.getClass())).append("Elem");
 			final String elemClsName = sb.toString();
-
+			// ? list of package names to be tried with Class.forName
 			try {
 				final JavaCodeElem jce = (JavaCodeElem) Class.forName(elemClsName).getConstructor(dbf.getClass())
 						.newInstance(dbf);
@@ -67,7 +67,8 @@ public final class JavaCodeEmitter {
 		}
 
 		out.println("//****************************************************");
-		out.println(cls.getName());
+		out.println("//** generated code");
+		out.println("//**   " + cls.getName());
 		out.println("//****************************************************");
 		for (final JavaCodeElem e : elems) {
 			e.emit(out);
