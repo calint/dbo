@@ -8,7 +8,6 @@ import java.util.Map;
 import db.DbField;
 import db.DbObject;
 import db.FldBlob;
-import db.FldStr;
 
 public final class FldSerializable extends DbField {
 	@Override
