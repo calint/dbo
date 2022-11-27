@@ -15,13 +15,13 @@ public class import_games extends TestCase {
 	}
 
 	protected String getFilePath() {
-		return "../cvs-samples/steam-games.csv";
+		return "../csv-samples/steam-games.csv";
 	}
 
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		System.out.println("importing " + getFilePath());
+		Db.log("importing " + getFilePath());
 		final FileReader in = new FileReader(getFilePath());
 		final CsvReader csv = new CsvReader(in, ';', '"');
 		List<String> ls = csv.nextRecord(); // read headers
@@ -34,11 +34,11 @@ public class import_games extends TestCase {
 			o.setName(ls.get(1));
 			o.setDescription(ls.get(2));
 			if (++i % 100 == 0) {
-				System.out.println(i);
+				Db.log("  " + i);
 				tn.commit();
 			}
 		}
 		in.close();
-		System.out.println("done importing " + (i - 2) + " records from " + getFilePath());
+		Db.log("done importing " + (i - 2) + " records from " + getFilePath());
 	}
 }

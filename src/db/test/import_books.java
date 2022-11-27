@@ -16,14 +16,12 @@ public class import_books extends TestCase {
 	}
 
 	protected String getFilePath() {
-		return "../cvs-samples/books_data.csv";
+		return "../csv-samples/books_data.csv";
 	}
 
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-//		Db.log_enable = false;
-//		System.out.println("cache_enabled=" + tn.cache_enabled);
 
 		final String filePath = getFilePath();
 		// sanity check
@@ -31,7 +29,7 @@ public class import_books extends TestCase {
 		CsvReader csv = new CsvReader(in);
 		List<String> ls = csv.nextRecord();// read headers
 		int i = 2; // skip headers
-		System.out.println("bounds check file '" + filePath + "'");
+		Db.log("bounds check file '" + filePath + "'");
 		while (true) {
 			ls = csv.nextRecord();
 			if (ls == null)
@@ -52,10 +50,10 @@ public class import_books extends TestCase {
 						+ " but field length is " + Book.publisher.getSize());
 
 			if (++i % 100 == 0)
-				System.out.println(i);
+				Db.log("  " + i);
 		}
 		in.close();
-		System.out.println("bounds check done. importing " + (i - 2) + " books from " + filePath + "'");
+		Db.log("bounds check done. importing " + (i - 2) + " books from " + filePath + "'");
 		in = new FileReader(filePath);
 		csv = new CsvReader(in);
 		ls = csv.nextRecord();// read headers
@@ -77,11 +75,11 @@ public class import_books extends TestCase {
 			d.setMeta(sb.toString());
 
 			if (++i % 100 == 0) {
-				System.out.println(i);
+				Db.log("  " + i);
 				tn.commit();
 			}
 		}
 		in.close();
-		System.out.println("import done. " + (i - 2) + " books imported.");
+		Db.log("import done. " + (i - 2) + " books imported.");
 	}
 }

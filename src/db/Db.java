@@ -16,7 +16,7 @@ public final class Db {
 
 	public static boolean enable_log = true;
 
-	static void log(String s) {
+	public static void log(String s) {
 		if (!enable_log)
 			return;
 		System.out.println(s);

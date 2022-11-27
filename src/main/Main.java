@@ -9,6 +9,8 @@ import db.test.Game;
 import db.test.TestCase;
 import db.test.TestObj;
 import db.test.User;
+import db.test.import_books_sample;
+import db.test.import_games_sample;
 import db.test.test1;
 import db.test.test2;
 
@@ -33,18 +35,19 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
-//		Db.enable_log = false;
+		Db.enable_log = false;
 		
 		run(test1.class);
 		run(test2.class);
-//		run(import_books_sample.class);
+		run(import_books_sample.class);
 //		run(import_books.class);
 //		run(fulltext_search_books.class);
 //		run(get_books.class);
 //		run(jdbc_select_books.class);
 //		run(print_column_types.class);
+		run(import_games_sample.class);
 //		run(import_games.class);
-
+		
 		db.shutdown();
 	}
 
