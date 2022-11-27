@@ -10,16 +10,6 @@ import db.Query;
 
 public class test2 extends TestCase {
 	@Override
-	protected boolean isRunWithCache() {
-		return true;
-	}
-
-	@Override
-	protected boolean isRunWithoutCache() {
-		return true;
-	}
-
-	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		final ArrayList<String> ls = new ArrayList<String>();
@@ -78,7 +68,7 @@ public class test2 extends TestCase {
 		final TestObj to7 = (TestObj) tn.get(TestObj.class, qid, null, null).get(0);
 		if (!to7.getDateTime().equals(ts3))
 			throw new RuntimeException();
-		
+
 		tn.delete(to7);
 	}
 }

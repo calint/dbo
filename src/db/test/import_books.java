@@ -11,11 +11,6 @@ import db.DbTransaction;
 //   download csv at https://www.kaggle.com/datasets/mohamedbakhet/amazon-books-reviews
 public class import_books extends TestCase {
 	@Override
-	protected boolean isResetDatabase() {
-		return false;
-	}
-
-	@Override
 	protected boolean isRunWithoutCache() {
 		return false;
 	}

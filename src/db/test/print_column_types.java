@@ -10,11 +10,6 @@ import db.DbTransaction;
 // prints column types of user
 public class print_column_types extends TestCase {
 	@Override
-	protected boolean isResetDatabase() {
-		return false;
-	}
-
-	@Override
 	protected boolean isRunWithoutCache() {
 		return false;
 	}

@@ -9,10 +9,6 @@ import db.DbTransaction;
 
 // import games
 public class import_games extends TestCase {
-	@Override
-	protected boolean isRunWithoutCache() {
-		return false;
-	}
 
 	protected String getFilePath() {
 		return "../cvs-samples/steam-games.csv";

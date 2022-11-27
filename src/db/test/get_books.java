@@ -7,13 +7,7 @@ import db.DbObject;
 import db.DbTransaction;
 import db.Limit;
 
-//// get-book-10req-1M
 public class get_books extends TestCase {
-	@Override
-	protected boolean isResetDatabase() {
-		return false;
-	}
-
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;

@@ -8,13 +8,7 @@ import db.DbTransaction;
 import db.Limit;
 import db.Query;
 
-//// get-book-10req-1M
 public class fulltext_search_books extends TestCase {
-	@Override
-	protected boolean isResetDatabase() {
-		return false;
-	}
-
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;

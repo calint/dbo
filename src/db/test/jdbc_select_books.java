@@ -5,13 +5,7 @@ import java.sql.Statement;
 
 import db.Db;
 
-//// jdbc-select-book-10req-1M
 public class jdbc_select_books extends TestCase {
-	@Override
-	protected boolean isResetDatabase() {
-		return false;
-	}
-
 	@Override
 	protected boolean isRunWithoutCache() {
 		return false;

@@ -15,16 +15,6 @@ public class test1 extends TestCase {
 	}
 
 	@Override
-	protected boolean isRunWithCache() {
-		return true;
-	}
-
-	@Override
-	protected boolean isRunWithoutCache() {
-		return true;
-	}
-
-	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
 		final User u1 = (User) tn.create(User.class);
