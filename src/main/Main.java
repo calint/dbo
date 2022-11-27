@@ -17,6 +17,8 @@ public final class Main {
 		Class.forName("com.mysql.jdbc.Driver"); // ? necessary in java 1.5
 		Db.initInstance();
 		Db db = Db.instance();
+//		db.update_referring = false;
+
 		db.register(User.class);
 		db.register(File.class);
 		db.register(DataBinary.class);
