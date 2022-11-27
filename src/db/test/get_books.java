@@ -22,7 +22,7 @@ public class get_books extends TestCase {
 	@Override
 	public void doRun() throws Throwable {
 		final DbTransaction tn = Db.currentTransaction();
-		final int nreq = 10;
+		final int nreq = 100;
 		int i = 0;
 		while (true) {
 			final List<DbObject> ls = tn.get(Book.class, null, null, new Limit(0, 1000000));
