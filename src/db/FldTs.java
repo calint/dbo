@@ -29,7 +29,7 @@ public final class FldTs extends DbField {
 		kvm.put(this, defval);
 	}
 
-	// java.sql.Timestamp adds .0 at the end. mysql default value does not have that
+	// java.sql.Timestamp adds .0 at the end. mysql default value does not.
 	public static String defValToStr(final Timestamp def) {
 		String s = def.toString();
 		if (s.endsWith(".0"))

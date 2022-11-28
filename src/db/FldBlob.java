@@ -11,12 +11,10 @@ public final class FldBlob extends DbField {
 		final byte[] data = o.getBytesArray(this);
 		final int cap = sb.length() + data.length * 2;
 		sb.ensureCapacity(cap);
-		appendHexedBytesToStringBuilder(sb, data);
+		appendHexedBytes(sb, data);
 	}
 
-	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-
-	public static void appendHexedBytesToStringBuilder(final StringBuilder sb, final byte[] bytes) {
+	public static void appendHexedBytes(final StringBuilder sb, final byte[] bytes) {
 		final char[] hex = new char[2];
 		for (int i = 0; i < bytes.length; i++) {
 			final int v = bytes[i] & 0xFF;
@@ -25,4 +23,6 @@ public final class FldBlob extends DbField {
 			sb.append(hex);
 		}
 	}
+
+	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 }

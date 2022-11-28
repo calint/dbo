@@ -33,7 +33,7 @@ public final class FldSerializable extends DbField {
 			final byte[] ba = bos.toByteArray();
 			sb.append("0x");
 			sb.ensureCapacity(sb.length() + ba.length * 2);
-			FldBlob.appendHexedBytesToStringBuilder(sb, ba);
+			FldBlob.appendHexedBytes(sb, ba);
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}

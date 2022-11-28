@@ -101,9 +101,6 @@ public class Index {
 
 	@Override
 	public String toString() {
-//		final StringBuilder sb = new StringBuilder(128);
-//		sb.append(name);// .append(" on ").append(tableName).append('(');
-//		return sb.toString();
 		return name;
 	}
 }
