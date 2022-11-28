@@ -35,7 +35,7 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
-		Db.enable_log = false;
+//		Db.enable_log = false;
 
 		new test1().run();
 		new test2().run();
