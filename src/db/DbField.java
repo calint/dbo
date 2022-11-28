@@ -3,7 +3,7 @@ package db;
 import java.sql.DatabaseMetaData;
 import java.util.Map;
 
-/** Abstract field */
+/** Abstract field. */
 public abstract class DbField {
 	String name;
 	Class<? extends DbObject> cls;
@@ -33,18 +33,21 @@ public abstract class DbField {
 		this.isStringType = isStringType;
 	}
 
-	/** Called by DbClass when asserting that column type matches DbField type. */
+	/**
+	 * Called by {@link DbClass} when asserting that column type matches
+	 * {@link DbField} type.
+	 */
 	public final String getSqlType() {
 		return type;
 	}
 
-	/** @return Size of field if applicable (varchar and char) or 0 */
+	/** @return size of field if applicable (varchar and char) or 0. */
 	public final int getSize() {
 		return size;
 	}
 
 	/**
-	 * @return the field name in the java class where index was created
+	 * @return the field name of the Java class where the field was created.
 	 */
 	public final String getName() {
 		return name;
@@ -66,7 +69,10 @@ public abstract class DbField {
 		return isStringType;
 	}
 
-	/** Called by DbClass at column creation and move column. */
+	/**
+	 * Append to SQL statement the definition of the column. Called by
+	 * {@link DbClass} at column creation and move column.
+	 */
 	protected void sql_columnDefinition(final StringBuilder sb) {
 		sb.append(name).append(' ').append(getSqlType());
 		if (size != 0)
@@ -86,7 +92,10 @@ public abstract class DbField {
 		}
 	}
 
-	/** Called by DbTransaction at update database from object. */
+	/**
+	 * Append to SQL statement the value of the field. Called by
+	 * {@link DbTransaction} at update database from object.
+	 */
 	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
 		final Object v = o.get(this);
 		if (v == null) {
@@ -106,7 +115,10 @@ public abstract class DbField {
 		sb.append(v);
 	}
 
-	/** Called by DbTransaction at object creation. */
+	/**
+	 * The field puts default value in the map. Called by {@link DbTransaction} at
+	 * object creation.
+	 */
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 
@@ -120,9 +132,10 @@ public abstract class DbField {
 		return name;
 	}
 
-	// note: from
-	// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
+	/** Append to StringBuilder escaped string. */
 	public static void escapeSqlString(final StringBuilder sb, final String s) {
+		// note: from
+		// https://stackoverflow.com/questions/1812891/java-escape-string-to-prevent-sql-injection
 		final int len = s.length();
 		for (int i = 0; i < len; ++i) {
 			final char ch = s.charAt(i);

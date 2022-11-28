@@ -2,7 +2,7 @@ package db;
 
 import java.util.Map;
 
-/** Float field */
+/** Float field. */
 public final class FldFlt extends DbField {
 	private float defval;
 

@@ -3,7 +3,7 @@ package db;
 import java.sql.Timestamp;
 import java.util.Map;
 
-/** Timestamp field */
+/** Timestamp field. */
 public final class FldTs extends DbField {
 	final private Timestamp defval;
 

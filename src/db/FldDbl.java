@@ -2,7 +2,7 @@ package db;
 
 import java.util.Map;
 
-/** Double field */
+/** Double field. */
 public final class FldDbl extends DbField {
 	final private double defval;
 

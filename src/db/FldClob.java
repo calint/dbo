@@ -1,6 +1,6 @@
 package db;
 
-/** CLOB field */
+/** CLOB field. */
 public final class FldClob extends DbField {
 	public FldClob() {
 		super("longtext", 0, null, true, true);

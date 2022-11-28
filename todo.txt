@@ -1,4 +1,5 @@
-[ ] review code. search for "// todo" "// !" "// ?"
+[o] javadoc
+[o] review code. search for "// todo" "// !" "// ?"
 [ ] Db.tableNameForJavaClass does not include package name
 [ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>. setting on db update_referring

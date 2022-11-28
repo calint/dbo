@@ -11,23 +11,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+/** The database. */
 public final class Db {
 	private static final ThreadLocal<DbTransaction> tn = new ThreadLocal<DbTransaction>();
 
+	/** Enables the log(...) method. */
 	public static boolean enable_log = true;
 
+	/** Prints the string to System.out */
 	public static void log(String s) {
 		if (!enable_log)
 			return;
 		System.out.println(s);
 	}
 
-	public Connection createJdbcConnection() throws Throwable {
-		final Connection c = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPasswd);
-		return c;
+	private static Db inst;
+
+	/** Called once to create the singleton instance. */
+	public static void initInstance() throws Throwable {
+		inst = new Db();
+		inst.register(DbObject.class);
 	}
 
-	/** initiates thread local for Db.currentTransaction() */
+	/** @return instance created at initInstance(). */
+	public static Db instance() {
+		return inst;
+	}
+
+	/**
+	 * Initiates thread local for currentTransaction(). The transaction can be
+	 * retrieved anywhere in the thread using Db.currentTransaction().
+	 * 
+	 * @return the created transaction
+	 */
 	public static DbTransaction initCurrentTransaction() {
 		Connection c = null;
 		synchronized (inst.conpool) {
@@ -49,6 +65,18 @@ public final class Db {
 		}
 	}
 
+	/**
+	 * @return current transaction that was initiated in the thread local by
+	 *         initCurrentTransaction().
+	 */
+	public static DbTransaction currentTransaction() {
+		return tn.get();
+	}
+
+	/**
+	 * Removes the transaction from the thread local and the JDBC connection is
+	 * returned to the pool.
+	 */
 	public static void deinitCurrentTransaction() {
 		final DbTransaction t = tn.get();
 
@@ -72,42 +100,27 @@ public final class Db {
 		tn.remove();
 	}
 
-	public static DbTransaction currentTransaction() {
-		return tn.get();
-	}
-
-	private static Db inst;
-
-	public static void initInstance() throws Throwable {
-		inst = new Db();
-		inst.register(DbObject.class);
-	}
-
-	public static Db instance() {
-		return inst;
-	}
-
 	// --- -- - -- -- - - --- - -- -- - -- --- - - - -- - - -- - -- -- -- - -- - - -
 	private final LinkedList<Connection> conpool = new LinkedList<Connection>();
 	private final ArrayList<DbClass> dbclasses = new ArrayList<DbClass>();
 	private final HashMap<Class<? extends DbObject>, DbClass> clsToDbClsMap = new HashMap<Class<? extends DbObject>, DbClass>();
 	final ArrayList<RelRefNMeta> relRefNMeta = new ArrayList<RelRefNMeta>();
 
-	/** if true undeclared columns are deleted */
+	/** If true undeclared columns are deleted. */
 	public boolean enable_delete_unused_columns = true;
 
-	/** if true undeclared indexes are deleted */
+	/** If true undeclared indexes are deleted. */
 	public boolean enable_drop_undeclared_indexes = true;
 
 	/**
-	 * Objects deleted that are being referred to by other classes updates referring
-	 * column to null.
+	 * Object delete triggers the updating of referring columns to null. Racing
+	 * conditions may occur.
 	 */
 	public boolean enable_update_referring_tables = true;
 
 	/**
-	 * Objects retrieved from database return the same instance that was previously
-	 * retrieved in the transaction.
+	 * Objects retrieved from the database are cached. This ensures that get(...)
+	 * returns the same instance of a previously retrieved object.
 	 */
 	public boolean enable_cache = true;
 
@@ -115,12 +128,21 @@ public final class Db {
 	private String jdbcUser;
 	private String jdbcPasswd;
 
+	/** Registers DbObject class to be persisted. */
 	public void register(final Class<? extends DbObject> cls) throws Throwable {
 		final DbClass dbcls = new DbClass(cls);
 		dbclasses.add(dbcls);
 		clsToDbClsMap.put(cls, dbcls);
 	}
 
+	/**
+	 * Initiates the registered classes and connects to the database.
+	 * 
+	 * @param url      JDBC URL to the database
+	 * @param user
+	 * @param password
+	 * @param ncons    number of connections in the pool
+	 */
 	public void init(final String url, final String user, final String password, final int ncons) throws Throwable {
 		jdbcUrl = url;
 		jdbcUser = user;
@@ -179,6 +201,12 @@ public final class Db {
 		}
 
 		Db.log("--- - - - ---- - - - - - -- -- --- -- --- ---- -- -- - - -");
+	}
+
+	/** @return a JDBC connection. */
+	public Connection createJdbcConnection() throws Throwable {
+		final Connection c = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPasswd);
+		return c;
 	}
 
 	private void printDbMetaInfo(final DatabaseMetaData dbm) throws SQLException {
@@ -274,7 +302,7 @@ public final class Db {
 	}
 
 	/**
-	 * !!! deletes all and recreates tables and indexes. used by testing framework
+	 * Deletes and recreates all tables and indexes. Used by testing framework.
 	 */
 	public void reset() {
 		Db.log("*** reseting database");
@@ -314,6 +342,7 @@ public final class Db {
 		}
 	}
 
+	/** Sets singleton instance to null and closes the connections in the pool. */
 	public void shutdown() {
 		Db.inst = null;
 		synchronized (conpool) {
@@ -343,6 +372,7 @@ public final class Db {
 //		return dbclasses;
 //	}
 
+	/** @return the {@link DbClass} for the Java class */
 	public DbClass getDbClassForJavaClass(final Class<? extends DbObject> cls) {
 		return clsToDbClsMap.get(cls);
 	}

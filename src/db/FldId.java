@@ -1,6 +1,6 @@
 package db;
 
-/** Primary key integer field */
+/** Primary key integer field. */
 public final class FldId extends DbField {
 	FldId() {
 		super("int", 0, null, false, false);

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/** Abstract database object */
+/** Abstract database object. */
 public abstract class DbObject {
 	public final static FldId id = new FldId();
 
@@ -17,7 +17,7 @@ public abstract class DbObject {
 		return dirtyFields;
 	}
 
-	/** alias for getId() */
+	/** Alias for getId(). */
 	final public int id() {
 		return ((Integer) fieldValues.get(id)).intValue();
 	}
@@ -69,9 +69,9 @@ public abstract class DbObject {
 	}
 
 	/**
-	 * puts and object in the field value map without marking field dirty and
-	 * triggering an update. used by user defined DbFields to optimize get/set data
-	 * transformations
+	 * Puts object in the field value map without marking field dirty triggering an
+	 * update. Used by user defined DbFields to optimize get/set data
+	 * transformations.
 	 */
 	final protected void put(final DbField field, final Object value) {
 		fieldValues.put(field, value);
@@ -139,12 +139,12 @@ public abstract class DbObject {
 		o.put(f, v);
 	}
 
-	/** Sets the value v in DbField f in DbObject o */
+	/** Sets the value v in DbField f in DbObject o. */
 	public static void setFieldValue(final DbObject o, final DbField f, Object v) {
 		o.set(f, v);
 	}
 
-	/** @return the object for field f in DbObject o */
+	/** @return the object for field f in DbObject o. */
 	public static Object getFieldValue(final DbObject o, final DbField f) {
 		return o.get(f);
 	}
