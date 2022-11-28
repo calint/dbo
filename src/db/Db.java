@@ -101,7 +101,7 @@ public final class Db {
 
 	/**
 	 * Objects deleted that are being referred to by other classes trigger update of
-	 * referring classes setting referring field to null
+	 * referring classes setting referring field to null.
 	 */
 	public boolean enable_update_referring_tables = true;
 

@@ -3,7 +3,7 @@ experimental persistence of java objects to relational database written in legac
 
 ```
 source wc
-   1569    6791   61910
+   1551    6712   61155
 source gzip wc
-     34     222   11108
+     53     263   11177
 ```
