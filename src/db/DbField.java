@@ -61,7 +61,7 @@ public abstract class DbField {
 	 * @return true if default value is a string and should be quoted and escaped
 	 *         when defining column and updates.
 	 */
-	protected boolean isDefaultValueString() {
+	public final boolean isDefaultValueString() {
 		return isStringType;
 	}
 
