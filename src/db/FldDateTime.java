@@ -11,18 +11,8 @@ public class FldDateTime extends DbField {
 	}
 
 	public FldDateTime(final Timestamp def) {
-		super(0, def == null ? null : def.toString(), true);
+		super("datetime", 0, def == null ? null : FldTs.defValToStr(def), true, true);
 		defval = def;
-	}
-
-	@Override
-	protected String getSqlType() {
-		return "datetime";
-	}
-
-	@Override
-	protected void sql_updateValue(StringBuilder sb, DbObject o) {
-		sb.append('\'').append(o.getTs(this)).append('\'');
 	}
 
 	@Override

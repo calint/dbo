@@ -331,6 +331,7 @@ public final class Db {
 	static String tableNameForJavaClass(final Class<? extends DbObject> cls) {
 		final String tblnm = cls.getName().substring(cls.getName().lastIndexOf('.') + 1);// ? package name
 //		final String tblnm = cls.getName().replace('.', '_');
+//		final String tblnm = cls.getName();
 		return tblnm;
 	}
 

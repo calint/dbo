@@ -4,9 +4,8 @@ import java.util.Map;
 
 /** Field/column that refers to an id. It may be null or 0. */
 final class FldRel extends DbField {
-	@Override
-	protected String getSqlType() {
-		return "int";
+	public FldRel() {
+		super("int", 0, null, true, false);
 	}
 
 	@Override
@@ -17,14 +16,5 @@ final class FldRel extends DbField {
 			return;
 		}
 		sb.append(id);
-	}
-
-//	@Override
-//	protected void sql_columnDefinition(final StringBuilder sb) {
-//		sb.append(name).append(' ').append(getSqlType());
-//	}
-
-	@Override
-	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 }

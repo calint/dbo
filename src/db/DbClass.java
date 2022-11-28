@@ -174,9 +174,11 @@ public final class DbClass {
 				final String fv = f.defVal;
 				final String cv = c.column_def;
 				defval_ok = fv != null && fv.equals(cv);
+//				if (!defval_ok)
+//					System.out.println(fv + " " + cv);
 			}
 			final boolean is_nullable_ok;
-			if (f.allowNull) {
+			if (f.allowsNull) {
 				is_nullable_ok = "YES".equals(c.is_nullable);
 			} else {
 				is_nullable_ok = "NO".equals(c.is_nullable);

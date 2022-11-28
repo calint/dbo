@@ -3,9 +3,8 @@ package db;
 import java.util.Map;
 
 public final class FldBlob extends DbField {
-	@Override
-	protected String getSqlType() {
-		return "longblob";
+	public FldBlob() {
+		super("longblob", 0, null, true, false);
 	}
 
 	@Override
@@ -15,10 +14,6 @@ public final class FldBlob extends DbField {
 		final int cap = sb.length() + data.length * 2;
 		sb.ensureCapacity(cap);
 		appendHexedBytesToStringBuilder(sb, data);
-	}
-
-	@Override
-	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 
 	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
@@ -32,14 +27,4 @@ public final class FldBlob extends DbField {
 			sb.append(hex);
 		}
 	}
-
-//	public static char[] bytesToHex(final byte[] bytes) {
-//		final char[] hexChars = new char[bytes.length * 2];
-//		for (int i = 0; i < bytes.length; i++) {
-//			final int v = bytes[i] & 0xFF;
-//			hexChars[i * 2] = HEX_ARRAY[v >>> 4];
-//			hexChars[i * 2 + 1] = HEX_ARRAY[v & 0x0F];
-//		}
-//		return hexChars;
-//	}
 }

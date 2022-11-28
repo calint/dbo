@@ -35,14 +35,14 @@ public final class Main {
 //		db.init("jdbc:mysql://localhost:3306/testdb", "c", "password", 5);
 		db.init("jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false", "c", "password", 10);
 
-		Db.enable_log = false;
+//		Db.enable_log = false;
 
-		new test1().run();
+//		new test1().run();
 		new test2().run();
-		new import_books().run();
+//		new import_books().run();
 //		new import_books("../csv-samples/books_data.csv").run();
-		new fulltext_search_books().run();
-		new import_games().run();
+//		new fulltext_search_books().run();
+//		new import_games().run();
 //		new import_games("../csv-samples/steam-games.csv").run();
 
 //		run(import_books_sample.class);

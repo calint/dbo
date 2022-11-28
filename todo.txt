@@ -1,4 +1,6 @@
 [ ] review code. search for "// todo" "// !" "// ?"
+[ ] Db.tableNameForJavaClass does not include package name
+[ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] removing referenced DbObject. check and possibly fail or update to null? DbClass.List<RelRef>. setting on db update_referring
 [x]   updates referring tables column to null
 [ ]   objects in cache not updated. evict all objects of the referring type or iterate through cache and set null where field refers to deleted object
@@ -7,9 +9,7 @@
 [ ] Db.instance().makeConsistent() deleting RefN orphans, setting null on missing Ref etc 
 [ ] Db.instance().delete(Index) Db.instance().create(Index) for faster imports?
 [ ] check RelRef.set(id) vs RelRef.set(DbObject) check type? requires get() for id. still not safe. maybe when Db.mode_safe_ref_set=true
-[ ] Db.tableNameForJavaClass does not include package name
 [ ] tn.get(new Class[]{User.class,File.class},...) returns List<DbObject[]>
-[ ] Query.TableAliasMap: User -> u. if u present try us etc
 [o] better connection pool
 [x]   thread safe
 [x]   wait if connection pool is empty or create new connections? wait.
@@ -25,7 +25,6 @@
 [ ] class OID instead of integer
 [ ] FldString check string length vs field length at set? DbField.getSize()?
 [ ] FldFloat max from Float.MAX_VALUE can not be committed
-[ ] FldTimestamp mysql min '1970-01-01 00:00:01' cannot be committed 
 [ ] inheritance
 [ ]   example: select t1.* from File where t1.clspth like 'aaabbb%'; selects all objects that are File or inherits from File given File clspth=aaabbb
 [ ] refactor commands. example: rename main.User main.Person, rename main.User.name fullName, delete main.User.hashCode etc
@@ -149,3 +148,4 @@
 [x]   FldTs using java.sql type. ok?
 [x]   main.FldDateTime supports range 0001-01-01 00:00:00 to 9999-12-31 23:59:59
 [x]     FldDt in package db. get/set java.sql.Timestamp
+[x] FldTimestamp mysql min '1970-01-01 00:00:01' cannot be committed. use FldDateTime for better range. 

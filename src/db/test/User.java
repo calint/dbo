@@ -30,7 +30,7 @@ public final class User extends DbObject {
 	public final static FldDbl dbl = new FldDbl();
 	public final static FldBool bool = new FldBool(true);
 
-	public final static FldTs birthTime = new FldTs();
+	public final static FldTs birthTime = new FldTs(Timestamp.valueOf("2022-11-28 03:32:00"));
 
 	public final static RelAgg profilePic = new RelAgg(File.class);
 	public final static RelRef groupPic = new RelRef(File.class);

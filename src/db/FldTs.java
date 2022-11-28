@@ -8,7 +8,7 @@ public final class FldTs extends DbField {
 	final private Timestamp defval;
 
 	public FldTs(final Timestamp def) {
-		super(0, def == null ? null : def.toString(), true);
+		super("timestamp", 0, def == null ? null : defValToStr(def), true, true);
 		defval = def;
 	}
 
@@ -16,15 +16,10 @@ public final class FldTs extends DbField {
 		this(null);
 	}
 
-	@Override
-	protected String getSqlType() {
-		return "timestamp";
-	}
-
-	@Override
-	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-		sb.append('\'').append(o.getTs(this)).append('\'');
-	}
+//	@Override
+//	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
+//		sb.append('\'').append(o.getTs(this)).append('\'');
+//	}
 
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
@@ -32,5 +27,13 @@ public final class FldTs extends DbField {
 			return;
 
 		kvm.put(this, defval);
+	}
+
+	// java.sql.Timestamp adds .0 at the end. mysql default value does not have that
+	public static String defValToStr(final Timestamp def) {
+		String s = def.toString();
+		if (s.endsWith(".0"))
+			s = s.substring(0, s.length() - 2);
+		return s;
 	}
 }

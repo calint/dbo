@@ -10,14 +10,8 @@ import db.DbObject;
 import db.FldBlob;
 
 public final class FldSerializable extends DbField {
-	@Override
-	protected String getSqlType() {
-		return "longblob";
-	}
-
-	@Override
-	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(getName()).append(' ').append(getSqlType());
+	public FldSerializable() {
+		super("longblob", 0, null, true, false);
 	}
 
 	@Override
@@ -44,9 +38,5 @@ public final class FldSerializable extends DbField {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
-	}
-
-	@Override
-	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 	}
 }
