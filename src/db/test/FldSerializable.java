@@ -3,7 +3,6 @@ package db.test;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Map;
 
 import db.DbField;
 import db.DbObject;
