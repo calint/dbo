@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Parameter to get(...) for filtering and joining on relations. */
+/**
+ * Parameter to get(...) and getCoun(...) for filtering and joining on
+ * relations.
+ */
 public final class Query {
 	public final static int EQ = 1;
 	public final static int NEQ = 2;
@@ -151,7 +154,7 @@ public final class Query {
 	}
 
 	////////////////////////////////////////////////////////
-	/** query by id */
+	/** Query by id. */
 	public Query(final Class<? extends DbObject> c, final int id) {
 		append(NOP, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
