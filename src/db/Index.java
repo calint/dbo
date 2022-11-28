@@ -27,7 +27,7 @@ public class Index {
 	void init(final DbClass c) {
 	}
 
-	protected void ensureIndexes(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
+	protected void ensureIndex(final Statement stmt, final DatabaseMetaData dbm) throws Throwable {
 		final ResultSet rs = dbm.getIndexInfo(null, null, tableName, false, false);
 		boolean found = false;
 		while (rs.next()) {

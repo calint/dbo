@@ -260,14 +260,14 @@ public final class Db {
 		// allIndexes to other classes
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {
-				dbrel.ensureIndexes(stmt, dbm);
+				dbrel.ensureIndex(stmt, dbm);
 			}
 		}
 
 		// ensure indexes exist and match definition
 		for (final DbClass dbcls : dbclasses) {
 			for (final Index ix : dbcls.allIndexes) {
-				ix.ensureIndexes(stmt, dbm);
+				ix.ensureIndex(stmt, dbm);
 			}
 		}
 
