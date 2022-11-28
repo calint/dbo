@@ -16,11 +16,6 @@ public final class FldTs extends DbField {
 		this(null);
 	}
 
-//	@Override
-//	protected void sql_updateValue(final StringBuilder sb, final DbObject o) {
-//		sb.append('\'').append(o.getTs(this)).append('\'');
-//	}
-
 	@Override
 	protected void putDefaultValue(final Map<DbField, Object> kvm) {
 		if (defval == null)

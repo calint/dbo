@@ -8,6 +8,6 @@ public final class FldId extends DbField {
 
 	@Override
 	protected void sql_columnDefinition(final StringBuilder sb) {
-		sb.append(name).append(' ').append(getSqlType()).append(" primary key auto_increment");// ? maybe bigint
+		sb.append(name).append(' ').append(getSqlType()).append(" primary key auto_increment");
 	}
 }

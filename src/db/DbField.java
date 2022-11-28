@@ -1,5 +1,6 @@
 package db;
 
+import java.sql.DatabaseMetaData;
 import java.util.Map;
 
 public abstract class DbField {
@@ -14,11 +15,13 @@ public abstract class DbField {
 
 	/**
 	 * @param sqlType      the SQL type as returned by TYPE_NAME
-	 * @param size         where applicable (varchar, char, bit)
+	 *                     {@link DatabaseMetaData}.getColumns(...).
+	 * @param size         where applicable (varchar, char) otherwise 0.
 	 * @param defVal       default value as returned by COLUMN_DEF from
-	 *                     DatabaseMetaData.getColumns(...).
+	 *                     {@link DatabaseMetaData}.getColumns(...).
 	 * @param allowsNull   true if null is allowed.
-	 * @param isStringType true if default value is to be enclosed by quotes.
+	 * @param isStringType true if default value is to be enclosed by quotes and
+	 *                     escaped at column definition and update.
 	 */
 	protected DbField(final String sqlType, final int size, final String sqlDefVal, final boolean allowsNull,
 			final boolean isStringType) {
