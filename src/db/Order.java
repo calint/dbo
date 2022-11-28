@@ -20,7 +20,7 @@ public final class Order {
 		append(fld, ascending);
 	}
 
-	/** sort on id */
+	/** Sort on id. */
 	public Order(final Class<? extends DbObject> cls, final boolean ascending) {
 		final Elem e = new Elem();
 		e.tableName = Db.tableNameForJavaClass(cls);
@@ -29,7 +29,7 @@ public final class Order {
 		elems.add(e);
 	}
 
-	/** sort on id */
+	/** Sort on id. */
 	public Order(final Class<? extends DbObject> cls) {
 		this(cls, true);
 	}

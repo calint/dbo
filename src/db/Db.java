@@ -260,7 +260,7 @@ public final class Db {
 		// allIndexes to other classes
 		for (final DbClass dbcls : dbclasses) {
 			for (final DbRelation dbrel : dbcls.allRelations) {
-				dbrel.ensureIndex(stmt, dbm);
+				dbrel.ensureIndexes(stmt, dbm);
 			}
 		}
 
