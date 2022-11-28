@@ -7,16 +7,8 @@ import db.DbField;
 public final class FldChars extends DbField {
 
 	public FldChars(int size, String def) {
-		super("char", size, def == null ? null : def, false, true);
+		super("char", size, def == null ? null : def, true, true);
 	}
-
-//	@Override
-//	protected void sql_updateValue(StringBuilder sb, DbObject o) {
-//		final Object v = DbObject.getFieldValue(o, this);
-//		sb.append('\'');
-//		FldStr.escapeSqlString(sb, v.toString());
-//		sb.append('\'');
-//	}
 
 	@Override
 	protected void putDefaultValue(Map<DbField, Object> kvm) {

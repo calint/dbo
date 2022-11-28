@@ -12,7 +12,7 @@ public class import_games extends TestCase {
 	final private String filePath;
 
 	public import_games() {
-		this("csv/steam-games_sample.csv");
+		this("csv/steam_games_sample.csv");
 	}
 
 	@Override
