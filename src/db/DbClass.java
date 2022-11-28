@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+/** Meta data of {@link DbObject} class */
 public final class DbClass {
 	final Class<? extends DbObject> javaClass;
 	final String tableName;

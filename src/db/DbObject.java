@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/** Abstract database object */
 public abstract class DbObject {
 	public final static FldId id = new FldId();
 

@@ -3,6 +3,7 @@ package db;
 import java.sql.DatabaseMetaData;
 import java.util.Map;
 
+/** Abstract field */
 public abstract class DbField {
 	String name;
 	Class<? extends DbObject> cls;

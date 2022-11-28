@@ -3,6 +3,7 @@ package db;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/** Full text index of column(s) */
 public final class IndexFt extends Index {
 	public IndexFt(final DbField... fld) {
 		super(fld);

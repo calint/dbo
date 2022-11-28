@@ -100,8 +100,8 @@ public final class Db {
 	public boolean enable_drop_undeclared_indexes = true;
 
 	/**
-	 * Objects deleted that are being referred to by other classes trigger update of
-	 * referring classes setting referring field to null.
+	 * Objects deleted that are being referred to by other classes updates referring
+	 * column to null.
 	 */
 	public boolean enable_update_referring_tables = true;
 

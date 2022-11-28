@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/** Index of column(s) */
 public class Index {
 	/** The class that declared the index. */
 	Class<? extends DbObject> cls;
