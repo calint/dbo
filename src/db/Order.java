@@ -2,6 +2,7 @@ package db;
 
 import java.util.ArrayList;
 
+/** Parameter to get(...) sorting the result list. */
 public final class Order {
 	final private static class Elem {
 		String tableName;

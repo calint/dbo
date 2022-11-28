@@ -1,6 +1,6 @@
 package db;
 
-/** Index of relation column */
+/** Index of relation column. */
 public class IndexRel extends Index {
 	final private DbRelation rel;
 

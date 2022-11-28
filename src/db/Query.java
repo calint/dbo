@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Parameter to get(...) for filtering and joining on relations. */
 public final class Query {
 	public final static int EQ = 1;
 	public final static int NEQ = 2;

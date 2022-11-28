@@ -31,7 +31,7 @@ public final class RelRef extends DbRelation {
 		todbcls.referingRef.add(this);
 	}
 
-	/** set 0 to remove reference */
+	/** Set 0 to remove reference. */
 	public void set(final DbObject ths, final int trgId) {
 		ths.set(relFld, trgId);
 	}
@@ -40,7 +40,7 @@ public final class RelRef extends DbRelation {
 //		set(ths, 0);
 //	}
 
-	/** @returns 0 if id is null */
+	/** @returns 0 if id is null. */
 	public int getId(final DbObject ths) {
 		final Object objId = ths.fieldValues.get(relFld);
 		if (objId == null)
