@@ -17,7 +17,8 @@ public final class Query {
 	public final static int LT = 5;
 	public final static int LTE = 6;
 	public final static int LIKE = 7;
-	public final static int FTQ = 8;// full text query
+	/** Full text query. */
+	public final static int FTQ = 8;
 
 	final private static class Elem {
 		int elemOp;
@@ -187,24 +188,24 @@ public final class Query {
 	public Query(final DbField lh, final int op, final boolean rh) {
 		append(NOP, lh.tableName, lh.name, op, null, Boolean.toString(rh));
 	}
-
+	/** Join. */
 	public Query(final RelAggN rel) {
 		append(NOP, rel.tableName, DbObject.id.name, EQ, rel.toTableName, rel.relFld.name);
 	}
-
+	/** Join. */
 	public Query(final RelRefN rel) {
 		append(NOP, rel.tableName, DbObject.id.name, EQ, rel.rrm.tableName, rel.rrm.fromColName).append(AND,
 				rel.rrm.tableName, rel.rrm.toColName, EQ, rel.rrm.toTableName, DbObject.id.name);
 	}
-
+	/** Join. */
 	public Query(final RelAgg rel) {
 		append(NOP, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
-
+	/** Join. */
 	public Query(final RelRef rel) {
 		append(NOP, rel.tableName, rel.relFld.name, EQ, rel.toTableName, DbObject.id.name);
 	}
-
+	/** Full text query. */
 	public Query(final IndexFt ix, final String ftquery) {
 		final Elem e = new Elem();
 		e.elemOp = NOP;
@@ -244,7 +245,6 @@ public final class Query {
 	}
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
-	/** query by id */
 	public Query and(final Class<? extends DbObject> c, final int id) {
 		return append(AND, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
@@ -304,7 +304,6 @@ public final class Query {
 	}
 
 	// - - - - - - -- --- - - -- - - -- - - -- --
-	/** query by id */
 	public Query or(final Class<? extends DbObject> c, final int id) {
 		return append(OR, Db.tableNameForJavaClass(c), DbObject.id.name, EQ, null, Integer.toString(id));
 	}
