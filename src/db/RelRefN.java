@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
 
-/** Association One-to-Many */
+/** Association One-to-Many. */
 public final class RelRefN extends DbRelation {
 	RelRefNMeta rrm;
 

@@ -2,7 +2,7 @@ package db;
 
 import java.util.List;
 
-/** Association One-to-One */
+/** Association One-to-One. */
 public final class RelRef extends DbRelation {
 
 	public RelRef(final Class<? extends DbObject> toCls) {
